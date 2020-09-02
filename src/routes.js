@@ -21,6 +21,7 @@ import TableList from "views/TableList.jsx";
 import Typography from "views/Typography.jsx";
 import Icons from "views/Icons.jsx";
 import Notifications from "views/Notifications.jsx";
+import Login from "views/Login.jsx";
 
 const dashboardRoutes = [
   {
@@ -38,8 +39,8 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/table",
-    name: "Table List",
+    path: "/leaderboard",
+    name: "Leaderboard",
     icon: "pe-7s-note2",
     component: TableList,
     layout: "/admin",
@@ -64,6 +65,14 @@ const dashboardRoutes = [
     name: "Notifications",
     icon: "pe-7s-bell",
     component: Notifications,
+    layout: "/admin",
+  },
+
+  {
+    path: "/login",
+    name: "Login",
+    icon: "pe-7s-user",
+    component: Login,
     layout: "/admin",
   },
 ];

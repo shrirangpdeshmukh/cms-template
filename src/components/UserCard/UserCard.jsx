@@ -21,17 +21,16 @@ export class UserCard extends Component {
   render() {
     return (
       <div className="card card-user">
-        <div className="image">
-          <img src={this.props.bgImage} alt="..." />
-        </div>
+        <div className="image"></div>
         <div className="content">
           <div className="author">
             <a href="#pablo">
-              <img
+              {/* <img
                 className="avatar border-gray"
                 src={this.props.avatar}
                 alt="..."
-              />
+              /> */}
+              <div className="image"></div>
               <h4 className="title">
                 {this.props.name}
                 <br />

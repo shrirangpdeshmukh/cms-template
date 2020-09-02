@@ -91,15 +91,7 @@ class Admin extends Component {
     }
     return "Brand";
   };
-  handleImageClick = (image) => {
-    this.setState({ image: image });
-  };
-  handleColorClick = (color) => {
-    this.setState({ color: color });
-  };
-  handleHasImage = (hasImage) => {
-    this.setState({ hasImage: hasImage });
-  };
+
   handleFixedClick = () => {
     if (this.state.fixedClasses === "dropdown") {
       this.setState({ fixedClasses: "dropdown show-dropdown open" });
@@ -123,14 +115,8 @@ class Admin extends Component {
   }
   render() {
     return (
-      <div className="wrapper">
-        <Sidebar
-          {...this.props}
-          routes={routes}
-          image={this.state.image}
-          color={this.state.color}
-          hasImage={this.state.hasImage}
-        />
+      <div className="">
+        <Sidebar {...this.props} routes={routes} />
         <div id="main-panel" className="main-panel" ref="mainPanel">
           <AdminNavbar
             {...this.props}

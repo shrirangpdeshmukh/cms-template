@@ -40,7 +40,6 @@ class UserProfile extends Component {
           <Row>
             <Col md={4}>
               <UserCard
-                bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
                 avatar={avatar}
                 name="Mike Andrew"
                 userName="michael24"
@@ -52,19 +51,6 @@ class UserProfile extends Component {
                     <br />
                     I'm in that two seat Lambo"
                   </span>
-                }
-                socials={
-                  <div>
-                    <Button simple>
-                      <i className="fa fa-facebook-square" />
-                    </Button>
-                    <Button simple>
-                      <i className="fa fa-twitter" />
-                    </Button>
-                    <Button simple>
-                      <i className="fa fa-google-plus-square" />
-                    </Button>
-                  </div>
                 }
               />
             </Col>

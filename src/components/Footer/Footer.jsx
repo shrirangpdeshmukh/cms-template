@@ -25,38 +25,48 @@ class Footer extends Component {
       <footer className="footer">
         <Grid fluid>
           <p className="copyright pull-left">
-            &copy; {new Date().getFullYear()}{" "}
-            <a href="#">Neuromancers, IITBBS</a>, made with &hearts; for the
-            college.
+            &copy; {new Date().getFullYear()} Neuromancers, IITBBS, made with
+            &hearts; for the college.
           </p>
 
           <nav className="pull-right">
-            <ul>
-              <li>
-                <Button simple>
-                  {" "}
-                  <a href="https://github.com/NeuromancersIITBBS">
-                    <i className="fa fa-github fa-2x" />
-                  </a>
-                </Button>
-              </li>
-              <li>
-                <Button simple>
-                  <a href="https://www.instagram.com/neuro_iitbbs/">
-                    <i className="fa fa-instagram fa-2x" />
-                  </a>
-                </Button>
-              </li>
+            <Button simple>
+              {" "}
+              <a
+                href="https://github.com/NeuromancersIITBBS"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fa fa-github fa-2x" style={{ color: "black" }} />
+              </a>
+            </Button>
 
-              <li>
-                <Button simple>
-                  {" "}
-                  <a href="https://www.facebook.com/neuroIITBBS/">
-                    <i className="fa fa-facebook-square fa-2x" />
-                  </a>{" "}
-                </Button>
-              </li>
-            </ul>
+            <Button simple>
+              <a
+                href="https://www.instagram.com/neuro_iitbbs/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i
+                  className="fa fa-instagram fa-2x"
+                  style={{ color: "black" }}
+                />
+              </a>
+            </Button>
+
+            <Button simple>
+              {" "}
+              <a
+                href="https://www.facebook.com/neuroIITBBS/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i
+                  className="fa fa-facebook-square fa-2x"
+                  style={{ color: "black" }}
+                />
+              </a>{" "}
+            </Button>
           </nav>
         </Grid>
       </footer>
