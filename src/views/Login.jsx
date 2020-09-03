@@ -10,13 +10,15 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import styles from "./Login.module.css";
+import img from "../assets/img/login.png";
 
 class Login extends Component {
   render() {
     return (
       <div className="content" sytle={{ alignContent: "center" }}>
         <Grid>
-          <Col md={6}>
+          <Col md={6} sm={12}>
             <Card
               title="Login"
               content={
@@ -46,13 +48,18 @@ class Login extends Component {
                     ]}
                   />
 
-                  <Button bsStyle="info" pullRight fill type="submit">
+                  <Button bsStyle="info" fill type="submit">
                     Login
                   </Button>
                   <div className="clearfix" />
                 </form>
               }
             />
+          </Col>
+          <Col md={5} sm={12}>
+            <div>
+              <img src={img} alt="Sign" className={styles.SignUpImg} />
+            </div>
           </Col>
         </Grid>
       </div>

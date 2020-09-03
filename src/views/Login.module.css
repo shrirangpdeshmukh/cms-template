@@ -1,0 +1,15 @@
+.SignUpImg {
+  width: 95%;
+  height: 80%;
+  overflow: hidden;
+  margin: 0 20px;
+  margin-top: 45px;
+  z-index: 0;
+  align-items: center;
+}
+
+/* @media screen and (max-width: 768px) {
+  .SignUpImg {
+    display: none;
+  }
+} */
