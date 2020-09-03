@@ -32,8 +32,10 @@ import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/faces/face-3.jpg";
 
+
 class UserProfile extends Component {
   render() {
+    
     return (
       <div className="content">
         <Grid fluid>
@@ -42,14 +44,11 @@ class UserProfile extends Component {
               <UserCard
                 avatar={avatar}
                 name="Mike Andrew"
-                userName="michael24"
-                description={
+                email="michael24@iitbbs.ac.in"
+                rank = "10"
+                bio={
                   <span>
-                    "Lamborghini Mercy
-                    <br />
-                    Your chick she so thirsty
-                    <br />
-                    I'm in that two seat Lambo"
+                    I am a sophomore at Indian Institute of Technology Bhubaneswar, studying in computer Science engineering.
                   </span>
                 }
               />
