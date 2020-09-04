@@ -26,7 +26,7 @@ class Footer extends Component {
         className="footer"
         style={{
           position: "absolute",
-          bottom: "0",
+          bottom: "50px",
           width: "100%",
           maxHeight: "1.5rem",
         }}
