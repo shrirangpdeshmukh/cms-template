@@ -16,7 +16,10 @@ import img from "../assets/img/login.png";
 class Login extends Component {
   render() {
     return (
-      <div className="content" sytle={{ alignContent: "center" }}>
+      <div
+        className="content"
+        style={{ position: " relative", minHeight: "100vh" }}
+      >
         <Grid>
           <Col md={6} sm={12}>
             <Card

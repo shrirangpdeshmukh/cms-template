@@ -22,7 +22,15 @@ import Button from "../CustomButton/CustomButton";
 class Footer extends Component {
   render() {
     return (
-      <footer className="footer">
+      <footer
+        className="footer"
+        style={{
+          position: "absolute",
+          bottom: "0",
+          width: "100%",
+          maxHeight: "1.5rem",
+        }}
+      >
         <Grid fluid>
           <p className="copyright pull-left">
             &copy; {new Date().getFullYear()} Neuromancers, IITBBS, made with
@@ -31,7 +39,6 @@ class Footer extends Component {
 
           <nav className="pull-right">
             <Button simple>
-              {" "}
               <a
                 href="https://github.com/NeuromancersIITBBS"
                 target="_blank"
@@ -55,7 +62,6 @@ class Footer extends Component {
             </Button>
 
             <Button simple>
-              {" "}
               <a
                 href="https://www.facebook.com/neuroIITBBS/"
                 target="_blank"
@@ -65,7 +71,7 @@ class Footer extends Component {
                   className="fa fa-facebook-square fa-2x"
                   style={{ color: "black" }}
                 />
-              </a>{" "}
+              </a>
             </Button>
           </nav>
         </Grid>
