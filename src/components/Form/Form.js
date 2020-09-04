@@ -11,8 +11,8 @@ import styles from "./Form.module.css";
 //images
 import Login from "../../assets/img/login2.png";
 // import signUp from "../../assets/img/signin.png";
-// import Auth from "../../assets/img/auth.png";
-// import Forgot from "../../assets/img/forgot_password.png";
+import Auth from "../../assets/img/auth.png";
+import Forgot from "../../assets/img/forgot_password.png";
 // import Post from "../../assets/img/newPost.png";
 // import ModifyPost from "../../assets/img/modifyPost.png";
 // import SignUpCNF from "../../assets/img/SignUpCNF.png";
@@ -21,39 +21,39 @@ import Login from "../../assets/img/login2.png";
 
 const form = (props) => {
   //img switcher
-  let img = Login;
-  // switch (props.img) {
-  //   case "SignUp":
-  //     img = signUp;
-  //     break;
+  let img = null;
+  switch (props.img) {
+    //   case "SignUp":
+    //     img = signUp;
+    //     break;
 
-  //   case "Login":
-  //     img = Login;
-  //     break;
-  //   case "Auth":
-  //     img = Auth;
-  //     break;
-  //   case "Forgot":
-  //     img = Forgot;
-  //     break;
-  //   case "newPost":
-  //     img = Post;
-  //     break;
-  //   case "modifyPost":
-  //     img = ModifyPost;
-  //     break;
-  //   case "signupCNF":
-  //     img = SignUpCNF;
-  //     break;
-  //   case "Guest":
-  //     img = Guest;
-  //     break;
-  //   case "ChangePass":
-  //     img = ChangePassword;
-  //     break;
-  //   default:
-  //     img = null;
-  // }
+    case "Login":
+      img = Login;
+      break;
+    case "Auth":
+      img = Auth;
+      break;
+    case "Forgot":
+      img = Forgot;
+      break;
+    //   case "newPost":
+    //     img = Post;
+    //     break;
+    //   case "modifyPost":
+    //     img = ModifyPost;
+    //     break;
+    //   case "signupCNF":
+    //     img = SignUpCNF;
+    //     break;
+    //   case "Guest":
+    //     img = Guest;
+    //     break;
+    //   case "ChangePass":
+    //     img = ChangePassword;
+    //     break;
+    default:
+      img = null;
+  }
 
   return (
     <Grid>
