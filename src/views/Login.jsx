@@ -10,17 +10,35 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import styles from "./Login.module.css";
+
 import img from "../assets/img/login.png";
 
 class Login extends Component {
   render() {
+    const SignUP = {
+      width: "95%",
+      height: "80%",
+      overflow: "hidden",
+      margin: "0 10px",
+      marginTop: "45px",
+      zIndex: "0",
+      alignItems: "center",
+    };
+
     return (
-      <div className="content" sytle={{ alignContent: "center" }}>
+      <div
+        className="content"
+        style={{ position: " relative", minHeight: "100vh" }}
+      >
         <Grid>
+          <Col md={5} sm={12}>
+            <div>
+              <img src={img} alt="Sign" style={SignUP} />
+            </div>
+          </Col>
           <Col md={6} sm={12}>
             <Card
-              title="Login"
+              title=""
               content={
                 <form>
                   <FormInputs
@@ -55,11 +73,6 @@ class Login extends Component {
                 </form>
               }
             />
-          </Col>
-          <Col md={5} sm={12}>
-            <div>
-              <img src={img} alt="Sign" className={styles.SignUpImg} />
-            </div>
           </Col>
         </Grid>
       </div>
