@@ -20,9 +20,28 @@ import React, { Component } from "react";
 export class Card extends Component {
   render() {
     return (
-      <div className={"card" + (this.props.plain ? " card-plain" : "")}>
-        <div className={"header" + (this.props.hCenter ? " text-center" : "")}>
-          <h4 className="title">{this.props.title}</h4>
+      <div
+        className={"card" + (this.props.plain ? " card-plain" : "")}
+        style={this.props.style}
+      >
+        <div
+          className={"header" + (this.props.hCenter ? " bold text-center" : "")}
+        >
+          <h4
+            className="title"
+            style={
+              this.props.topicCard
+                ? {
+                    fontSize: "2em",
+                    textDecoration: "underline",
+                    textUnderlineOffset: "0.5em",
+                    margin: "10px",
+                  }
+                : null
+            }
+          >
+            {this.props.title}
+          </h4>
           <p className="category">{this.props.category}</p>
         </div>
         <div

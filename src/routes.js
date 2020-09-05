@@ -22,6 +22,7 @@ import Typography from "views/Typography.jsx";
 import Icons from "views/Icons.jsx";
 import Notifications from "views/Notifications.jsx";
 import Login from "views/Login.jsx";
+import Topics from "views/Topics.jsx";
 
 const dashboardRoutes = [
   {
@@ -29,6 +30,13 @@ const dashboardRoutes = [
     name: "Dashboard",
     icon: "pe-7s-graph",
     component: Dashboard,
+    layout: "/admin",
+  },
+  {
+    path: "/demo",
+    name: "Topics",
+    icon: "pe-7s-graph",
+    component: Topics,
     layout: "/admin",
   },
   {

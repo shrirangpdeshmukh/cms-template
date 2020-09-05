@@ -33,7 +33,7 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      <Route path="/authNOt" render={(props) => <UnAuthLayout {...props} />} />
+      <Route path="/auth" render={(props) => <UnAuthLayout {...props} />} />
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
   </BrowserRouter>,
