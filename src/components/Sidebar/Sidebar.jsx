@@ -40,9 +40,6 @@ class Sidebar extends Component {
     window.addEventListener("resize", this.updateDimensions.bind(this));
   }
   render() {
-    const sidebarBackground = {
-      backgroundImage: "url(" + this.props.image + ")",
-    };
     return (
       <div
         id="sidebar"
@@ -51,12 +48,12 @@ class Sidebar extends Component {
         data-image={this.props.image}
       >
         <div className="logo">
-          <a href="" className="simple-text logo-mini">
+          <a href="/" className="simple-text logo-mini">
             <div className="logo-img">
               <img src={logo} alt="logo_image" />
             </div>
           </a>
-          <a href="" className="simple-text logo-normal">
+          <a href="/" className="simple-text logo-normal">
             Neuromancers
           </a>
         </div>

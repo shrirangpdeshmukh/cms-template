@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import classes from "./Layout.module.css";
-import Login from "../views/Login2.jsx";
-import ForgotPassword from "../views/ForgotPassword.jsx";
-import ResetPassword from "../views/ResetPassword.jsx";
 import Footer from "components/Footer/Footer";
 import logo from "../assets/img/collegelogo.png";
 import routes from "../routes2.js";

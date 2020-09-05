@@ -16,18 +16,21 @@
 
 */
 import React, { Component } from "react";
-import styles from './UserCard.module.css';
+import styles from "./UserCard.module.css";
 import { FaHashtag } from "react-icons/fa";
 
 export class UserCard extends Component {
   render() {
     return (
-      <div className="card card-user" >
-        <div className = {styles.Rank} >
+      <div className="card card-user">
+        <div className={styles.Rank}>
           {/* <p><FaHashtag className = {styles.Hash}/> 1</p> */}
-          <p> <span className = {styles.Hash}>#</span> {this.props.rank}</p>
+          <p>
+            {" "}
+            <span className={styles.Hash}>#</span> {this.props.rank}
+          </p>
         </div>
-        
+
         <div className="image"></div>
         <div className="content">
           <div className="author">

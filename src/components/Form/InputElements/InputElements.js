@@ -1,13 +1,7 @@
 import React from "react";
 
 //bootstrap
-import {
-  FormGroup,
-  InputGroup,
-  Form,
-  ControlLabel,
-  FormControl,
-} from "react-bootstrap";
+import { FormGroup, InputGroup, FormControl } from "react-bootstrap";
 
 //css
 import styles from "./InputElements.module.css";
