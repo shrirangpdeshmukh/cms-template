@@ -27,7 +27,7 @@ import {
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
+import { UserCard } from "components/UserCard/UserCard2.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/faces/face-3.jpg";
@@ -41,7 +41,7 @@ class UserProfile extends Component {
         <Grid fluid>
           <Row>
             <Col md={4}>
-              <UserCard
+              {/* <UserCard
                 avatar={avatar}
                 name="Mike Andrew"
                 email="michael24@iitbbs.ac.in"
@@ -51,8 +51,15 @@ class UserProfile extends Component {
                     I am a sophomore at Indian Institute of Technology Bhubaneswar, studying in computer Science engineering.
                   </span>
                 }
-              />
-
+              /> */}
+            <UserCard name = "Bysani Navaneeth" 
+            email = "brn14@iitbbs.ac.in" 
+            rank = "10" 
+            bio = "I am Navaneeth Bysani, sophomore at IIT BBS"
+            role = "superAdmin"
+            designation="core-team"
+            points = "135"
+            />
             </Col>
             <Col md={8}>
                 <Table />
