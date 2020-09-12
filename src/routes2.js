@@ -18,7 +18,6 @@ const dashboardRoutes = [
   {
     path: "/reset",
     name: "Reset",
-
     component: ResetPassword,
     layout: "/auth",
   },
