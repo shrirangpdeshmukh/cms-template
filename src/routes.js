@@ -23,6 +23,7 @@ import Icons from "views/Icons.jsx";
 import Notifications from "views/Notifications.jsx";
 import Login from "views/Login.jsx";
 import Topics from "views/Topics.jsx";
+import Test from "views/Test.jsx";
 
 const dashboardRoutes = [
   {
@@ -37,6 +38,13 @@ const dashboardRoutes = [
     name: "Topics",
     icon: "pe-7s-graph",
     component: Topics,
+    layout: "/admin",
+  },
+  {
+    path: "/test",
+    name: "Test",
+    icon: "pe-7s-user",
+    component: Test,
     layout: "/admin",
   },
   {
