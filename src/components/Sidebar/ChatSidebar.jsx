@@ -18,7 +18,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
-import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
+import AdminSidebarLinks from "../Navbars/AdminSidebarLinks.jsx";
 
 import logo from "assets/img/collegelogo.png";
 
@@ -59,8 +59,9 @@ class Sidebar extends Component {
         </div>
         <div className="sidebar-wrapper">
           <ul className="nav">
-            {this.state.width <= 991 ? <AdminNavbarLinks /> : null}
-            {/* {this.props.routes.map((prop, key) => {
+            {this.state.width <= 991 ? <AdminSidebarLinks /> : null}
+
+            {this.props.routes.map((prop, key) => {
               if (!prop.redirect)
                 return (
                   <li
@@ -78,7 +79,7 @@ class Sidebar extends Component {
                   </li>
                 );
               return null;
-            })} */}
+            })}
           </ul>
         </div>
       </div>

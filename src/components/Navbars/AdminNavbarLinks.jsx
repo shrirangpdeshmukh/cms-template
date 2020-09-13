@@ -21,24 +21,31 @@ import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
 import routes from "../../routes";
 
 class AdminNavbarLinks extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      width: window.innerWidth,
+    };
+  }
+
   render() {
-    const drop = routes.map((route) => {
+    const nav = routes.map((route) => {
       return (
-        <MenuItem key={route.name} href={`${route.layout}${route.path}`}>
-          <i className={route.icon} /> {route.name}
-        </MenuItem>
+        <NavItem key={route.name} href={`${route.layout}${route.path}`}>
+          <i
+            className={route.icon}
+            style={{ padding: "2px", fontSize: "1.2em", fontWeight: "bolder" }}
+          />
+          <span style={{ padding: "3px", fontWeight: "bold" }}>
+            {route.name}
+          </span>
+        </NavItem>
       );
     });
 
-    return (
-      <div>
-        <Nav pullRight>
-          <NavDropdown eventKey={2} title="Menu" id="basic-nav-dropdown-right">
-            {drop}
-          </NavDropdown>
-        </Nav>
-      </div>
-    );
+    const Navigation = <Nav pullRight>{nav}</Nav>;
+
+    return Navigation;
   }
 }
 

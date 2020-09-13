@@ -1,7 +1,7 @@
 import Login from "views/Login2.jsx";
 import ForgotPass from "views/ForgotPassword.jsx";
 import ResetPassword from "views/ResetPassword.jsx";
-
+import Test from "views/Test.jsx";
 const dashboardRoutes = [
   {
     path: "/login",
@@ -13,6 +13,12 @@ const dashboardRoutes = [
     path: "/forgot",
     name: "Forgot",
     component: ForgotPass,
+    layout: "/auth",
+  },
+  {
+    path: "/test",
+    name: "Test",
+    component: Test,
     layout: "/auth",
   },
   {
