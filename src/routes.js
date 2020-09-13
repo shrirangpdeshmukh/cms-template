@@ -68,27 +68,12 @@ const dashboardRoutes = [
     component: Typography,
     layout: "/admin",
   },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "pe-7s-science",
-    component: Icons,
-    layout: "/admin",
-  },
 
   {
     path: "/notifications",
     name: "Notifications",
     icon: "pe-7s-bell",
     component: Notifications,
-    layout: "/admin",
-  },
-
-  {
-    path: "/login",
-    name: "Login",
-    icon: "pe-7s-user",
-    component: Login,
     layout: "/admin",
   },
 ];

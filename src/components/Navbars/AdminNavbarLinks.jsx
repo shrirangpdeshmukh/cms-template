@@ -29,14 +29,6 @@ class AdminNavbarLinks extends Component {
   }
 
   render() {
-    const drop = routes.map((route) => {
-      return (
-        <MenuItem key={route.name} href={`${route.layout}${route.path}`}>
-          <i className={route.icon} /> {route.name}
-        </MenuItem>
-      );
-    });
-
     const nav = routes.map((route) => {
       return (
         <NavItem key={route.name} href={`${route.layout}${route.path}`}>
@@ -52,14 +44,8 @@ class AdminNavbarLinks extends Component {
     });
 
     const Navigation = <Nav pullRight>{nav}</Nav>;
-    const DropDown = (
-      <Nav pullRight>
-        <NavDropdown eventKey={2} title="Menu" id="basic-nav-dropdown-right">
-          {drop}
-        </NavDropdown>
-      </Nav>
-    );
-    return this.state.width <= 991 ? DropDown : Navigation;
+
+    return Navigation;
   }
 }
 

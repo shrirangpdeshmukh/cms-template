@@ -1,53 +1,40 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import AdminNavbar from "components/Navbars/AdminNavbar";
+import ChatNavbar from "components/Navbars/ChatNavbar";
 import Footer from "components/Footer/Footer";
-import Sidebar from "components/Sidebar/Sidebar";
+import ChatSidebar from "components/Sidebar/ChatSidebar.jsx";
 
-import routes from "routes.js";
+import routes from "routes3.js";
 
-class Admin extends Component {
+class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      _notificationSystem: null,
-      // image: image,
-      color: "black",
-      hasImage: true,
       fixedClasses: "dropdown show-dropdown open",
+      modal: false,
     };
   }
-  handleNotificationClick = (position) => {
-    var color = Math.floor(Math.random() * 4 + 1);
-    var level;
-    switch (color) {
-      case 1:
-        level = "success";
-        break;
-      case 2:
-        level = "warning";
-        break;
-      case 3:
-        level = "error";
-        break;
-      case 4:
-        level = "info";
-        break;
-      default:
-        break;
-    }
+
+  showModal = () => {
+    this.setState({ modal: true });
   };
+
+  hideModal = () => {
+    this.setState({ modal: false });
+  };
+
   getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/chat") {
         return (
           <Route
             path={prop.layout + prop.path}
             render={(props) => (
               <prop.component
                 {...props}
-                handleClick={this.handleNotificationClick}
+                modalData={this.state.modal}
+                hideModal={this.hideModal}
               />
             )}
             key={key}
@@ -95,11 +82,12 @@ class Admin extends Component {
   render() {
     return (
       <div className="">
-        <Sidebar {...this.props} routes={routes} />
+        <ChatSidebar {...this.props} routes={routes} />
         <div id="main-panel" className="main-panel" ref="mainPanel">
-          <AdminNavbar
+          <ChatNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
+            infoCallback={this.showModal}
           />
           <Switch>{this.getRoutes(routes)}</Switch>
           <Footer />
@@ -109,4 +97,4 @@ class Admin extends Component {
   }
 }
 
-export default Admin;
+export default Chat;

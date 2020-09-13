@@ -29,12 +29,14 @@ import "./assets/css/pe-icon-7-stroke.css";
 
 import AdminLayout from "layouts/Admin.jsx";
 import UnAuthLayout from "layouts/UnAuthLayout.js";
+import ChatLayout from "layouts/ChatLayout.js";
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Route path="/auth" render={(props) => <UnAuthLayout {...props} />} />
+      <Route path="/chat" render={(props) => <ChatLayout {...props} />} />
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
   </BrowserRouter>,
