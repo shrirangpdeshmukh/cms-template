@@ -13,7 +13,7 @@ class Layout extends Component {
         return (
           <Route
             path={prop.layout + prop.path}
-            render={(props) => <prop.component />}
+            render={(props) => <prop.component {...this.props.cookies} />}
             key={key}
           />
         );

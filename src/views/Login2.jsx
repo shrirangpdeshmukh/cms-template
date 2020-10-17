@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 
+import checkValidity from "../variables/validityRules";
 import Form from "../components/Form/Form";
+
+import axios from "../axios-root";
+
+import Spinner from "../components/Spinner/Spinner";
 
 class LoginForm extends Component {
   state = {
@@ -33,12 +38,67 @@ class LoginForm extends Component {
         icon: "lock",
         validation: {
           required: true,
-          minLength: 8,
+        
         },
         valid: false,
         touched: false,
       },
     },
+    formIsValid: false,
+    loading: false,
+    redirectPath:null
+  };
+
+  inputChangedHandler = (event, inputIdentifier) => {
+    const updatedForm = {
+      ...this.state.loginForm,
+    };
+    const updatedFormElement = {
+      ...updatedForm[inputIdentifier],
+    };
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
+    let formIsValid = true;
+    updatedForm[inputIdentifier] = updatedFormElement;
+    for (let inputIdentifier in updatedForm) {
+      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+    }
+    this.setState({ loginForm: updatedForm, formIsValid: formIsValid });
+  };
+
+  loginHandler = (event) => {
+    event.preventDefault();
+    this.setState({ loading: true });
+    const formData = {};
+    for (let formElementIdentifier in this.state.loginForm) {
+      formData[formElementIdentifier] = this.state.loginForm[
+        formElementIdentifier
+      ].value;
+    }
+
+    axios
+      .post("/auth/login", formData)
+
+      .then((response) => {
+        if (response.data) {
+          this.setState({loading: false});
+          console.log("Login successful");
+          console.log(response.data);
+          console.log(this.props.cookies);
+          const cookies = this.props.cookies;
+          cookies.set("isAuthenticated", true, { path: "/" });
+          cookies.set("userData", response.data.data, { path: "/" });
+        } else {
+          console.log("Error occured");
+        }
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
   };
 
   render() {
@@ -54,18 +114,18 @@ class LoginForm extends Component {
       <Form
         img="Login"
         title="Login"
-        submitAction={null}
+        submitAction={this.loginHandler}
         elements={formElementsArray}
-        changeHandler={null}
+        changeHandler={this.inputChangedHandler}
         Description="Log into Your Account"
         link2="Forgot Password ?"
         linkData2="/users/forgotPassword"
-        btnState={null}
+        btnState={this.state.formIsValid}
       />
     );
-    // if (this.state.loading) {
-    //   form = <Spinner />;
-    // }
+    if (this.state.loading) {
+      form = <Spinner />;
+    }
     // let modal = null;
     // if (this.state.modalData)
     //   modal = (
@@ -87,82 +147,3 @@ class LoginForm extends Component {
 }
 
 export default LoginForm;
-
-//   loginHandler = (event) => {
-//     event.preventDefault();
-//     this.setState({ loading: true });
-//     const formData = {};
-//     for (let formElementIdentifier in this.state.loginForm) {
-//       formData[formElementIdentifier] = this.state.loginForm[
-//         formElementIdentifier
-//       ].value;
-//     }
-
-//     axios
-//       .post("/users/login", formData)
-
-//       .then((response) => {
-//         if (response.data) {
-//           const modalData = {
-//             title: "Log In Succesful",
-//             message: `Welocme ${response.data.data.user.name}`,
-//             Button: "success",
-//             hide: this.fowardToHome,
-//           };
-//           this.setState({
-//             loading: false,
-//             showModal: true,
-//             modalData: modalData,
-//           });
-//           const cookies = this.props.cookies;
-//           cookies.set("isAuthenticated", true, { path: "/" });
-//           cookies.set("userData", response.data.data, { path: "/" });
-//         } else {
-//           const modalData = {
-//             title: "Log In Failed",
-//             message: response.response.data.message,
-//             Button: "danger",
-//             hide: this.hideModal,
-//           };
-
-//           this.setState({
-//             loading: false,
-//             showModal: true,
-//             modalData: modalData,
-//           });
-//         }
-//       })
-//       .catch((error) => {
-//         // console.log(error);
-//       });
-//   };
-
-//   inputChangedHandler = (event, inputIdentifier) => {
-//     const updatedForm = {
-//       ...this.state.loginForm,
-//     };
-//     const updatedFormElement = {
-//       ...updatedForm[inputIdentifier],
-//     };
-//     updatedFormElement.value = event.target.value;
-//     updatedFormElement.valid = checkValidity(
-//       updatedFormElement.value,
-//       updatedFormElement.validation
-//     );
-//     updatedFormElement.touched = true;
-//     let formIsValid = true;
-//     updatedForm[inputIdentifier] = updatedFormElement;
-//     for (let inputIdentifier in updatedForm) {
-//       formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
-//     }
-//     this.setState({ loginForm: updatedForm, formIsValid: formIsValid });
-//   };
-
-//   hideModal = () => {
-//     this.setState({ showModal: false });
-//   };
-
-//   fowardToHome = () => {
-//     this.setState({ showModal: false, redirectPath: "/posts" });
-//     // this.props.history.push("/");
-//   };

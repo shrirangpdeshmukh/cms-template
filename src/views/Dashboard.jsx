@@ -22,6 +22,7 @@ import { Grid, Row, Col } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import { Tasks } from "components/Tasks/Tasks.jsx";
+import Spinner from "components/Spinner/Spinner.jsx";
 import {
   dataPie,
   legendPie,
@@ -32,7 +33,7 @@ import {
   dataBar,
   optionsBar,
   responsiveBar,
-  legendBar
+  legendBar,
 } from "variables/Variables.jsx";
 
 class Dashboard extends Component {
@@ -49,6 +50,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="content">
+        <Spinner />
         <Grid fluid>
           <Row>
             <Col lg={3} sm={6}>

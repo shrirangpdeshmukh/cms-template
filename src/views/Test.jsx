@@ -29,7 +29,7 @@ class Chat extends Component {
           title={`Ranga ${(i % 3) + 1}`}
           userLink="https://github.com"
           stats="3 minutes ago"
-          content="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
+          content="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...fdifj fgigjdfid lorem ipsu mggnihn fdffinfhifn fbnfsnfg grdngjn "
         />
       );
     });
