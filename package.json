@@ -10,7 +10,7 @@
     "react": "16.8.6",
     "react-bootstrap": "0.32.4",
     "react-chartist": "0.13.3",
-    "react-cookies": "^0.1.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "16.8.6",
     "react-icons": "^3.11.0",
     "react-notification-system": "0.2.17",
