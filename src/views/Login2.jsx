@@ -6,50 +6,18 @@ import Form from "../components/Form/Form";
 import axios from "../axios-root";
 
 import Spinner from "../components/Spinner/Spinner";
+import {Login} from "../variables/forms";
 
 class LoginForm extends Component {
   state = {
-    loginForm: {
-      email: {
-        elementType: "input",
-        elementConfig: {
-          type: "email",
-          id: "Login",
-          placeholder: "Your Email",
-        },
-        value: null,
-        icon: "email",
-        validation: {
-          required: true,
-          isEmail: true,
-        },
-        valid: false,
-        touched: false,
-      },
-
-      password: {
-        elementType: "input",
-        elementConfig: {
-          type: "password",
-          placeholder: "Your Password",
-          id: "LoginPass",
-        },
-        value: null,
-        icon: "lock",
-        validation: {
-          required: true,
-        
-        },
-        valid: false,
-        touched: false,
-      },
-    },
+    loginForm: Login,
     formIsValid: false,
     loading: false,
     redirectPath:null
   };
 
   inputChangedHandler = (event, inputIdentifier) => {
+    // console.log(inputIdentifier);
     const updatedForm = {
       ...this.state.loginForm,
     };
@@ -67,6 +35,7 @@ class LoginForm extends Component {
     for (let inputIdentifier in updatedForm) {
       formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
     }
+     
     this.setState({ loginForm: updatedForm, formIsValid: formIsValid });
   };
 
@@ -97,7 +66,7 @@ class LoginForm extends Component {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error.response.data.message);
       });
   };
 
