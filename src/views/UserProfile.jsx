@@ -16,6 +16,7 @@
 
 */
 import React, { Component } from "react";
+import DropDown from "./userDropDown.jsx";
 import {
   Grid,
   Row,
@@ -35,23 +36,26 @@ import Table from "./pointTransactionTable";
 
 class UserProfile extends Component {
   render() {
+    let list = {
+      "Blacklist" : "#",
+      "changeDesignation" : "#",
+      "changeRole" : "#",
+      "deleteUser" : "#",
+      "awardPoints" : "#"
+    }
     
     return (
       <div className="content">
         <Grid fluid>
           <Row>
+            <DropDown title = "Admin Options"/>
+            
+            
+            <Col md={8}>
+                <Table />
+            </Col>
+
             <Col md={4}>
-              {/* <UserCard
-                avatar={avatar}
-                name="Mike Andrew"
-                email="michael24@iitbbs.ac.in"
-                rank = "10"
-                bio={
-                  <span>
-                    I am a sophomore at Indian Institute of Technology Bhubaneswar, studying in computer Science engineering.
-                  </span>
-                }
-              /> */}
             <UserCard name = "Bysani Navaneeth" 
             email = "brn14@iitbbs.ac.in" 
             rank = "10" 
@@ -60,9 +64,6 @@ class UserProfile extends Component {
             designation="core-team"
             points = "135"
             />
-            </Col>
-            <Col md={8}>
-                <Table />
             </Col>
           </Row>
         </Grid>
