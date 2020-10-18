@@ -33,6 +33,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/faces/face-3.jpg";
 import Table from "./pointTransactionTable";
+import BlacklistModal from './blacklistModal';
 
 class UserProfile extends Component {
   render() {
@@ -47,14 +48,13 @@ class UserProfile extends Component {
     return (
       <div className="content">
         <Grid fluid>
-          <Row>
-            <DropDown title = "Admin Options"/>
-            
-            
+          <Row>  
             <Col md={8}>
                 <Table />
             </Col>
-
+            <BlacklistModal></BlacklistModal>
+              
+            <DropDown title = "Admin Options"/>
             <Col md={4}>
             <UserCard name = "Bysani Navaneeth" 
             email = "brn14@iitbbs.ac.in" 
@@ -64,6 +64,7 @@ class UserProfile extends Component {
             designation="core-team"
             points = "135"
             />
+            
             </Col>
           </Row>
         </Grid>
