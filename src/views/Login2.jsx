@@ -1,46 +1,105 @@
 import React, { Component } from "react";
 
+import axios from "../axios-root";
+
+import Auxillary from "../hoc/Auxillary/Auxillary";
+
+import {Login} from "../variables/forms";
+import checkValidity from "../variables/validityRules";
+
 import Form from "../components/Form/Form";
+import Spinner from "../components/Spinner/Spinner";
+import ResponseModal from "../components/ResponseModal/ResponseModal";
+
 
 class LoginForm extends Component {
   state = {
-    loginForm: {
-      email: {
-        elementType: "input",
-        elementConfig: {
-          type: "email",
-          id: "Login",
-          placeholder: "Your Email",
-        },
-        value: null,
-        icon: "email",
-        validation: {
-          required: true,
-          isEmail: true,
-        },
-        valid: false,
-        touched: false,
-      },
-
-      password: {
-        elementType: "input",
-        elementConfig: {
-          type: "password",
-          placeholder: "Your Password",
-          id: "LoginPass",
-        },
-        value: null,
-        icon: "lock",
-        validation: {
-          required: true,
-          minLength: 8,
-        },
-        valid: false,
-        touched: false,
-      },
-    },
+    loginForm: Login,
+    formIsValid: false,
+    loading: false,
+    showModal: false,
   };
 
+  inputChangedHandler = (event, inputIdentifier) => {
+    // console.log(inputIdentifier);
+    const updatedForm = {
+      ...this.state.loginForm,
+    };
+    const updatedFormElement = {
+      ...updatedForm[inputIdentifier],
+    };
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
+    let formIsValid = true;
+    updatedForm[inputIdentifier] = updatedFormElement;
+    for (let inputIdentifier in updatedForm) {
+      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+    }
+     
+    this.setState({ loginForm: updatedForm, formIsValid: formIsValid });
+  };
+
+  loginHandler = (event) => {
+    event.preventDefault();
+    this.setState({ loading: true });
+    const formData = {};
+    for (let formElementIdentifier in this.state.loginForm) {
+      formData[formElementIdentifier] = this.state.loginForm[
+        formElementIdentifier
+      ].value;
+    }
+
+    axios
+      .post("/auth/login", formData)
+
+      .then((response) => {
+        if (response.data) {
+          this.setState({loading: false});
+          console.log("Login successful");
+          const modalData = {
+            title: "Log In Succesful",
+            message: `Welcome ${response.data.data.user.name} !`,
+            Button: "success",
+            img:"success",
+            hide: this.fowardToHome,
+          };
+          
+          this.setState({
+            loading: false,
+            showModal: true,
+            modalData: modalData,
+          });
+         
+          
+          console.log(this.props.cookies);
+          const cookies = this.props.cookies;
+          cookies.set("isAuthenticated", true, { path: "/" });
+          cookies.set("userData", response.data.data, { path: "/" });
+          
+        } else {
+          this.setState({loading: false,formIsValid: false});
+          // console.log("Error occured");
+        }
+      })
+      .catch((error) => {
+        this.setState({loading: false,formIsValid: false});
+
+      });
+  };
+
+  fowardToHome = () => {
+    this.setState({ showModal: false});
+    this.props.history.push("/");
+  };
+  
+  
+  hideModal = () => {
+    this.setState({ showModal: false });
+  };
   render() {
     const formElementsArray = [];
     for (let key in this.state.loginForm) {
@@ -54,115 +113,34 @@ class LoginForm extends Component {
       <Form
         img="Login"
         title="Login"
-        submitAction={null}
+        submitAction={this.loginHandler}
         elements={formElementsArray}
-        changeHandler={null}
+        changeHandler={this.inputChangedHandler}
         Description="Log into Your Account"
         link2="Forgot Password ?"
-        linkData2="/users/forgotPassword"
-        btnState={null}
+        linkData2="/auth/forgotPassword"
+        btnState={this.state.formIsValid}
       />
     );
-    // if (this.state.loading) {
-    //   form = <Spinner />;
-    // }
-    // let modal = null;
-    // if (this.state.modalData)
-    //   modal = (
-    //     <Modal
-    //       show={this.state.showModal}
-    //       onHide={this.state.modalData.hide}
-    //       title={this.state.modalData.title}
-    //       body={this.state.modalData.message}
-    //       button={this.state.modalData.Button}
-    //     />
-    //   );
+    if (this.state.loading) {
+      form = <Spinner />;
+    }
+    let modal = null;
+    if (this.state.modalData)
+      modal = (
+        <ResponseModal
+          show={this.state.showModal}
+          onHide={this.state.modalData.hide}
+          title={this.state.modalData.title}
+          body={this.state.modalData.message}
+          button={this.state.modalData.Button}
+          img={this.state.modalData.img}
+        />
+      );
 
-    // if (this.state.redirectPath) {
-    //   return <Redirect to={this.state.redirectPath} />;
-    // }
 
-    return form;
+    return <Auxillary>{modal}{form}</Auxillary>;
   }
 }
 
 export default LoginForm;
-
-//   loginHandler = (event) => {
-//     event.preventDefault();
-//     this.setState({ loading: true });
-//     const formData = {};
-//     for (let formElementIdentifier in this.state.loginForm) {
-//       formData[formElementIdentifier] = this.state.loginForm[
-//         formElementIdentifier
-//       ].value;
-//     }
-
-//     axios
-//       .post("/users/login", formData)
-
-//       .then((response) => {
-//         if (response.data) {
-//           const modalData = {
-//             title: "Log In Succesful",
-//             message: `Welocme ${response.data.data.user.name}`,
-//             Button: "success",
-//             hide: this.fowardToHome,
-//           };
-//           this.setState({
-//             loading: false,
-//             showModal: true,
-//             modalData: modalData,
-//           });
-//           const cookies = this.props.cookies;
-//           cookies.set("isAuthenticated", true, { path: "/" });
-//           cookies.set("userData", response.data.data, { path: "/" });
-//         } else {
-//           const modalData = {
-//             title: "Log In Failed",
-//             message: response.response.data.message,
-//             Button: "danger",
-//             hide: this.hideModal,
-//           };
-
-//           this.setState({
-//             loading: false,
-//             showModal: true,
-//             modalData: modalData,
-//           });
-//         }
-//       })
-//       .catch((error) => {
-//         // console.log(error);
-//       });
-//   };
-
-//   inputChangedHandler = (event, inputIdentifier) => {
-//     const updatedForm = {
-//       ...this.state.loginForm,
-//     };
-//     const updatedFormElement = {
-//       ...updatedForm[inputIdentifier],
-//     };
-//     updatedFormElement.value = event.target.value;
-//     updatedFormElement.valid = checkValidity(
-//       updatedFormElement.value,
-//       updatedFormElement.validation
-//     );
-//     updatedFormElement.touched = true;
-//     let formIsValid = true;
-//     updatedForm[inputIdentifier] = updatedFormElement;
-//     for (let inputIdentifier in updatedForm) {
-//       formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
-//     }
-//     this.setState({ loginForm: updatedForm, formIsValid: formIsValid });
-//   };
-
-//   hideModal = () => {
-//     this.setState({ showModal: false });
-//   };
-
-//   fowardToHome = () => {
-//     this.setState({ showModal: false, redirectPath: "/posts" });
-//     // this.props.history.push("/");
-//   };

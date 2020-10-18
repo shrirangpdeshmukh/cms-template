@@ -111,7 +111,7 @@ const inputElement = (props) => {
                 placeholder={formElement.config.elementConfig.placeholder}
                 value={formElement.config.elementConfig.value}
                 defaultValue={formElement.config.default}
-                // onChange={(event) => props.changeHandler(event, formElement.id)}
+                onChange={(event) => props.changeHandler(event, formElement.id)}
               />
             </InputGroup>
           </FormGroup>

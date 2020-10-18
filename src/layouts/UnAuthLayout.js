@@ -13,7 +13,9 @@ class Layout extends Component {
         return (
           <Route
             path={prop.layout + prop.path}
-            render={(props) => <prop.component />}
+            render={(props) => (
+              <prop.component {...props} cookies={this.props.cookies} />
+            )}
             key={key}
           />
         );
@@ -26,11 +28,11 @@ class Layout extends Component {
     return (
       <div>
         <div className={classes.logo} style={{ backgroundColor: "black" }}>
-          <p className={[classes.logoMini, classes.simpleText].join(" ")}>
+          <div className={[classes.logoMini, classes.simpleText].join(" ")}>
             <div className={classes.logoImg}>
               <img src={logo} alt="logo_image" />
             </div>
-          </p>
+          </div>
           <p className={[classes.logoNormal, classes.simpleText].join(" ")}>
             CMS Neuromancers
           </p>
