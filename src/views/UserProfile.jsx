@@ -52,7 +52,7 @@ class UserProfile extends Component {
             <Col md={8}>
                 <Table />
             </Col>
-            <BlacklistModal></BlacklistModal>
+            {/* <BlacklistModal></BlacklistModal> */}
               
             <DropDown title = "Admin Options"/>
             <Col md={4}>

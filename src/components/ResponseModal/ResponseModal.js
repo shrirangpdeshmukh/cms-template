@@ -78,7 +78,11 @@ class ResponseModal extends Component {
         </Modal.Header>
         <Modal.Body>{modalBody}</Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.props.onHide} bsStyle={this.props.button}>
+          <Button
+            className="btn-fill"
+            onClick={this.props.onHide}
+            bsStyle={this.props.button}
+          >
             Close
           </Button>
         </Modal.Footer>

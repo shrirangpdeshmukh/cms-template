@@ -8,11 +8,14 @@ export class userDropDown extends Component {
             <div className = {styles.dropdown}>
             <button className ={styles.dropbtn}>{this.props.title}</button>
             <div className={styles.dropdown_content}>
-                <a href="#">Blacklist</a>
-                <a href="#">change designation</a>
-                <a href="#">change role</a>
-                <a href="#">delete user</a>
-                <a href="#">award points</a>
+               
+                <a href="/">Award Points points</a>
+                <a href="/admin">Change Designation</a>
+                <a href="/">Change Role</a>
+                
+                <a href="/">Blacklist</a>
+                <a href="/">Delete User</a>
+                
             </div>
             </div>
         )
