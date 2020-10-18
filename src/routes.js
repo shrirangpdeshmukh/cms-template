@@ -18,9 +18,9 @@
 import Dashboard from "views/Dashboard.jsx";
 import UserProfile from "views/UserProfile.jsx";
 import TableList from "views/TableList.jsx";
-import Typography from "views/Typography.jsx";
+import AllUsers from "views/AllUsers.jsx";
 import Icons from "views/Icons.jsx";
-import Notifications from "views/Notifications.jsx";
+import Announcements from "views/Announcements.jsx";
 import Login from "views/Login.jsx";
 import Topics from "views/Topics.jsx";
 import Test from "views/Test.jsx";
@@ -62,18 +62,18 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/typography",
-    name: "Typography",
+    path: "/allUsers",
+    name: "All Users",
     icon: "pe-7s-news-paper",
-    component: Typography,
+    component: AllUsers,
     layout: "/admin",
   },
 
   {
-    path: "/notifications",
-    name: "Notifications",
+    path: "/announcements",
+    name: "Announcements",
     icon: "pe-7s-bell",
-    component: Notifications,
+    component: Announcements,
     layout: "/admin",
   },
 ];
