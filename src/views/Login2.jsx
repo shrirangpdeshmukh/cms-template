@@ -1,19 +1,23 @@
 import React, { Component } from "react";
 
-import checkValidity from "../variables/validityRules";
-import Form from "../components/Form/Form";
-
 import axios from "../axios-root";
 
-import Spinner from "../components/Spinner/Spinner";
+import Auxillary from "../hoc/Auxillary/Auxillary";
+
 import {Login} from "../variables/forms";
+import checkValidity from "../variables/validityRules";
+
+import Form from "../components/Form/Form";
+import Spinner from "../components/Spinner/Spinner";
+import ResponseModal from "../components/ResponseModal/ResponseModal";
+
 
 class LoginForm extends Component {
   state = {
     loginForm: Login,
     formIsValid: false,
     loading: false,
-    redirectPath:null
+    showModal: false,
   };
 
   inputChangedHandler = (event, inputIdentifier) => {
@@ -56,20 +60,46 @@ class LoginForm extends Component {
         if (response.data) {
           this.setState({loading: false});
           console.log("Login successful");
-          console.log(response.data);
+          const modalData = {
+            title: "Log In Succesful",
+            message: `Welcome ${response.data.data.user.name} !`,
+            Button: "success",
+            img:"success",
+            hide: this.fowardToHome,
+          };
+          
+          this.setState({
+            loading: false,
+            showModal: true,
+            modalData: modalData,
+          });
+         
+          
           console.log(this.props.cookies);
           const cookies = this.props.cookies;
           cookies.set("isAuthenticated", true, { path: "/" });
           cookies.set("userData", response.data.data, { path: "/" });
+          
         } else {
-          console.log("Error occured");
+          this.setState({loading: false,formIsValid: false});
+          // console.log("Error occured");
         }
       })
       .catch((error) => {
-        console.log(error.response.data.message);
+        this.setState({loading: false,formIsValid: false});
+
       });
   };
 
+  fowardToHome = () => {
+    this.setState({ showModal: false});
+    this.props.history.push("/");
+  };
+  
+  
+  hideModal = () => {
+    this.setState({ showModal: false });
+  };
   render() {
     const formElementsArray = [];
     for (let key in this.state.loginForm) {
@@ -88,30 +118,28 @@ class LoginForm extends Component {
         changeHandler={this.inputChangedHandler}
         Description="Log into Your Account"
         link2="Forgot Password ?"
-        linkData2="/users/forgotPassword"
+        linkData2="/auth/forgotPassword"
         btnState={this.state.formIsValid}
       />
     );
     if (this.state.loading) {
       form = <Spinner />;
     }
-    // let modal = null;
-    // if (this.state.modalData)
-    //   modal = (
-    //     <Modal
-    //       show={this.state.showModal}
-    //       onHide={this.state.modalData.hide}
-    //       title={this.state.modalData.title}
-    //       body={this.state.modalData.message}
-    //       button={this.state.modalData.Button}
-    //     />
-    //   );
+    let modal = null;
+    if (this.state.modalData)
+      modal = (
+        <ResponseModal
+          show={this.state.showModal}
+          onHide={this.state.modalData.hide}
+          title={this.state.modalData.title}
+          body={this.state.modalData.message}
+          button={this.state.modalData.Button}
+          img={this.state.modalData.img}
+        />
+      );
 
-    // if (this.state.redirectPath) {
-    //   return <Redirect to={this.state.redirectPath} />;
-    // }
 
-    return form;
+    return <Auxillary>{modal}{form}</Auxillary>;
   }
 }
 

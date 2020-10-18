@@ -1,15 +1,24 @@
 import React, { Component } from "react";
 
-import checkValidity from "../variables/validityRules";
 import axios from "../axios-root";
-import Form from "../components/Form/Form";
+
+import Auxillary from "../hoc/Auxillary/Auxillary";
+
 import {ResetPassword} from "../variables/forms"
+import checkValidity from "../variables/validityRules";
+
+import Form from "../components/Form/Form";
+import Spinner from "../components/Spinner/Spinner";
+import ResponseModal from "../components/ResponseModal/ResponseModal";
+
 class ResetForm extends Component {
   state = {
     loginForm: ResetPassword,
     formIsValid: false,
     redirectPath:null,
-    loading:false
+    loading:false,
+    modalData:null,
+    showModal:false
   }
   
   inputChangedHandler = (event, inputIdentifier) => {
@@ -53,24 +62,54 @@ class ResetForm extends Component {
       .patch("/auth/resetPassword", formData)
         
       .then((response) => {
+        console.log(response);
         if (response.data) {
-          this.setState({loading: false});
-          console.log("Reset successful");
-          console.log(response.data);
-          console.log("redirecting to homepage\n");
-          console.log(this.props.cookies);
+          const modalData = {
+            title: "Password Reset Succesful",
+            message: `You will be redirected to HomePage`,
+            Button: "success",
+            hide: this.forwardToHome,
+            img:"success"
+          };
+          this.setState({
+            loading: false,
+            showModal: true,
+            modalData: modalData,
+          });
           const cookies = this.props.cookies;
           cookies.set("isAuthenticated", true, { path: "/" });
-          cookies.set("userData", response.data.data, { path: "/" });
+          cookies.set("userData", response.data.data, { path: "/" })
         } else {
+          console.log(response.response);
+          const modalData = {
+            title: "Error",
+            message: `${response.response.data.message}`,
+            Button: "danger",
+            hide: this.hideModal,
+          };
+          this.setState({
+            loading: false,
+            showModal: true,
+            modalData: modalData,
+            formIsValid: false,
+          });
           console.log("Error occured");
         }
       })
       .catch((error) => {
-        // console.log(error);
+        this.setState({loading: false,formIsValid: false})
+
       });
   };
   
+  hideModal = () => {
+    this.setState({ showModal: false });
+  };
+
+  forwardToHome = () => {
+    this.setState({ showModal: false });
+    this.props.history.push("/");
+  };
   
 
   render() {
@@ -96,7 +135,26 @@ class ResetForm extends Component {
       />
     );
 
-    return form;
+    let modal = null;
+
+    if (this.state.modalData)
+      modal = (
+        <ResponseModal
+          show={this.state.showModal}
+          img={this.state.modalData.img}
+          onHide={this.state.modalData.hide}
+          title={this.state.modalData.title}
+          body={this.state.modalData.message}
+          button={this.state.modalData.Button}
+        />
+      );
+
+    return (
+      <Auxillary>
+        {modal}
+        {form}
+      </Auxillary>
+    );
   }
 }
 

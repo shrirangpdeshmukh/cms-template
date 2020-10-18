@@ -2,7 +2,10 @@ import React, { Component } from "react";
 
 import { Route, Switch, Redirect } from "react-router-dom";
 
+import axios from "./axios-root";
+
 import Auxillary from "./hoc/Auxillary/Auxillary";
+import ErrorHandler from "./hoc/ErrorHandler/ErrorHandler";
 
 import AdminLayout from "layouts/Admin.jsx";
 import UnAuthLayout from "layouts/UnAuthLayout.js";
@@ -40,4 +43,4 @@ class App extends Component {
   }
 }
 
-export default withCookies(App);
+export default withCookies(ErrorHandler(App, axios));
