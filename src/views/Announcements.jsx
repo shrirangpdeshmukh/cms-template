@@ -59,7 +59,7 @@ class Announcements extends Component {
                       <span data-notify="icon" className="pe-7s-bell" />
                       <span data-notify="message">
                         This is a notification with close button and icon and have
-                        many lines. <button class="btn" type="button" style={{border:"none"}}>(Show full announcement)</button>
+                        many lines. <button className="btn" type="button" style={{border:"none"}}>(Show full announcement)</button>
                    
                       </span>
                      
@@ -82,8 +82,8 @@ class Announcements extends Component {
                       </FormGroup>
                     </div>
                   
-                    <Button style={{ marginRight:"10px"}} bsStyle="primary">Edit</Button>
-                    <Button bsStyle="danger">Delete</Button>
+                    <Button className="btn-fill" style={{ marginRight:"10px"}} bsStyle="primary">Edit</Button>
+                    <Button className="btn-fill" bsStyle="danger">Delete</Button>
                   </Col>
                 </Row>
                 <br />
@@ -111,7 +111,7 @@ class Announcements extends Component {
                       <span data-notify="icon" className="pe-7s-bell" />
                       <span data-notify="message">
                         This is a notification with close button and icon and have
-                        many lines.<button class="btn" type="button" onClick={()=>this.setState({ open: !this.state.open })} style={{border:"none"}}>(Show full announcement)</button>
+                        many lines.<button className="btn" type="button" onClick={()=>this.setState({ open: !this.state.open })} style={{border:"none"}}>(Show full announcement)</button>
                     </span>
                    <Collapse in={this.state.open}>
           <div>
@@ -128,8 +128,8 @@ class Announcements extends Component {
                             </FormGroup>
                             
                     </div>
-             <Button style={{ marginRight:"10px"}} bsStyle="primary">Edit</Button>
-                    <Button bsStyle="danger">Delete</Button>
+             <Button className="btn-fill" style={{ marginRight:"10px"}} bsStyle="primary">Edit</Button>
+                    <Button bsStyle="danger" className="btn-fill">Delete</Button>
                         </div>
                         
         </Collapse>
