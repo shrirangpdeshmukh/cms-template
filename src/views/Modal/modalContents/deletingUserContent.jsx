@@ -1,29 +1,33 @@
 import React , {Component} from 'react';
-import Modal from './Modal/Modal'
 import Button from 'components/CustomButton/CustomButton';
+import Aux from '../../../hoc/Auxillary/Auxillary';
 
-class blacklistModal extends Component {
+class deleteUserModal extends Component {
         render() {
+            const msg = `Are you sure you want to delete the user ?`;
+            const name = 'Bysani R Navaneeth';
+            const email = 'brn14@iitbbs.ac.in';
+          
             return (
-                <Modal show = "1" modalClosed = "1">
-                    <p>Are you sure you want to blacklist the below user ?</p>
+                <Aux>
+                    <p>{msg}</p>
                     <hr />
                     <table>
                         <tr>
-                        <td><b>Name :</b></td>
-                        <td>Bysani R Navaneeth</td>
+                        <td><b>Name :   </b></td>
+                        <td>{name}</td>
                         </tr>
                         <tr>
                         <td><b>Email :</b></td>
-                        <td>brn14@iitbbs.ac.in</td>
+                        <td>{email}</td>
                         </tr> 
                     </table>
                     <br />
                     <Button bsStyle="danger" fill block>Yes, Go ahead</Button> 
                     <Button bsStyle="success" fill block>Nope, Go back</Button>
-                </Modal>
+                </Aux>
             )
         }
 }
 
-export default blacklistModal;
+export default deleteUserModal;
