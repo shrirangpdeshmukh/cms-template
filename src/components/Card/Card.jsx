@@ -42,7 +42,7 @@ export class Card extends Component {
           >
             {this.props.title}
           </h4>
-          <p className="category">{this.props.category}</p>
+          <div className="category">{this.props.category}</div>
         </div>
         <div
           className={

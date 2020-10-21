@@ -20,7 +20,7 @@ import ReactDOM from "react-dom";
 
 import { BrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
-
+import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/animate.min.css";
 import "./assets/sass/light-bootstrap-dashboard-react.scss?v=1.3.0";
@@ -34,6 +34,9 @@ ReactDOM.render(
     <BrowserRouter>
       <App />
     </BrowserRouter>
+    ,
   </CookiesProvider>,
   document.getElementById("root")
 );
+
+serviceWorker.unregister();

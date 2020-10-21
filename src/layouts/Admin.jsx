@@ -69,6 +69,7 @@ class Admin extends Component {
               <prop.component
                 {...props}
                 handleClick={this.handleNotificationClick}
+                cookies={this.props.cookies}
               />
             )}
             key={key}
