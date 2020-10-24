@@ -54,9 +54,12 @@ class LoginForm extends Component {
     }
 
     axios
-      .post("/auth/login", formData)
+      .post("/auth/login", formData, {withCredentials: true})
 
       .then((response) => {
+        
+        // console.log(response);
+        
         if (response.data) {
           this.setState({loading: false});
           console.log("Login successful");
@@ -75,14 +78,13 @@ class LoginForm extends Component {
           });
          
           
-          console.log(this.props.cookies);
+          // console.log(this.props.cookies);
           const cookies = this.props.cookies;
           cookies.set("isAuthenticated", true, { path: "/" });
           cookies.set("userData", response.data.data, { path: "/" });
           
         } else {
           this.setState({loading: false,formIsValid: false});
-          // console.log("Error occured");
         }
       })
       .catch((error) => {

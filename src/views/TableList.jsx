@@ -21,6 +21,7 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import { thArray, tdArray } from "variables/Variables.jsx";
+import axios from "axios";
 
 class TableList extends Component {
   updownArrow = (num) => {
@@ -48,33 +49,65 @@ class TableList extends Component {
     }
   };
 
+  refreshBoard = () => {
+    axios
+      .patch("/board/leaderboard/refresh",{withCredentials:true})
+      .then((res) => {
+        if (res.data) {
+          console.log(res);
+        } else {
+          console.log(res);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   render() {
+    let category = null;
+
+    const cookies = this.props.cookies.cookies;
+
+    const auth = cookies.isAuthenticated;
+    const userData = cookies.userData;
+
+    if (auth && userData && userData !== "undefined") {
+      const authJSON = JSON.parse(auth);
+      const userDataJSON = JSON.parse(userData);
+
+      if (authJSON && userDataJSON) {
+        const userRole = userDataJSON.user.role;
+
+        if (userRole === "admin" || userRole === "superAdmin") {
+          category = (
+            <div className="container">
+              <Col xs={12} md={4} sm={2}>
+                <Button simple onClick={this.refreshBoard}>
+                  <span>Refresh Leaderboard &nbsp;</span>
+
+                  <i
+                    className="pe pe-7s-refresh"
+                    style={{
+                      color: "black",
+
+                      borderRadius: "20px",
+                      fontWeight: "bold",
+                    }}
+                  />
+                </Button>
+              </Col>
+            </div>
+          );
+        }
+      }
+    }
     const title = (
       <div className="container">
         <Col xs={12} md={8} sm={10}>
           <h3 className="pull-left" style={{ fontWeight: "bold" }}>
             Current Leaderboard
           </h3>
-        </Col>
-      </div>
-    );
-
-    const category = (
-      <div className="container">
-        <Col xs={12} md={4} sm={2}>
-          <Button simple>
-            <span>Refresh Leaderboard &nbsp;</span>
-
-            <i
-              className="pe pe-7s-refresh"
-              style={{
-                color: "black",
-
-                borderRadius: "20px",
-                fontWeight: "bold",
-              }}
-            />
-          </Button>
         </Col>
       </div>
     );
