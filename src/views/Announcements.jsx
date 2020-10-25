@@ -1,20 +1,4 @@
-/*!
 
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { Component } from "react";
 import {
   Grid,
@@ -28,19 +12,26 @@ import {
 } from "react-bootstrap";
 
 import Button from "components/CustomButton/CustomButton.jsx";
+import axios from "../axios-root"
 
 class Announcements extends Component {
   state = {
-    show: false,
-    open:false,
-    announcementData:`This is a notification with close button and icon and have many lines. You can see that the icon and the close button are always vertically aligned. This is a beautiful notification. So you don't have to worry about the style.`
-                        
-                        
-                        
+      open: false,
+      announcements: null,
+    error:null,
+    announcementData:null
+                       
   }
   
+    componentDidMount() {
+        axios.get('/board/announcements').then(response => {
+            this.setState({announcements:response.data})
+        }).catch(err => {
+            this.setState({error:err})
+        })
+    }
+    
   render() {
-    let test = null;
     if (window.innerWidth >= 993) {
       return (
         <div className="content">
