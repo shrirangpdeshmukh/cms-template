@@ -13,6 +13,7 @@ class deleteUserModal extends Component {
                     <p>{msg}</p>
                     <hr />
                     <table>
+                        <tbody>
                         <tr>
                         <td><b>Name :   </b></td>
                         <td>{name}</td>
@@ -21,6 +22,7 @@ class deleteUserModal extends Component {
                         <td><b>Email :</b></td>
                         <td>{email}</td>
                         </tr> 
+                        </tbody>
                     </table>
                     <br />
                     <Button bsStyle="danger" fill block>Yes, Go ahead</Button> 
