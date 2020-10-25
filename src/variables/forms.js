@@ -104,3 +104,21 @@ export const ForgotPassword = {
     touched: false,
   },
 };
+
+export const ChangeRole = {
+  NewRole: {
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      id: "newRole",
+      placeholder: "New Role",
+    },
+    value: null,
+    icon: "role",
+    validation: {
+      required: true,
+    },
+    valid: false,
+    touched: false,
+  },
+};
