@@ -24,163 +24,92 @@ import {
   ListGroup,
   Badge,
 } from "react-bootstrap";
+
+import axios from "../axios-root";
+
 import Card from "components/Card/Card.jsx";
 import CustomButton from "../components/CustomButton/CustomButton";
+import Spinner from "../components/Spinner/Spinner";
 
 class AllUsers extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      users: [],
+    };
+  }
+
+  componentDidMount() {
+    axios
+      .get("/users/allUsers")
+      .then((response) => {
+        this.setState({ loading: false, users: response.data.users });
+      })
+      .catch((err) => {
+        this.setState({ loading: false });
+        console.log(err);
+      });
+  }
+
+  roleCards = (heading, role) => {
     return (
-      <div className="content">
+      <Card
+        title={heading}
+        hCenter
+        content={
+          <div>
+            <hr></hr>
+            <ListGroup>
+              {this.state.users.map((user) => {
+                if (user.role === role) {
+                  return (
+                    <ListGroupItem
+                      key={user.id}
+                      onClick={() => this.props.history.push("/")}
+                      style={{
+                        borderTop: 0,
+                        borderRight: 0,
+                        borderLeft: 0,
+                        fontSize: 20,
+                        borderLeft: 0,
+                      }}
+                    >
+                      {user.name}
+                      <Badge>{user.designation}</Badge>
+                    </ListGroupItem>
+                  );
+                }
+              })}
+            </ListGroup>
+          </div>
+        }
+      />
+    );
+  };
+
+  render() {
+    let data = null;
+
+    if (this.state.loading) {
+      data = <Spinner />;
+    }
+
+    if (this.state.users.length != 0) {
+      data = (
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <Card
-                title="Super Admin(s)"
-                hCenter
-                //category="Created using Roboto Font Family"
-                content={
-                  <div>
-                    <hr></hr>
-                    <ListGroup>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderTop: 0,
-                          borderRight: 0,
-                          borderLeft: 0,
-                          fontSize: 20,
-                          borderLeft: 0,
-                        }}
-                      >
-                        User <Badge>designation</Badge>
-                      </ListGroupItem>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderRight: 0,
-                          fontSize: 20,
-                          borderLeft: 0,
-                        }}
-                      >
-                        User <Badge>designation</Badge>
-                      </ListGroupItem>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderRight: 0,
-                          fontSize: 20,
-                          borderLeft: 0,
-                        }}
-                      >
-                        User <Badge>designation</Badge>
-                      </ListGroupItem>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderRight: 0,
-                          fontSize: 20,
-                          borderLeft: 0,
-                        }}
-                      >
-                        User <Badge>designation</Badge>
-                      </ListGroupItem>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderRight: 0,
-                          borderBottom: 0,
-                          borderLeft: 0,
-                          fontSize: 20,
-                        }}
-                      >
-                        User <Badge>designation</Badge>
-                      </ListGroupItem>
-                    </ListGroup>
-                  </div>
-                }
-              />
-              <Card
-                title="Admins"
-                hCenter
-                //category="Created using Roboto Font Family"
-                content={
-                  <div>
-                    <hr></hr>
-                    <ListGroup>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderTop: 0,
-                          borderRight: 0,
-                          borderLeft: 0,
-                          fontSize: 20,
-                          borderLeft: 0,
-                        }}
-                      >
-                        User dasfadxasf<Badge>designation</Badge>
-                      </ListGroupItem>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderRight: 0,
-                          fontSize: 20,
-                          borderLeft: 0,
-                        }}
-                      >
-                        User asfsdvsfbdgndgjhdghsdga
-                        <Badge>designation</Badge>
-                      </ListGroupItem>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderRight: 0,
-                          fontSize: 20,
-                          borderLeft: 0,
-                        }}
-                      >
-                        User aDaxsxaDASDC<Badge>designation</Badge>
-                      </ListGroupItem>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderRight: 0,
-                          fontSize: 20,
-                          borderLeft: 0,
-                        }}
-                      >
-                        User sadasdasd<Badge>designation</Badge>
-                      </ListGroupItem>
-                      <ListGroupItem
-                        onClick={() => alert("clicked")}
-                        style={{
-                          borderBottom: 0,
-                          borderRight: 0,
-                          fontSize: 20,
-                          borderLeft: 0,
-                        }}
-                      >
-                        User SDADXSDASDa<Badge>designation</Badge>
-                      </ListGroupItem>
-                    </ListGroup>
-                  </div>
-                }
-              />
-              <Card
-                title="Members"
-                hCenter
-                //category="Created using Roboto Font Family"
-                content={
-                  <div>
-                    <hr></hr>
-                   
-                  </div>
-                }
-              />
+              {this.roleCards("Super Admins", "superAdmin")}
+              {this.roleCards("Admins", "admin")}
+              {this.roleCards("Members", "user")}
             </Col>
           </Row>
         </Grid>
-      </div>
-    );
+      );
+    }
+
+    return <div className="content">{data};</div>;
   }
 }
 
