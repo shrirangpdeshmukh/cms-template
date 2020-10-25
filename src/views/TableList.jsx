@@ -20,9 +20,25 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import { thArray, tdArray } from "variables/Variables.jsx";
+
+import axios from "../axios-root";
 
 class TableList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { board: [] };
+  }
+  componentDidMount() {
+    axios
+      .get("/board/leaderboard/")
+      .then((response) => {
+        this.setState({ board: response.data.board });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   updownArrow = (num) => {
     if (num > 0) {
       return (
@@ -48,33 +64,78 @@ class TableList extends Component {
     }
   };
 
+  refresh = () => {
+    axios
+      .patch("/board/leaderboard/refresh", { withCredentials: true })
+      .then((response) => {
+        axios
+          .get("/board/leaderboard/")
+          .then((response) => {
+            console.log(response);
+            this.setState({ board: response.data.board });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   render() {
+    let category = null;
+    const cookies = this.props.cookies.cookies;
+    
+
+    const auth = cookies.isAuthenticated;
+    const userData = cookies.userData;
+
+    if (auth && userData && userData !== "undefined") {
+      const authJSON = JSON.parse(auth);
+      const userDataJSON = JSON.parse(userData);
+
+      if (authJSON && userDataJSON) {
+        const userRole = userDataJSON.user.role;
+
+        if (userRole === "admin" || userRole === "superAdmin") {
+          category = (
+            <div className="container">
+              <Col xs={12} md={4} sm={2}>
+                <Button simple onClick={this.refresh}>
+                  <span>Refresh Leaderboard &nbsp;</span>
+
+                  <i
+                    className="pe pe-7s-refresh"
+                    style={{
+                      color: "black",
+                      borderRadius: "20px",
+                      fontWeight: "bold",
+                    }}
+                  />
+                </Button>
+              </Col>
+            </div>
+          );
+        }
+      }
+    }
+
+    const thArray = [
+      "ID",
+      "Name",
+      "Points",
+      "Previous Rank",
+      "Current Rank",
+      "Change",
+    ];
+
     const title = (
       <div className="container">
         <Col xs={12} md={8} sm={10}>
           <h3 className="pull-left" style={{ fontWeight: "bold" }}>
             Current Leaderboard
           </h3>
-        </Col>
-      </div>
-    );
-
-    const category = (
-      <div className="container">
-        <Col xs={12} md={4} sm={2}>
-          <Button simple>
-            <span>Refresh Leaderboard &nbsp;</span>
-
-            <i
-              className="pe pe-7s-refresh"
-              style={{
-                color: "black",
-
-                borderRadius: "20px",
-                fontWeight: "bold",
-              }}
-            />
-          </Button>
         </Col>
       </div>
     );
@@ -99,15 +160,19 @@ class TableList extends Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {tdArray.map((prop, key) => {
+                      {this.state.board.map((prop, key) => {
                         return (
                           <tr key={key}>
-                            {prop.map((prop, key) => {
-                              return <td key={key}>{prop}</td>;
-                            })}
+                            <td>{prop.id}</td>
+                            <td>{prop.name}</td>
+                            <td>{prop.points}</td>
+                            <td>{prop.current_rank}</td>
+                            <td>{prop.old_rank}</td>
                             <td>
-                              {this.updownArrow(prop[4] - prop[3])}
-                              {Math.abs(prop[4] - prop[3])}
+                              {this.updownArrow(
+                                prop.current_rank - prop.old_rank
+                              )}
+                              {Math.abs(prop.current_rank - prop.old_rank)}
                             </td>
                           </tr>
                         );
