@@ -54,7 +54,7 @@ class LoginForm extends Component {
     }
 
     axios
-      .post("/auth/login", formData)
+      .post("/auth/login", formData,{withCredentials:true})
 
       .then((response) => {
         if (response.data) {

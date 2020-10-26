@@ -28,10 +28,12 @@ export class Card extends Component {
           className={"header" + (this.props.hCenter ? " bold text-center" : "")}
         >
           <h4
+            onClick={this.props.toChat}
             className="title"
             style={
               this.props.topicCard
                 ? {
+                  cursor:"pointer",
                     fontSize: "2em",
                     textDecoration: "underline",
                     textUnderlineOffset: "0.5em",

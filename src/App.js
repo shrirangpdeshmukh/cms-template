@@ -9,7 +9,7 @@ import ErrorHandler from "./hoc/ErrorHandler/ErrorHandler";
 
 import AdminLayout from "layouts/Admin.jsx";
 import UnAuthLayout from "layouts/UnAuthLayout.js";
-import ChatLayout from "layouts/ChatLayout.js";
+import ChatLayout from "./layouts/ChatLayout";
 
 import { withCookies } from "react-cookie";
 
@@ -32,7 +32,7 @@ class App extends Component {
             )}
           />
           <Route
-            path="/chat"
+            path="/chat/:topicId/:taskId"
             render={(props) => (
               <ChatLayout {...props} cookies={this.props.cookies} />
             )}
