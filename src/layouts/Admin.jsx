@@ -116,9 +116,9 @@ class Admin extends Component {
   }
   render() {
     return (
-      <div className="">
+      <div style={{ position: " relative"}}>
         <Sidebar {...this.props} routes={routes} />
-        <div id="main-panel" className="main-panel" ref="mainPanel">
+        <div id="main-panel" className="main-panel" ref="mainPanel" styles={{paddingBottom:"2.5rem"}}>
           <AdminNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}

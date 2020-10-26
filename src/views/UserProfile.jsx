@@ -32,67 +32,166 @@ import { UserCard } from "components/UserCard/UserCard2.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/faces/face-3.jpg";
-import Table from "./pointTransactionTable";
-import BlacklistUserContent from './Modal/modalContents/blacklistUserContent';
-import DeleteUserContent from './Modal/modalContents/deletingUserContent';
-import Modal from './Modal/Modal';
+import Table from "./pointTransactionTable.jsx";
+import BlacklistUserContent from "./Modal/modalContents/blacklistUserContent";
+import DeleteUserContent from "./Modal/modalContents/deletingUserContent";
+import Modal from "./Modal/Modal";
+import axios from "../axios-root";
 
 class UserProfile extends Component {
-  state = {
-    blacklistingUser : 0,
-    deletingUser : 0
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      blacklistingUser: 0,
+      deletingUser: 0,
+      user: null,
+    };
+  }
+  
+  
+
+  componentDidMount() {
+    
+    let path="/users/9";
+    
+    
+    
+    if (this.props.match.path.includes("/profile")) {
+    const cookies = this.props.cookies.cookies;
+      
+    const auth = cookies.isAuthenticated;
+    const userData = cookies.userData;
+
+    if (auth && userData && userData !== "undefined") {
+      const authJSON = JSON.parse(auth);
+      const userDataJSON = JSON.parse(userData);
+
+      console.log(userDataJSON);
+      if (authJSON && userDataJSON) {
+        path=`/users/${userDataJSON.user.id}`
+        console.log(path);
+      }}
+    
+    }
+    console.log(this.props.match);
+    if (this.props.match.path.includes("/user")) {
+      path = `/users/${this.props.match.params.id}`
+    }
+    
+    // console.log(path);
+    
+    axios
+      .get(path)
+      .then((response) => {
+        console.log(response);
+        this.setState({ user: response.data.user });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
- 
   removeModal = () => {
     this.setState({
-      blacklistingUser : 0,
-      deletingUser : 0
-    })
-  }
+      blacklistingUser: 0,
+      deletingUser: 0,
+    });
+  };
 
   deleteUserClicked = () => {
-    this.setState({deletingUser : 1})
-  }
+    this.setState({ deletingUser: 1 });
+  };
 
   blacklistUserClicked = () => {
-    this.setState({blacklistingUser : 1})
-  }
+    this.setState({ blacklistingUser: 1 });
+  };
   render() {
     let list = {
-      "Blacklist" : "#",
-      "changeDesignation" : "#",
-      "changeRole" : "#",
-      "deleteUser" : "#",
-      "awardPoints" : "#"
+      Blacklist: "#",
+      changeDesignation: "#",
+      changeRole: "#",
+      deleteUser: "#",
+      awardPoints: "#",
+    };
+
+    let data = null;
+    if (this.state.user) {
+      data = (
+        <UserCard
+          name={this.state.user.name}
+          email={this.state.user.email}
+          rank={this.state.user.current_rank}
+          bio={this.state.user.bio}
+          role={this.state.user.role}
+          designation={this.state.user.designation}
+          points={this.state.user.points}
+        />
+      );
     }
+    
+    
+    let table =null;
+    if (this.state.user) {
+      if (this.state.user.tracking_points && this.state.user.allotments) {
+        // if (this.state.user.allotments.length >0) {
+          table=<Table details={this.state.user.allotments}/>
+        // }
+      }
+    }
+    
+    
+    let dropdown =null;
+    
+    const cookies = this.props.cookies.cookies;
+    
+
+    const auth = cookies.isAuthenticated;
+    const userData = cookies.userData;
+
+    if (auth && userData && userData !== "undefined") {
+      const authJSON = JSON.parse(auth);
+      const userDataJSON = JSON.parse(userData);
+
+      if (authJSON && userDataJSON) {
+        const userRole = userDataJSON.user.role;
+
+        if (userRole === "admin" || userRole === "superAdmin") {
+          dropdown = (
+            <DropDown
+            title="Admin Options"
+            deleteUserClicked={this.deleteUserClicked}
+            blacklistUserClicked={this.blacklistUserClicked}
+          />
+          );
+        }
+      }
+    }
+    
+    
+    
+    
+    
 
     return (
       <div className="content">
         <Grid fluid>
-          <Row>  
+          <Row>
             <Col md={8}>
-                <Table />
+              {table}
             </Col>
-            <Modal show = {this.state.blacklistingUser} clicked = {this.removeModal}>
+            <Modal
+              show={this.state.blacklistingUser}
+              clicked={this.removeModal}
+            >
               <BlacklistUserContent />
             </Modal>
-            
-            <Modal show = {this.state.deletingUser} clicked = {this.removeModal}>
+
+            <Modal show={this.state.deletingUser} clicked={this.removeModal}>
               <DeleteUserContent />
             </Modal>
-            <DropDown title = "Admin Options" deleteUserClicked = {this.deleteUserClicked} blacklistUserClicked = {this.blacklistUserClicked}/>
-            <Col md={4}>
-            <UserCard name = "Bysani Navaneeth" 
-            email = "brn14@iitbbs.ac.in" 
-            rank = "10" 
-            bio = "I am Navaneeth Bysani, sophomore at IIT BBS"
-            role = "superAdmin"
-            designation="core-team"
-            points = "135"
-            />
-            
-            </Col>
+            {dropdown}
+            <Col md={4}>{data}</Col>
           </Row>
         </Grid>
       </div>

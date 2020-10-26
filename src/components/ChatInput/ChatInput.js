@@ -30,7 +30,6 @@ const ChatInput = (props) => {
         </Col>
         <Col lg={1} md={4} xs={2} style={{ paddingLeft: "2px" }}>
           <Button
-            pullRight
             type="submit"
             style={{ padding: "5px", borderRadius: "10px" }}
           >

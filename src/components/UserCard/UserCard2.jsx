@@ -23,8 +23,10 @@ export class UserCard extends Component {
     componentDidMount() {
         const name = this.props.name;
         const names = name.split(' ');
-        console.log(names);
-        const displayName = names[0].charAt(0) + names[1].charAt(0);
+        
+        let displayName = names[0].charAt(0).toUpperCase();
+        if (names[1] != null || names[1]!== undefined) {displayName = displayName + names[1].charAt(0).toUpperCase();}
+        
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
         ctx.font = "60px Arial";
@@ -32,6 +34,32 @@ export class UserCard extends Component {
         ctx.fillText(displayName, canvas.width/2, canvas.height/2);
     }
   render() {
+    
+    let bio=null;
+    if (this.props.bio) {
+      bio =( <div className={styles.insta_bio}>
+        <p><b><u>Bio:</u></b></p>
+        <br/>
+        <p>{this.props.bio}</p>
+        </div>)
+    }
+    
+    let rank=null;
+    
+    if (this.props.rank) {
+      rank = (<div className={styles.insta_follow}>
+        <h2>{this.props.rank}<span>Rank</span></h2>
+      </div>)
+    }
+    
+    let points =null;
+    
+    if (this.props.points) {
+      points = ( <div className={styles.insta_follow}>
+        <h2>{this.props.points}<span>Points</span></h2>
+      </div>)
+    }
+    
     
     return (
         <div className={styles.insta_main}>
@@ -50,12 +78,8 @@ export class UserCard extends Component {
             <h2>{this.props.name} <span>{this.props.email}</span></h2>
             </div>
             <div className={styles.insta_followers_wrap}>
-              <div className={styles.insta_follow}>
-                <h2>{this.props.rank}<span>Rank</span></h2>
-              </div>
-              <div className={styles.insta_follow}>
-                <h2>{this.props.points}<span>Points</span></h2>
-              </div>
+               {rank}
+             {points}
             </div>
             <div className={styles.insta_button}>
               <div>
@@ -67,12 +91,8 @@ export class UserCard extends Component {
                   </p>
               </div>
             </div>
-            
-            <div className={styles.insta_bio}>
-            <p><b><u>Bio:</u></b></p>
-            <br/>
-            <p>{this.props.bio}</p>
-            </div>
+            {bio}
+           
           </div>
         </div>
       </div>

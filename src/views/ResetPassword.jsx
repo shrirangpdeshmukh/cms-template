@@ -80,18 +80,18 @@ class ResetForm extends Component {
           cookies.set("isAuthenticated", true, { path: "/" });
           cookies.set("userData", response.data.data, { path: "/" })
         } else {
-          console.log(response.response);
-          const modalData = {
-            title: "Error",
-            message: `${response.response.data.message}`,
-            Button: "danger",
-            hide: this.hideModal,
-          };
+          // console.log(response.response);
+          // const modalData = {
+          //   title: "Error",
+          //   message: `${response.response.data.message}`,
+          //   Button: "danger",
+          //   hide: this.hideModal,
+          // };
           this.setState({
             loading: false,
-            showModal: true,
-            modalData: modalData,
             formIsValid: false,
+            // showModal: true,
+            // modalData: modalData,
           });
           console.log("Error occured");
         }

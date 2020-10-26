@@ -45,6 +45,9 @@ export const ResetPassword = {
     icon: "key",
     validation: {
       required: true,
+      isNumeric: true,
+      minLength: 4,
+      maxLength: 4,
     },
     valid: false,
     touched: false,
