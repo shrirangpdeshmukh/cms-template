@@ -25,7 +25,8 @@ class Announcements extends Component {
   
     componentDidMount() {
         axios.get('/board/announcements').then(response => {
-            this.setState({announcements:response.data})
+          this.setState({ announcements: response.data.announcements })
+          console.log(this.state.announcements)
         }).catch(err => {
             this.setState({error:err})
         })

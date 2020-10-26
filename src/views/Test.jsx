@@ -3,8 +3,27 @@ import { Grid } from "react-bootstrap";
 import Card from "components/Card/CommentCard.jsx";
 import ChatInput from "components/ChatInput/ChatInput";
 import ChatModal from "components/ChatModal/ChatModal.js";
+import axios from '../axios-root'
+import io from "socket.io-client";
 
 class Chat extends Component {
+  state = {
+    comments: [],
+    error: false,
+    socket:null
+  }
+
+  componentDidMount() {
+    axios.get(`/topics/${this.props.topicId}/tasks/${this.props.taskId}/comments/100`).then(response => {
+      console.log(response)
+      const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTYwMzYyNzQzMCwiZXhwIjoxNjExNDAzNDMwfQ.ztSZ9gVXpCszeO0KgZNL26wAXhYgd8377l264ZoWbz0`
+      const socket = io.connect(`http://localhost:5000`, {
+        query:{token}
+      })
+      this.setState({ chats: response.data })
+    }).catch(err=>this.setState({error:true}))
+    console.log(this.props)
+  }
   render() {
     let modal = null;
 
