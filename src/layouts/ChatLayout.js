@@ -4,11 +4,11 @@ import { Route, Switch } from "react-router-dom";
 import ChatNavbar from "components/Navbars/ChatNavbar";
 import Footer from "components/Footer/Footer";
 import ChatSidebar from "components/Sidebar/ChatSidebar.jsx";
-import axios from '../axios-root'
+import axios from "../axios-root";
 import io from "socket.io-client";
 //import routes from "routes3.js";
-import { withCookies } from "react-cookie"
-import Test from '../views/Test'
+import { withCookies } from "react-cookie";
+import Test from "../views/Test.jsx";
 
 // import Card from "components/Card/CommentCard.jsx";
 // import ChatInput from "components/ChatInput/ChatInput";
@@ -19,7 +19,6 @@ import Test from '../views/Test'
 //         query:{token}
 //       })
 
-
 class Chat extends Component {
   constructor(props) {
     super(props);
@@ -28,39 +27,46 @@ class Chat extends Component {
       modal: false,
       error: false,
       tasks: [],
-      routes:[],
-     
-      topic: null
+      routes: [],
+
+      topic: null,
     };
   }
 
-  
   componentDidMount() {
-    const params = new URLSearchParams(document.location.search.substring(1));
-    const topicId = params.get("topic")
-    axios.get(`/board/topics/${topicId}/tasks/`).then(response => {
-      console.log(response)
-      // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTYwMzYyNzQzMCwiZXhwIjoxNjExNDAzNDMwfQ.ztSZ9gVXpCszeO0KgZNL26wAXhYgd8377l264ZoWbz0`
-      //    const socket = io.connect(`http://localhost:5000`, {
-      //       query:{token}
-      //    })
-      const routes = []
-      response.data.tasks.forEach(task => {
-        return routes.push({
-          path: `/${task.id}`,
-          name: task.heading,
-          component: Test,
-          layout: `/chat/?topic=${topicId}`,
-          icon: "pe-7s-news-paper",
-          id:task.id
-        })
+    const params = new URLSearchParams(document.location.search);
+
+    // console.log(params);
+
+    const topicId = this.props.match.params.topicId;
+    axios
+      .get(`/board/topics/${topicId}/tasks/`)
+      .then((response) => {
+        console.log(response);
+        // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTYwMzYyNzQzMCwiZXhwIjoxNjExNDAzNDMwfQ.ztSZ9gVXpCszeO0KgZNL26wAXhYgd8377l264ZoWbz0`
+        //    const socket = io.connect(`http://localhost:5000`, {
+        //       query:{token}
+        //    })
+        const routes = [];
+        response.data.tasks.forEach((task) => {
+          return routes.push({
+            path: `/${task.id}`,
+            name: task.heading,
+            component: Test,
+            layout: `/chat/${topicId}`,
+            icon: "pe-7s-news-paper",
+            id: task.id,
+          });
+        });
+        console.log(routes);
+        this.setState({
+          tasks: response.data.tasks,
+          routes: routes,
+          topic: topicId,
+        });
+        console.log(this.props.cookies);
       })
-      console.log(routes)
-      this.setState({ tasks: response.data.tasks,routes:routes,topic:topicId })
-      console.log(this.props.cookies)
-     
-      
-    }).catch(err=>this.setState({error:true}))
+      .catch((err) => this.setState({ error: true }));
   }
 
   showModal = () => {
@@ -73,12 +79,12 @@ class Chat extends Component {
 
   getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === `/chat/?topic=${this.state.topic}`) {
+      if (prop.layout === `/chat/${this.state.topic}`) {
         return (
           <Route
             path={prop.layout + prop.path}
             render={(props) => (
-              <prop.component
+              <Test
                 {...props}
                 topicId={this.state.topic}
                 taskId={prop.id}
@@ -129,35 +135,6 @@ class Chat extends Component {
     }
   }
   render() {
-
-    // let modal = null;
-
-    // modal = this.state.modal ? (
-    //   <ChatModal
-    //     {...this.props}
-    //     show={this.state.modal}
-    //     onHide={this.hideModal}
-    //     taskName="Test Name"
-    //     taskCreator="Ranga"
-    //     description="Test description lorem ipsum dolor sit amet, consectetur lorem ipsumdolo dolrfshsfhfs fxfggfshshs"
-    //     assignedTo={["Ranga", "Srirang", "Rahul"]}
-    //     deadline="23/09/2020"
-    //   />
-    // ) : null;
-
-    // const chats = [1, 2, 3, 4, 5, 6, 7, 8];
-
-    // let chat = chats.map((i) => (
-     
-    //     <Card
-    //       title={`Ranga ${(i % 3) + 1}`}
-    //       userLink="https://github.com"
-    //       stats="3 minutes ago"
-    //       content="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...fdifj fgigjdfid lorem ipsu mggnihn fdffinfhifn fbnfsnfg grdngjn "
-    //     />
-    //   ))
-    
-
     return (
       <div className="">
         <ChatSidebar {...this.props} routes={this.state.routes} />
@@ -189,7 +166,4 @@ class Chat extends Component {
   }
 }
 
-
 export default withCookies(Chat);
-
-

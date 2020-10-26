@@ -49,6 +49,7 @@ class Chat extends Component {
           userLink="https://github.com"
           stats="3 minutes ago"
           content="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...fdifj fgigjdfid lorem ipsu mggnihn fdffinfhifn fbnfsnfg grdngjn "
+          key={i}
         />
       );
     });
