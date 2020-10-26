@@ -11,6 +11,7 @@ class Topics extends Component {
     topics: null,
     error: null,
     updatedTime: null,
+    userData:null
   };
   componentDidMount() {
     axios
@@ -24,6 +25,10 @@ class Topics extends Component {
         });
       })
       .catch((err) => this.setState({ error: true }));
+    const userId=JSON.parse(this.props.cookies.cookies.userData).user.id
+    axios.get(`/users/${userId}`).then(response => {
+      console.log(response)
+    }).catch(err=>this.setState({error:true}))
   }
 
   toChatHandler = (topicId) => {
@@ -70,33 +75,6 @@ class Topics extends Component {
             content={
               <Row>
                 {topics}
-                <Col md={4} sm={12}>
-                  <Card
-                    statsIcon="fa fa-history"
-                    id="chartHours"
-                    title="Topic Test: Template Selections"
-                    category="Created by: Shrirang"
-                    stats="Updated 3 minutes ago"
-                    style={{
-                      border: "0.1px dashed",
-                      margin: "2px",
-                      marginBottom: "20px",
-                    }}
-                    content={
-                      <div className="description">
-                        This topic is secltion of tempaltes for CMS Neuromancers
-                        This topic is secltion of tempaltes for CMS Neuromancers
-                        This topic is secltion of tempaltes for CMS Neuromancers
-                        This topic is secltion of tempaltes for CMS Neuromancers
-                        This topic is secltion of tempaltes for CMS Neuromancers
-                        This topic is secltion of tempaltes for CMS Neuromancers
-                        This topic is secltion of tempaltes for CMS Neuromancers
-                        This topic is secltion of tempaltes for CMS Neuromancers
-                        This topic is secltion of tempaltes for CMS Neuromancers
-                      </div>
-                    }
-                  />
-                </Col>
               </Row>
             }
           />
