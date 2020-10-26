@@ -48,12 +48,20 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/user",
+    path: "/user/:id",
     name: "User Profile",
     icon: "pe-7s-user",
     component: UserProfile,
     layout: "/admin",
   },
+  {
+    path: "/profile",
+    name: "My Profile",
+    icon: "pe-7s-user",
+    component: UserProfile,
+    layout: "/admin",
+  },
+
   {
     path: "/leaderboard",
     name: "Leaderboard",

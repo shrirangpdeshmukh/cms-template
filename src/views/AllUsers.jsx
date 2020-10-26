@@ -66,7 +66,7 @@ class AllUsers extends Component {
                   return (
                     <ListGroupItem
                       key={user.id}
-                      onClick={() => this.props.history.push("/")}
+                      onClick={() => this.props.history.push(`/admin/user/${user.id}`)}
                       style={{
                         borderTop: 0,
                         borderRight: 0,

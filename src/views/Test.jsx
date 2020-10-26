@@ -26,6 +26,7 @@ class Chat extends Component {
     let chat = chats.map((i) => {
       return (
         <Card
+          key={i}
           title={`Ranga ${(i % 3) + 1}`}
           userLink="https://github.com"
           stats="3 minutes ago"
