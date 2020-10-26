@@ -33,8 +33,9 @@ class App extends Component {
           />
           <Route
             path="/chat"
-            render={(props) => <ChatLayout {...props} />}
-            cookies={this.props.cookies}
+            render={(props) => (
+              <ChatLayout {...props} cookies={this.props.cookies} />
+            )}
           />
           <Redirect from="/" to="/admin/dashboard" />
         </Switch>

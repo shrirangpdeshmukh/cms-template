@@ -21,7 +21,7 @@ class LoginForm extends Component {
   };
 
   inputChangedHandler = (event, inputIdentifier) => {
-    // console.log(inputIdentifier);
+    
     const updatedForm = {
       ...this.state.loginForm,
     };

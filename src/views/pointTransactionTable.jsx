@@ -19,8 +19,6 @@ import React, { Component } from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
-import { thArray, tdArray } from "variables/Variables.jsx";
 
 
 const pointsTable = (props) => {
@@ -48,11 +46,13 @@ const pointsTable = (props) => {
     </thead>
     <tbody>
       {props.details.map((prop, key) => {
+        
+        let date = new Date(parseInt(prop.awarded_at)).toString().split("GMT")[0];
         return (
           <tr key={key}>
             <td>{prop.points_awarded}</td>
             <td>{prop.name}</td>
-            <td>{prop.timestamp}</td>
+            <td>{date}</td>
             <td>{prop.reason}</td>
           </tr>
         );

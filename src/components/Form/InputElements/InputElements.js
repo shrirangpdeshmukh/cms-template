@@ -9,7 +9,8 @@ import styles from "./InputElements.module.css";
 //icons
 import { BsLock, BsLockFill } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
-import { FaUser, FaKey } from "react-icons/fa";
+import { FaUser, FaKey, FaUserEdit } from "react-icons/fa";
+import { RiCopperCoinFill, RiQuillPenLine } from "react-icons/ri";
 
 const inputElement = (props) => {
   //styles from icons
@@ -64,6 +65,15 @@ const inputElement = (props) => {
         icon = <FaKey />;
         break;
 
+      case "points":
+        icon = <RiCopperCoinFill />;
+        break;
+      case "reason":
+        icon = <RiQuillPenLine />;
+        break;
+      case "designation":
+        icon = <FaUserEdit />;
+        break;
       default:
         icon = null;
     }

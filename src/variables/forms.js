@@ -108,16 +108,51 @@ export const ForgotPassword = {
   },
 };
 
-export const ChangeRole = {
-  NewRole: {
+export const ChangeDesignation = {
+  designation: {
     elementType: "input",
     elementConfig: {
       type: "text",
-      id: "newRole",
-      placeholder: "New Role",
+      id: "designation",
+      placeholder: "New Designation",
     },
     value: null,
-    icon: "role",
+    icon: "designation",
+    validation: {
+      required: true,
+    },
+    valid: false,
+    touched: false,
+  },
+};
+
+export const AwardPoints = {
+  points: {
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      id: "points",
+      placeholder: "Points Awarded",
+    },
+    value: null,
+    icon: "points",
+    validation: {
+      required: true,
+      isNumeric: true,
+    },
+    valid: false,
+    touched: false,
+  },
+
+  reason: {
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      id: "reason",
+      placeholder: "Reason for Awarding Points",
+    },
+    value: null,
+    icon: "reason",
     validation: {
       required: true,
     },
