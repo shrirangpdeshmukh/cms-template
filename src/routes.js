@@ -16,7 +16,7 @@
 
 */
 import Dashboard from "views/Dashboard.jsx";
-import UserProfile from "views/UserProfile.jsx";
+import UserProfile from "views/UserProfile.js";
 import TableList from "views/TableList.jsx";
 import AllUsers from "views/AllUsers.jsx";
 import Icons from "views/Icons.jsx";
