@@ -77,14 +77,16 @@ class UserProfile extends Component {
       }
     }
 
-    if (this.props.match.path.includes("/user")) {
+    if (
+      this.props.match.path.includes("/user") &&
+      this.props.match.params.id !== ":id"
+    ) {
       path = `/users/${this.props.match.params.id}`;
     }
 
     axios
       .get(path)
       .then((response) => {
-        console.log(response);
         this.setState({ user: response.data.user });
       })
       .catch((error) => {

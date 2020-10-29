@@ -46,7 +46,7 @@ class ResponseModal extends Component {
           img = mail_sent;
           break;
         }
-        case "network": {
+        case "net_error": {
           img = network_error;
           break;
         }

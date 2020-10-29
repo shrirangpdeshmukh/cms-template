@@ -89,6 +89,7 @@ class Admin extends Component {
       ) {
         return routes[i].name;
       }
+      else if (this.props.location.pathname.includes("/admin/user")) {return "User Profile"}
     }
     return "Brand";
   };
@@ -126,6 +127,7 @@ class Admin extends Component {
           <Switch>{this.getRoutes(routes)}</Switch>
           <Footer />
         </div>
+        
       </div>
     );
   }
