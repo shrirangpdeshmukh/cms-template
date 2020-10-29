@@ -24,6 +24,7 @@ import Announcements from "views/Announcements.jsx";
 import Login from "views/Login.jsx";
 import Topics from "views/Topics.jsx";
 import Test from "views/Test.jsx";
+import SignUP from "views/Bulk";
 
 const dashboardRoutes = [
   {
@@ -82,6 +83,14 @@ const dashboardRoutes = [
     name: "Announcements",
     icon: "pe-7s-bell",
     component: Announcements,
+    layout: "/admin",
+  },
+
+  {
+    path: "/bulkTest",
+    name: "Bulk",
+    icon: "pe-7s-bell",
+    component: SignUP,
     layout: "/admin",
   },
 ];
