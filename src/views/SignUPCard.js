@@ -1,20 +1,14 @@
 import React, { Component } from "react";
-import {
-  Grid,
-  Row,
-  Col,
-  FormGroup,
-  ControlLabel,
-  FormControl,
-  DropdownButton,
-  MenuItem,
-} from "react-bootstrap";
 
+import { Row, Col, DropdownButton, MenuItem } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import checkValidity from "../variables/validityRules";
+
 import axios from "../axios-root";
+
+import checkValidity from "../variables/validityRules";
+
 import Auxillary from "../hoc/Auxillary/Auxillary";
 
 class UserProfile extends Component {
@@ -24,7 +18,10 @@ class UserProfile extends Component {
     this.state = {
       dropDownValue: "Role",
       role: null,
+      error: false,
+      success: false,
       formIsValid: false,
+      loading: false,
       formValues: {
         email: null,
         name: null,
@@ -36,7 +33,7 @@ class UserProfile extends Component {
           type: "text",
           bsClass: "form-control",
           placeholder: "Name",
-          defaultValue: "",
+          value: "",
           validationState: null,
           onChange: (event) =>
             this.changeHandler(
@@ -51,8 +48,8 @@ class UserProfile extends Component {
           label: "Email Address",
           type: "email",
           bsClass: "form-control",
+          value: "",
           placeholder: "eg123@iitbbs.ac.in",
-          defaultValue: "",
           validationState: null,
           onChange: (event) =>
             this.changeHandler(
@@ -69,8 +66,8 @@ class UserProfile extends Component {
           label: "Designation",
           type: "text",
           bsClass: "form-control",
+          value: "",
           placeholder: "E.g. Core Member",
-          defaultValue: "",
           validationState: null,
           onChange: (event) =>
             this.changeHandler(
@@ -87,8 +84,10 @@ class UserProfile extends Component {
   changeHandler = (event, rules, identifier) => {
     const newForm = { ...this.state.form };
     const newElement = { ...newForm[identifier] };
+    const val = event.target.value;
 
-    newElement.validationState = checkValidity(event.target.value, rules)
+    newElement.value = val;
+    newElement.validationState = checkValidity(val, rules)
       ? "success"
       : "error";
 
@@ -97,7 +96,7 @@ class UserProfile extends Component {
     const newFormValues = { ...this.state.formValues };
 
     let formIsValid = true;
-    newFormValues[identifier] = event.target.value;
+    newFormValues[identifier] = val;
 
     for (let inputIdentifier in newForm) {
       formIsValid =
@@ -113,16 +112,36 @@ class UserProfile extends Component {
 
   addHandler = (event) => {
     event.preventDefault();
+
+    this.setState({ loading: true });
+
     const data = { ...this.state.formValues };
     data["role"] = this.state.role;
     axios
-      .post("/users/addOnly", data)
+      .post("/users/addUser", data)
       .then((response) => {
-        console.log(response);
+        if (response.data) {
+          this.setState({ loading: false, success: true });
+        } else if (response.response.data.error) {
+          this.setState({ loading: false, success: false, error: true });
+        }
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  clearHandler = () => {
+    if (!this.state.loading && !this.state.success && this.state.error)
+      this.setState({ error: false });
+
+    const newForm = { ...this.state.form };
+
+    for (let inputIdentifier in newForm) {
+      newForm[inputIdentifier].value = "";
+      newForm[inputIdentifier].validationState = null;
+    }
+    this.setState({ form: newForm, loading: false, success: false });
   };
 
   render() {
@@ -135,11 +154,23 @@ class UserProfile extends Component {
       "user",
     ];
 
+    let buttonText = "Add User";
+
+    if (!this.state.loading && !this.state.success && !this.state.error) {
+      buttonText = "Add User";
+    } else if (this.state.loading && !this.state.success) {
+      buttonText = "Loading....";
+    } else if (!this.state.loading && this.state.success) {
+      buttonText = <span>"User Added Successfully" &#10003;</span>;
+    } else if (!this.state.loading && !this.state.success && this.state.error) {
+      buttonText = <span>"Email Already Taken" &#10006;</span>;
+    }
+
     return (
       <Auxillary className="content">
         <Col md={6} sm={6}>
           <Card
-            title="Add New User"
+            title="New User"
             content={
               <form>
                 <FormInputs
@@ -213,22 +244,22 @@ class UserProfile extends Component {
                   type="submit"
                   style={{ marginLeft: "5px" }}
                   disabled={
-                    !(
-                      this.state.formIsValid &&
-                      this.state.role !== null &&
-                      this.state.role !== undefined
-                    )
+                    !(this.state.formIsValid && this.state.role) ||
+                    this.state.loading ||
+                    this.state.success ||
+                    this.state.error
                   }
                 >
-                  Add User &#10003;
+                  {buttonText}
                 </Button>
                 <Button
                   bsStyle="danger"
                   fill
                   style={{ marginLeft: "5px" }}
-                  onClick={this.props.removeCard}
+                  onClick={this.clearHandler}
+                  disabled={!this.state.loading && this.state.success}
                 >
-                  Remove
+                  Clear
                 </Button>
                 <div className="clearfix" />
               </form>

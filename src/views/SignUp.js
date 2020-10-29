@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 
-import SignUPCard from "./TestSignUp";
-import Auxillary from "../hoc/Auxillary/Auxillary";
-import checkValidity from "../variables/validityRules";
-
-import Button from "../components/CustomButton/CustomButton";
 import { Row, Col } from "react-bootstrap";
-
 import { FormInputs } from "../components/FormInputs/FormInputs.jsx";
+import Button from "../components/CustomButton/CustomButton";
+import SignUPCard from "./SignUPCard";
+
+import Auxillary from "../hoc/Auxillary/Auxillary";
+
+import checkValidity from "../variables/validityRules";
 
 class BulkSignUp extends Component {
   constructor(props) {
@@ -29,7 +29,6 @@ class BulkSignUp extends Component {
   }
 
   changeHandler = (event) => {
-    // event.preventDefault();
     const newForm = { ...this.state.input };
     const newValue = event.target.value;
 
@@ -50,16 +49,6 @@ class BulkSignUp extends Component {
     this.setState({ indices: newArray, show: false, input: newForm });
   };
 
-  removeCurrentElement = (index) => {
-    const newForms = [...this.state.indices];
-    newForms.splice(index, 1);
-    this.setState({ indices: newForms });
-
-    if (this.state.indices.length - 1 <= 0) {
-      this.setState({ show: true });
-    }
-  };
-
   addOne = () => {
     const newForms = [...this.state.indices];
     newForms.push(1);
@@ -71,12 +60,9 @@ class BulkSignUp extends Component {
 
     if (this.state.indices.length > 0) {
       forms = this.state.indices.map((index, idx) => {
-        return (
-          <SignUPCard
-            key={idx}
-            removeCard={(idx) => this.removeCurrentElement(idx)}
-          />
-        );
+        if (index === 1) {
+          return <SignUPCard key={idx} />;
+        } else return null;
       });
     }
 
@@ -84,34 +70,35 @@ class BulkSignUp extends Component {
 
     if (this.state.show) {
       initialInputs = (
-        <Row style={{ margin: "10px" }}>
-          <Col md={6}>
-            <form>
+        <form>
+          <Row style={{ margin: "10px" }}>
+            <Col md={6}>
               <FormInputs
                 ncols={["col-md-12"]}
                 properties={[this.state.input]}
               />
-            </form>
-          </Col>
-          <Col md={6}>
-            <br />
+            </Col>
+            <Col md={6}>
+              <br />
 
-            <Button
-              style={{ marginTop: "5px" }}
-              bsStyle="primary"
-              onClick={this.renderForms}
-              fill
-              disabled={
-                !(
-                  this.state.number > 0 ||
-                  this.state.input.validationState === "success"
-                )
-              }
-            >
-              Submit
-            </Button>
-          </Col>
-        </Row>
+              <Button
+                style={{ marginTop: "5px" }}
+                bsStyle="primary"
+                onClick={this.renderForms}
+                type="submit"
+                fill
+                disabled={
+                  !(
+                    this.state.number > 0 ||
+                    this.state.input.validationState === "success"
+                  )
+                }
+              >
+                Submit
+              </Button>
+            </Col>
+          </Row>
+        </form>
       );
     }
 
