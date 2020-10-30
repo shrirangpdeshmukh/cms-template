@@ -160,3 +160,52 @@ export const AwardPoints = {
     touched: false,
   },
 };
+
+export const CreateTask = {
+  heading: {
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      id: "heading",
+      placeholder: "Task Heading",
+    },
+    value: null,
+    icon: "",
+    validation: {
+      required: true,
+    },
+    valid: false,
+    touched: false,
+  },
+  description: {
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      id: "description",
+      placeholder: "Task Description",
+    },
+    value: null,
+    icon: "",
+    validation: {
+      required: true,
+    },
+    valid: false,
+    touched: false,
+  },
+  deadline: {
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      id: "deadline",
+      placeholder: "DD/MM/YYYY",
+    },
+    value: null,
+    icon: "",
+    validation: {
+      required: true,
+      isDate:true
+    },
+    valid: false,
+    touched: false,
+  }
+}

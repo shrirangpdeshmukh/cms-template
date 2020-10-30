@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch,withRouter } from "react-router-dom";
 
 import ChatNavbar from "components/Navbars/ChatNavbar";
 import Footer from "components/Footer/Footer";
@@ -9,7 +9,18 @@ import io from "socket.io-client";
 //import routes from "routes3.js";
 import { withCookies } from "react-cookie";
 import Test from "../views/Test.jsx";
-
+import FormInputs from '../components/FormInputs/FormInputs'
+//import Button from '../components/CustomButton/CustomButton'
+import Card from '../components/Card/Card'
+import {
+  Grid,Col,Button
+} from 'react-bootstrap'
+import ResponseModal from '../components/ResponseModal/ResponseModal'
+import Auxillary from '../hoc/Auxillary/Auxillary'
+import InputElements from '../components/Form/InputElements/InputElements'
+import { CreateTask } from '../variables/forms'
+import checkValidity from '../variables/validityRules'
+import styles from '../components/Form/Form.module.css'
 // import Card from "components/Card/CommentCard.jsx";
 // import ChatInput from "components/ChatInput/ChatInput";
 // import ChatModal from "components/ChatModal/ChatModal.js";
@@ -28,8 +39,10 @@ class Chat extends Component {
       error: false,
       tasks: [],
       routes: [],
-
+      responseModal:false,
       topic: null,
+      createTask: CreateTask,
+      formIsValid:false
     };
   }
 
@@ -43,10 +56,6 @@ class Chat extends Component {
       .get(`/board/topics/${topicId}/tasks/`)
       .then((response) => {
         console.log(response);
-        // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTYwMzYyNzQzMCwiZXhwIjoxNjExNDAzNDMwfQ.ztSZ9gVXpCszeO0KgZNL26wAXhYgd8377l264ZoWbz0`
-        //    const socket = io.connect(`http://localhost:5000`, {
-        //       query:{token}
-        //    })
         const routes = [];
         response.data.tasks.forEach((task) => {
           return routes.push({
@@ -58,6 +67,7 @@ class Chat extends Component {
             id: task.id,
           });
         });
+        
         console.log(routes);
         this.setState({
           tasks: response.data.tasks,
@@ -68,6 +78,28 @@ class Chat extends Component {
       })
       .catch((err) => this.setState({ error: true }));
   }
+
+   createTaskInputChangedHandler = (event, inputIdentifier) => {
+    const updatedForm = {
+      ...this.state.createTask,
+    };
+    const updatedFormElement = {
+      ...updatedForm[inputIdentifier],
+    };
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
+    let formIsValid = true;
+    updatedForm[inputIdentifier] = updatedFormElement;
+    for (let inputIdentifier in updatedForm) {
+      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+    }
+
+    this.setState({ createTask: updatedForm, formIsValid: formIsValid });
+  };
 
   showModal = () => {
     this.setState({ modal: true });
@@ -84,7 +116,7 @@ class Chat extends Component {
           <Route
             path={prop.layout + prop.path}
             render={(props) => (
-              <Test
+              <prop.component
                 {...props}
                 topicId={this.state.topic}
                 taskId={prop.id}
@@ -134,31 +166,119 @@ class Chat extends Component {
       this.refs.mainPanel.scrollTop = 0;
     }
   }
+
+  
+  onCreateTask = (e) => {
+    e.preventDefault()
+    console.log(this.props)
+    const formData = {};
+    for (let formElementIdentifier in this.state.createTask) {
+      formData[formElementIdentifier] = this.state.createTask[
+        formElementIdentifier
+      ].value;
+    }
+    axios.post(`/board/topics/${this.state.topic}/tasks`, formData)
+      .then(response => {
+        console.log(response)
+        const modalData = {
+            title: "Task Created",
+            message: `The task was created successfully. Click OK to go back to the topic !`,
+            Button: "success",
+            img:"success",
+          hide: () => {
+              console.log("ftt")
+    this.setState({ responseModal: false});
+            this.props.history.push(`/chat/${this.state.topic}/${this.state.tasks[0].id}`);
+            window.location.reload(true)
+            },
+        };
+        this.setState({
+            responseModal: true,
+            modalData: modalData,
+          });
+      })
+      .catch(err => {
+        this.setState({error:true})
+      })
+  }
+
   render() {
+
+    let modal = null;
+    if (this.state.modalData)
+      modal = (
+        <ResponseModal
+          show={this.state.responseModal}
+          onHide={this.state.modalData.hide}
+          title={this.state.modalData.title}
+          body={this.state.modalData.message}
+          button={this.state.modalData.Button}
+          img={this.state.modalData.img}
+        />
+      );
+
+    let createTaskForm = []
+      for (let key in this.state.createTask) {
+      createTaskForm.push({
+        id: key,
+        config: this.state.createTask[key],
+      });
+    }
+    
+    let form = (
+      
+     <div
+        className="content"
+        style={{ position: " relative", minHeight: "100vh" }}
+      >
+        <Grid>
+          
+          <Col md={10} sm={12}>
+            <Card
+              title="Create Task"
+              content={
+                <form>
+                  {createTaskForm.map((formElement) => (
+                    <InputElements
+                      key={formElement.id}
+                      element={formElement}
+                      changeHandler={this.createTaskInputChangedHandler}
+                    />
+                  ))}
+                  <Button disabled={!this.state.formIsValid} className={styles.Button} onClick={(e)=>this.onCreateTask(e)}>Create</Button>
+                  </form>
+              }
+            />
+          </Col>
+        </Grid>
+      </div>
+    )
+    
+    
     return (
       <div className="">
-        <ChatSidebar {...this.props} routes={this.state.routes} />
+        <ChatSidebar {...this.props} routes={this.state.routes} layout={`/chat/${this.state.topic}`} />
         <div id="main-panel" className="main-panel" ref="mainPanel">
           <ChatNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
             infoCallback={this.showModal}
           />
-          {/* <div
-        className="content"
-        style={{
-          position: " relative",
-          minHeight: "100vh",
-          fontSize: "1.1em",
-        }}
-      >
-        <Grid style={{ paddingBottom: "30px" }}>
-          {modal}
-          {chat}
-          <ChatInput />
-        </Grid>
-      </div> */}
-          <Switch>{this.getRoutes(this.state.routes)}</Switch>
+          
+          <Switch>
+            {this.getRoutes(this.state.routes)}
+            <Route
+            path={`/chat/${this.state.topic}/newTask`}
+              render={(props) => (
+                <Auxillary>
+                  { modal }
+                 {form}
+                  
+              </Auxillary>
+            )}
+            //key={key}
+          />
+          </Switch>
           <Footer />
         </div>
       </div>
@@ -166,4 +286,4 @@ class Chat extends Component {
   }
 }
 
-export default withCookies(Chat);
+export default withRouter(withCookies(Chat));

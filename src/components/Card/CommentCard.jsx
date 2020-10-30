@@ -4,7 +4,7 @@ export class Card extends Component {
   render() {
     return (
       <Row>
-        <Col md={12} xs={12}>
+        <Col md={11} xs={12}>
           <div
             className={"card" + (this.props.plain ? " card-plain" : "")}
             style={{

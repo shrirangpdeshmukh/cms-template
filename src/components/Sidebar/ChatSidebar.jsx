@@ -80,6 +80,19 @@ class Sidebar extends Component {
                 );
               return null;
             })}
+            <li
+                    className={this.activeRoute(this.props.layout + "/newTask")}
+                    //key={key}
+                  >
+                    <NavLink
+                      to={this.props.layout + "/newTask"}
+                      className="nav-link"
+                      activeClassName="active"
+                    >
+                      <i className="pe-7s-plus" />
+                      <p>New Task</p>
+                    </NavLink>
+                  </li>
           </ul>
         </div>
       </div>
