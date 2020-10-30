@@ -74,13 +74,9 @@ const ErrorHandler = (WrappedComponent, axios) => {
       if (this.state.error) {
         if (this.state.error.message) {
           message = this.state.error.message;
-          console.log("this is from Error Handler");
-          console.log(message);
         }
         if (this.state.error.response) {
           message = this.state.error.response.data.message;
-          console.log("this is from Error Handler");
-          console.log(message);
         }
         modal = (
           <ResponseModal

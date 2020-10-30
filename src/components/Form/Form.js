@@ -86,7 +86,7 @@ const form = (props) => {
         </Col>
         <Col lg={6} md={6} sm={12} xs={12}>
           <div>
-            <img src={img} alt="Sign" className={styles.SignUpImg} />
+            <img src={img} alt="" className={styles.SignUpImg} />
             <a href={props.linkData} className={styles.Link}>
               {props.link}
             </a>

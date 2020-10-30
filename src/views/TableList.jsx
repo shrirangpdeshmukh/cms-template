@@ -40,14 +40,14 @@ class TableList extends Component {
   }
 
   updownArrow = (num) => {
-    if (num > 0) {
+    if (num < 0) {
       return (
         <i
           className="fa fa-angle-up"
           style={{ color: "green", fontSize: "1.5em" }}
         />
       );
-    } else if (num < 0) {
+    } else if (num > 0) {
       return (
         <i
           className="fa fa-angle-down"
@@ -125,8 +125,8 @@ class TableList extends Component {
       "ID",
       "Name",
       "Points",
-      "Previous Rank",
       "Current Rank",
+      "Previous Rank",
       "Change",
     ];
 
@@ -162,9 +162,9 @@ class TableList extends Component {
                     <tbody>
                       {this.state.board.map((prop, key) => {
                         return (
-                          <tr key={key}>
+                          <tr key={key} onClick={() =>this.props.history.push(`/admin/user/${prop.id}`)}>
                             <td>{prop.id}</td>
-                            <td>{prop.name}</td>
+                            <td >{prop.name}</td>
                             <td>{prop.points}</td>
                             <td>{prop.current_rank}</td>
                             <td>{prop.old_rank}</td>

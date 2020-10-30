@@ -27,6 +27,7 @@ import {
   Image,
 } from "react-bootstrap";
 
+
 import { UserCard } from "components/UserCard/UserCard2.jsx";
 import Table from "./pointTransactionTable.jsx";
 import InputElements from "../components/Form/InputElements/InputElements";
@@ -36,6 +37,7 @@ import ActionModalButtons from "../components/ActionModalButtons/ActionModalButt
 
 import award from "../assets/img/award.png";
 import designation from "../assets/img/designation.png";
+import TableAbsent from './tableAbsent';
 
 import axios from "../axios-root";
 
@@ -77,14 +79,16 @@ class UserProfile extends Component {
       }
     }
 
-    if (this.props.match.path.includes("/user")) {
+    if (
+      this.props.match.path.includes("/user") &&
+      this.props.match.params.id !== ":id"
+    ) {
       path = `/users/${this.props.match.params.id}`;
     }
 
     axios
       .get(path)
       .then((response) => {
-        console.log(response);
         this.setState({ user: response.data.user });
       })
       .catch((error) => {
@@ -369,6 +373,7 @@ class UserProfile extends Component {
     let changeRoleModal = null;
     let changeDesignationModal = null;
     let blacklistUserModal = null;
+    
 
     const cookies = this.props.cookies.cookies;
 
@@ -643,6 +648,8 @@ class UserProfile extends Component {
       if (this.state.user.tracking_points && this.state.user.allotments) {
         if (this.state.user.allotments.length > 0) {
           table = <Table details={this.state.user.allotments} />;
+        } else {
+          table = <TableAbsent />
         }
       }
     }
