@@ -112,11 +112,11 @@ class Chat extends Component {
         {...this.props}
         show={this.props.modalData}
         onHide={this.props.hideModal}
-        taskName="Test Name"
+        taskName={this.props.name}
         taskCreator="Ranga"
-        description="Test description lorem ipsum dolor sit amet, consectetur lorem ipsumdolo dolrfshsfhfs fxfggfshshs"
+        description={this.props.taskDescription}
         assignedTo={["Ranga", "Srirang", "Rahul"]}
-        deadline="23/09/2020"
+        deadline={this.props.taskDeadline}
       />
     ) : null;
 

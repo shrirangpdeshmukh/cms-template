@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 import { Route, Switch,withRouter } from "react-router-dom";
-
 import ChatNavbar from "components/Navbars/ChatNavbar";
 import Footer from "components/Footer/Footer";
 import ChatSidebar from "components/Sidebar/ChatSidebar.jsx";
 import axios from "../axios-root";
-import io from "socket.io-client";
-//import routes from "routes3.js";
 import { withCookies } from "react-cookie";
 import Test from "../views/Test.jsx";
-import FormInputs from '../components/FormInputs/FormInputs'
-//import Button from '../components/CustomButton/CustomButton'
 import Card from '../components/Card/Card'
 import {
   Grid,Col,Button
@@ -21,14 +16,7 @@ import InputElements from '../components/Form/InputElements/InputElements'
 import { CreateTask } from '../variables/forms'
 import checkValidity from '../variables/validityRules'
 import styles from '../components/Form/Form.module.css'
-// import Card from "components/Card/CommentCard.jsx";
-// import ChatInput from "components/ChatInput/ChatInput";
-// import ChatModal from "components/ChatModal/ChatModal.js";
-// import { Grid } from "react-bootstrap";
-//  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTYwMzYyNzQzMCwiZXhwIjoxNjExNDAzNDMwfQ.ztSZ9gVXpCszeO0KgZNL26wAXhYgd8377l264ZoWbz0`
-//      const socket = io.connect(`http://localhost:5000`, {
-//         query:{token}
-//       })
+
 
 class Chat extends Component {
   constructor(props) {
@@ -48,9 +36,6 @@ class Chat extends Component {
 
   componentDidMount() {
     const params = new URLSearchParams(document.location.search);
-
-    // console.log(params);
-
     const topicId = this.props.match.params.topicId;
     axios
       .get(`/board/topics/${topicId}/tasks/`)
@@ -65,6 +50,8 @@ class Chat extends Component {
             layout: `/chat/${topicId}`,
             icon: "pe-7s-news-paper",
             id: task.id,
+            deadline: task.deadline,
+            description: task.description
           });
         });
         
@@ -122,6 +109,9 @@ class Chat extends Component {
                 taskId={prop.id}
                 modalData={this.state.modal}
                 hideModal={this.hideModal}
+                taskDeadline={prop.deadline}
+                taskDescription={prop.description}
+                name={prop.name}
               />
             )}
             key={key}
