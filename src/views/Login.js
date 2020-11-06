@@ -9,7 +9,7 @@ import checkValidity from "../variables/validityRules";
 
 import Form from "../components/Form/Form";
 import Spinner from "../components/Spinner/Spinner";
-import ResponseModal from "../components/ResponseModal/ResponseModal";
+import ResponseModal from "../components/Modals/ResponseModal/ResponseModal";
 
 class LoginForm extends Component {
   state = {

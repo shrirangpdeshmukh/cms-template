@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Grid } from "react-bootstrap";
 import Button from "../components/CustomButton/CustomButton";
-import Card from "components/Card/CommentCard";
-import ChatInput from "components/ChatInput/ChatInput";
-import ChatModal from "components/ChatModal/ChatModal.js";
+import Card from "components/Cards/CommentCard/CommentCard.js";
+import ChatModal from "components/Modals/TaskInfoModal/TaskInfoModal";
 import axios from "../axios-root";
 import io from "socket.io-client";
 import { withCookies } from "react-cookie";

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Grid, Row, Col } from "react-bootstrap";
 
-import { Card } from "components/Card/Card";
+import { Card } from "components/Cards/Card/Card";
 import axios from "../axios-root";
 import { Route, Router } from "react-router";
 import TaskLayout from "../layouts/TaskLayout";

@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
-import ChatNavbar from "components/Navbars/ChatNavbar";
+import TaskNavbar from "components/Navbars/TaskNavbar";
 import Footer from "components/Footer/Footer";
 import ChatSidebar from "components/Sidebar/ChatSidebar";
 import axios from "../axios-root";
 import { withCookies } from "react-cookie";
 import Test from "../views/Task";
-import Card from "../components/Card/Card";
+import Card from "../components/Cards/Card/Card";
 import { Grid, Col, Button } from "react-bootstrap";
-import ResponseModal from "../components/ResponseModal/ResponseModal";
+import ResponseModal from "../components/Modals/ResponseModal/ResponseModal";
 import Auxillary from "../hoc/Auxillary/Auxillary";
 import InputElements from "../components/Form/InputElements/InputElements";
 import { CreateTask } from "../variables/forms";
@@ -254,7 +254,7 @@ class Chat extends Component {
           layout={`/task/${this.state.topic}`}
         />
         <div id="main-panel" className="main-panel" ref="mainPanel">
-          <ChatNavbar
+          <TaskNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
             infoCallback={this.showModal}

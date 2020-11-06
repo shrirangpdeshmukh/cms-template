@@ -62,7 +62,7 @@ class Sidebar extends Component {
             {this.state.width <= 991 ? <AdminSidebarLinks /> : null}
 
             {this.props.routes.map((prop, key) => {
-              if (!prop.redirect)
+              if (!prop.redirect && prop.name && prop.icon)
                 return (
                   <li
                     className={this.activeRoute(prop.layout + prop.path)}

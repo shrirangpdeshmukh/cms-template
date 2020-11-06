@@ -7,7 +7,7 @@ import Auxillary from "../hoc/Auxillary/Auxillary";
 import checkValidity from "../variables/validityRules";
 import {ForgotPassword} from "../variables/forms";
 
-import ResponseModal from "../components/ResponseModal/ResponseModal";
+import ResponseModal from "../components/Modals/ResponseModal/ResponseModal";
 import Form from "../components/Form/Form";
 import Spinner from "../components/Spinner/Spinner";
 

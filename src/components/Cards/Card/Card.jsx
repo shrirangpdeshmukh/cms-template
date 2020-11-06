@@ -33,7 +33,7 @@ export class Card extends Component {
             style={
               this.props.topicCard
                 ? {
-                  cursor:"pointer",
+                    cursor: "pointer",
                     fontSize: "2em",
                     textDecoration: "underline",
                     textUnderlineOffset: "0.5em",

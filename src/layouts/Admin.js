@@ -22,11 +22,7 @@ import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
 
-// import { style } from "variables/Variables";
-
 import { adminRoutes } from "routes.js";
-
-// import image from "assets/img/sidebar-3.jpg";
 
 class Admin extends Component {
   constructor(props) {
@@ -60,6 +56,8 @@ class Admin extends Component {
     }
   };
   getRoutes = (adminRoutes) => {
+    // if (this.props.location.pathname.includes("/admin/user"))
+
     return adminRoutes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (

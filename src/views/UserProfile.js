@@ -27,16 +27,16 @@ import {
   Image,
 } from "react-bootstrap";
 
-import { UserCard } from "components/UserCard/UserCard2";
-import Table from "./pointTransactionTable";
+import { UserCard } from "components/Cards/UserCard/UserCard2";
+import Table from "../components/Tables/pointTransactionTable";
 import InputElements from "../components/Form/InputElements/InputElements";
-import ResponseModal from "../components/ResponseModal/ResponseModal";
+import ResponseModal from "../components/Modals/ResponseModal/ResponseModal";
 import Spinner from "../components/Spinner/Spinner";
-import ActionModalButtons from "../components/ActionModalButtons/ActionModalButtons";
+import ActionModalButtons from "../components/CustomButton/ActionModalButtons/ActionModalButtons";
 
 import award from "../assets/img/award.png";
 import designation from "../assets/img/designation.png";
-import TableAbsent from "./tableAbsent";
+import TableAbsent from "../components/Cards/TableAbsentCard/TableAbsentCard";
 
 import axios from "../axios-root";
 

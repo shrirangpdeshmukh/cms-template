@@ -17,7 +17,7 @@
 */
 import Dashboard from "views/Dashboard";
 import UserProfile from "views/UserProfile.js";
-import TableList from "views/TableList";
+import TableList from "views/Leaderboard.js";
 import AllUsers from "views/AllUsers";
 import Icons from "views/Icons";
 import Announcements from "views/Announcements";
@@ -37,23 +37,21 @@ export const adminRoutes = [
     layout: "/admin",
   },
   {
-    path: "/demo",
+    path: "/topics",
     name: "Topics",
     icon: "pe-7s-graph",
     component: Topics,
     layout: "/admin",
   },
   {
-    path: "/user/:id",
-    name: "User Profile",
+    path: "/profile",
+    name: "My Profile",
     icon: "pe-7s-user",
     component: UserProfile,
     layout: "/admin",
   },
   {
-    path: "/profile",
-    name: "My Profile",
-    icon: "pe-7s-user",
+    path: "/user/:id",
     component: UserProfile,
     layout: "/admin",
   },
@@ -68,7 +66,7 @@ export const adminRoutes = [
   {
     path: "/allUsers",
     name: "All Users",
-    icon: "pe-7s-news-paper",
+    icon: "pe-7s-users",
     component: AllUsers,
     layout: "/admin",
   },
@@ -84,7 +82,7 @@ export const adminRoutes = [
   {
     path: "/signup",
     name: "Add New Users",
-    icon: "pe-7s-users",
+    icon: "pe-7s-id",
     component: SignUP,
     layout: "/admin",
   },

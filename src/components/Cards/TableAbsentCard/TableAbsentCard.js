@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-// import {Card} from 'components/Card/Card'
-// import { Media } from 'react-bootstrap';
-// import { isConstructorDeclaration } from 'typescript';
 
 class TableAbsentCard extends Component {
   state = {

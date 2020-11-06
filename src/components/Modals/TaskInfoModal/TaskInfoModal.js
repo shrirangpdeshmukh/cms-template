@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Modal, Row, Col, Image } from "react-bootstrap";
-import img from "../../assets/img/details.png";
+import img from "../../../assets/img/details.png";
 class ChatModal extends Component {
   state = { width: window.innerWidth };
 

@@ -18,8 +18,9 @@
 import React, { Component } from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 
-import Card from "components/Card/Card";
+import Card from "components/Cards/Card/Card";
 import Button from "components/CustomButton/CustomButton";
+import LeaderboardTable from "components/Tables/LeaderboardTable";
 
 import axios from "../axios-root";
 
@@ -38,31 +39,6 @@ class TableList extends Component {
         console.log(error);
       });
   }
-
-  updownArrow = (num) => {
-    if (num < 0) {
-      return (
-        <i
-          className="fa fa-angle-up"
-          style={{ color: "green", fontSize: "1.5em" }}
-        />
-      );
-    } else if (num > 0) {
-      return (
-        <i
-          className="fa fa-angle-down"
-          style={{ color: "red", fontSize: "1.5em" }}
-        />
-      );
-    } else {
-      return (
-        <i
-          className="fa fa-minus"
-          style={{ color: "blue", fontSize: "0.9em" }}
-        />
-      );
-    }
-  };
 
   refresh = () => {
     axios
@@ -83,10 +59,13 @@ class TableList extends Component {
       });
   };
 
+  userLink = (id) => {
+    this.props.history.push(`/admin/user/${id}`);
+  };
+
   render() {
     let category = null;
     const cookies = this.props.cookies.cookies;
-    
 
     const auth = cookies.isAuthenticated;
     const userData = cookies.userData;
@@ -121,70 +100,12 @@ class TableList extends Component {
       }
     }
 
-    const thArray = [
-      "ID",
-      "Name",
-      "Points",
-      "Current Rank",
-      "Previous Rank",
-      "Change",
-    ];
-
-    const title = (
-      <div className="container">
-        <Col xs={12} md={8} sm={10}>
-          <h3 className="pull-left" style={{ fontWeight: "bold" }}>
-            Current Leaderboard
-          </h3>
-        </Col>
-      </div>
-    );
-
     return (
-      <div className="content">
-        <Grid fluid>
-          <Row>
-            <Col md={12}>
-              <Card
-                title={title}
-                category={category}
-                ctTableFullWidth
-                ctTableResponsive
-                content={
-                  <Table striped hover>
-                    <thead>
-                      <tr>
-                        {thArray.map((prop, key) => {
-                          return <th key={key}>{prop}</th>;
-                        })}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.board.map((prop, key) => {
-                        return (
-                          <tr key={key} onClick={() =>this.props.history.push(`/admin/user/${prop.id}`)}>
-                            <td>{prop.id}</td>
-                            <td >{prop.name}</td>
-                            <td>{prop.points}</td>
-                            <td>{prop.current_rank}</td>
-                            <td>{prop.old_rank}</td>
-                            <td>
-                              {this.updownArrow(
-                                prop.current_rank - prop.old_rank
-                              )}
-                              {Math.abs(prop.current_rank - prop.old_rank)}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
-                }
-              />
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+      <LeaderboardTable
+        board={this.state.board}
+        category={category}
+        userLink={this.userLink}
+      />
     );
   }
 }
