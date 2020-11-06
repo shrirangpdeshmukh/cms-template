@@ -27,7 +27,7 @@ import {
 
 import axios from "../axios-root";
 
-import Card from "components/Card/Card.jsx";
+import Card from "components/Card/Card";
 import CustomButton from "../components/CustomButton/CustomButton";
 import Spinner from "../components/Spinner/Spinner";
 

@@ -18,7 +18,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
-import AdminSidebarLinks from "../Navbars/AdminSidebarLinks.jsx";
+import AdminSidebarLinks from "../Navbars/AdminSidebarLinks";
 
 import logo from "assets/img/collegelogo.png";
 

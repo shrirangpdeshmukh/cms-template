@@ -11,7 +11,7 @@ import {
   Collapse,
 } from "react-bootstrap";
 
-import Button from "components/CustomButton/CustomButton.jsx";
+import Button from "components/CustomButton/CustomButton";
 import axios from "../axios-root"
 
 class Announcements extends Component {

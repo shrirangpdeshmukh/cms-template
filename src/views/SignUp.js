@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { Row, Col } from "react-bootstrap";
-import { FormInputs } from "../components/FormInputs/FormInputs.jsx";
+import { FormInputs } from "../components/FormInputs/FormInputs";
 import Button from "../components/CustomButton/CustomButton";
 import SignUPCard from "./SignUPCard";
 

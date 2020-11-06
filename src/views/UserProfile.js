@@ -27,9 +27,8 @@ import {
   Image,
 } from "react-bootstrap";
 
-
-import { UserCard } from "components/UserCard/UserCard2.jsx";
-import Table from "./pointTransactionTable.jsx";
+import { UserCard } from "components/UserCard/UserCard2";
+import Table from "./pointTransactionTable";
 import InputElements from "../components/Form/InputElements/InputElements";
 import ResponseModal from "../components/ResponseModal/ResponseModal";
 import Spinner from "../components/Spinner/Spinner";
@@ -37,7 +36,7 @@ import ActionModalButtons from "../components/ActionModalButtons/ActionModalButt
 
 import award from "../assets/img/award.png";
 import designation from "../assets/img/designation.png";
-import TableAbsent from './tableAbsent';
+import TableAbsent from "./tableAbsent";
 
 import axios from "../axios-root";
 
@@ -373,7 +372,6 @@ class UserProfile extends Component {
     let changeRoleModal = null;
     let changeDesignationModal = null;
     let blacklistUserModal = null;
-    
 
     const cookies = this.props.cookies.cookies;
 
@@ -649,7 +647,7 @@ class UserProfile extends Component {
         if (this.state.user.allotments.length > 0) {
           table = <Table details={this.state.user.allotments} />;
         } else {
-          table = <TableAbsent />
+          table = <TableAbsent />;
         }
       }
     }

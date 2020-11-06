@@ -18,8 +18,8 @@
 import React, { Component } from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 
-import Card from "components/Card/Card.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
+import Card from "components/Card/Card";
+import Button from "components/CustomButton/CustomButton";
 
 import axios from "../axios-root";
 
