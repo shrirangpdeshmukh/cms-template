@@ -8,8 +8,8 @@ import Auxillary from "./hoc/Auxillary/Auxillary";
 import ErrorHandler from "./hoc/ErrorHandler/ErrorHandler";
 
 import AdminLayout from "layouts/Admin.js";
-import UnAuthLayout from "layouts/AuthLayout";
-import ChatLayout from "./layouts/ChatLayout";
+import AuthLayout from "layouts/AuthLayout";
+import TaskLayout from "./layouts/TaskLayout.js";
 
 import { withCookies } from "react-cookie";
 
@@ -22,7 +22,7 @@ class App extends Component {
         <Route
           path="/auth"
           render={(props) => (
-            <UnAuthLayout {...props} cookies={this.props.cookies} />
+            <AuthLayout {...props} cookies={this.props.cookies} />
           )}
         />
         <Redirect from="/" to="/auth/login" />
@@ -45,15 +45,15 @@ class App extends Component {
             )}
           />
           <Route
-            path="/chat/:topicId/:taskId"
+            path="/task/:topicId/:taskId"
             render={(props) => (
-              <ChatLayout {...props} cookies={this.props.cookies} />
+              <TaskLayout {...props} cookies={this.props.cookies} />
             )}
           />
           <Route
             path="/auth"
             render={(props) => (
-              <UnAuthLayout {...props} cookies={this.props.cookies} />
+              <AuthLayout {...props} cookies={this.props.cookies} />
             )}
           />
           <Redirect from="/" to="/admin/profile" />

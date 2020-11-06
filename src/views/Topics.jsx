@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Grid, Row, Col } from "react-bootstrap";
 
-import { Card } from "components/Card/Card.jsx";
+import { Card } from "components/Card/Card";
 import axios from "../axios-root";
 import { Route, Router } from "react-router";
-import ChatLayout from "../layouts/ChatLayout";
+import TaskLayout from "../layouts/TaskLayout";
 
 class Topics extends Component {
   state = {
@@ -36,7 +36,7 @@ class Topics extends Component {
       })
       .catch((err) => console.log(err));
 
-    this.props.history.push(`/chat/${topicId}/${taskId}`);
+    this.props.history.push(`/task/${topicId}/${taskId}`);
   };
   render() {
     let adminTopics = null;
