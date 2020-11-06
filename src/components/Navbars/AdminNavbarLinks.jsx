@@ -18,7 +18,7 @@
 import React, { Component } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
 
-import routes from "../../routes";
+import {adminRoutes} from "../../routes";
 
 class AdminNavbarLinks extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class AdminNavbarLinks extends Component {
   }
 
   render() {
-    const nav = routes.map((route) => {
+    const nav = adminRoutes.map((route) => {
       return (
         <NavItem key={route.name} href={`${route.layout}${route.path}`}>
           <i

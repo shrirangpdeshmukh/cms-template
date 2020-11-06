@@ -18,7 +18,7 @@
 import React, { Component } from "react";
 import { Navbar } from "react-bootstrap";
 
-import AdminNavbarLinks from "./AdminNavbarLinks.jsx";
+import AdminNavbarLinks from "./AdminNavbarLinks";
 
 class Header extends Component {
   constructor(props) {

@@ -4,13 +4,12 @@ import axios from "../axios-root";
 
 import Auxillary from "../hoc/Auxillary/Auxillary";
 
-import {Login} from "../variables/forms";
+import { Login } from "../variables/forms";
 import checkValidity from "../variables/validityRules";
 
 import Form from "../components/Form/Form";
 import Spinner from "../components/Spinner/Spinner";
 import ResponseModal from "../components/ResponseModal/ResponseModal";
-
 
 class LoginForm extends Component {
   state = {
@@ -21,7 +20,6 @@ class LoginForm extends Component {
   };
 
   inputChangedHandler = (event, inputIdentifier) => {
-    
     const updatedForm = {
       ...this.state.loginForm,
     };
@@ -39,7 +37,7 @@ class LoginForm extends Component {
     for (let inputIdentifier in updatedForm) {
       formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
     }
-     
+
     this.setState({ loginForm: updatedForm, formIsValid: formIsValid });
   };
 
@@ -54,49 +52,45 @@ class LoginForm extends Component {
     }
 
     axios
-      .post("/auth/login", formData,{withCredentials:true})
+      .post("/auth/login", formData, { withCredentials: true })
 
       .then((response) => {
         if (response.data) {
-          this.setState({loading: false});
+          this.setState({ loading: false });
           console.log("Login successful");
           const modalData = {
             title: "Log In Succesful",
             message: `Welcome ${response.data.data.user.name} !`,
             Button: "success",
-            img:"success",
+            img: "success",
             hide: this.fowardToHome,
           };
-          
+
           this.setState({
             loading: false,
             showModal: true,
             modalData: modalData,
           });
-         
-          
+
           // console.log(this.props.cookies);
           const cookies = this.props.cookies;
           cookies.set("isAuthenticated", true, { path: "/" });
           cookies.set("userData", response.data.data, { path: "/" });
-          
         } else {
-          this.setState({loading: false,formIsValid: false});
+          this.setState({ loading: false, formIsValid: false });
           // console.log("Error occured");
         }
       })
       .catch((error) => {
-        this.setState({loading: false,formIsValid: false});
-
+        this.setState({ loading: false, formIsValid: false });
       });
   };
 
   fowardToHome = () => {
-    this.setState({ showModal: false});
+    this.setState({ showModal: false });
     this.props.history.push("/admin/profile");
   };
-  
-  
+
   hideModal = () => {
     this.setState({ showModal: false });
   };
@@ -118,7 +112,7 @@ class LoginForm extends Component {
         changeHandler={this.inputChangedHandler}
         Description="Log into Your Account"
         link2="Forgot Password ?"
-        linkData2="/auth/forgotPassword"
+        linkData2="/auth/forgot"
         btnState={this.state.formIsValid}
       />
     );
@@ -138,8 +132,12 @@ class LoginForm extends Component {
         />
       );
 
-
-    return <Auxillary>{modal}{form}</Auxillary>;
+    return (
+      <Auxillary>
+        {modal}
+        {form}
+      </Auxillary>
+    );
   }
 }
 

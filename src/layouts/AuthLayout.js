@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import classes from "./Layout.module.css";
 import Footer from "components/Footer/Footer2";
 import logo from "../assets/img/collegelogo.png";
-import routes from "../routes2.js";
+import { authRoutes } from "../routes.js";
 
 class Layout extends Component {
   state = {};
@@ -46,7 +46,7 @@ class Layout extends Component {
             style={{ paddingBottom: "1.5rem" }}
           >
             {" "}
-            <Switch>{this.getRoutes(routes)}</Switch>
+            <Switch>{this.getRoutes(authRoutes)}</Switch>
           </div>
           <Footer />
         </main>

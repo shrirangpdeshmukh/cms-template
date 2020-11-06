@@ -24,7 +24,7 @@ import Sidebar from "components/Sidebar/Sidebar";
 
 // import { style } from "variables/Variables";
 
-import routes from "routes.js";
+import { adminRoutes } from "routes.js";
 
 // import image from "assets/img/sidebar-3.jpg";
 
@@ -59,8 +59,8 @@ class Admin extends Component {
         break;
     }
   };
-  getRoutes = (routes) => {
-    return routes.map((prop, key) => {
+  getRoutes = (adminRoutes) => {
+    return adminRoutes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
           <Route
@@ -81,13 +81,13 @@ class Admin extends Component {
     });
   };
   getBrandText = (path) => {
-    for (let i = 0; i < routes.length; i++) {
+    for (let i = 0; i < adminRoutes.length; i++) {
       if (
         this.props.location.pathname.indexOf(
-          routes[i].layout + routes[i].path
+          adminRoutes[i].layout + adminRoutes[i].path
         ) !== -1
       ) {
-        return routes[i].name;
+        return adminRoutes[i].name;
       } else if (this.props.location.pathname.includes("/admin/user")) {
         return "User Profile";
       }
@@ -119,7 +119,7 @@ class Admin extends Component {
   render() {
     return (
       <div style={{ position: " relative" }}>
-        <Sidebar {...this.props} routes={routes} />
+        <Sidebar {...this.props} routes={adminRoutes} />
         <div
           id="main-panel"
           className="main-panel"
@@ -130,7 +130,7 @@ class Admin extends Component {
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
           />
-          <Switch>{this.getRoutes(routes)}</Switch>
+          <Switch>{this.getRoutes(adminRoutes)}</Switch>
           <Footer />
         </div>
       </div>

@@ -15,18 +15,20 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard.jsx";
+import Dashboard from "views/Dashboard";
 import UserProfile from "views/UserProfile.js";
-import TableList from "views/TableList.jsx";
-import AllUsers from "views/AllUsers.jsx";
-import Icons from "views/Icons.jsx";
-import Announcements from "views/Announcements.jsx";
-import Login from "views/Login.jsx";
-import Topics from "views/Topics.jsx";
-import Test from "views/Test.jsx";
+import TableList from "views/TableList";
+import AllUsers from "views/AllUsers";
+import Icons from "views/Icons";
+import Announcements from "views/Announcements";
+import Topics from "views/Topics";
 import SignUP from "views/SignUp";
 
-const dashboardRoutes = [
+import Login from "views/Login.js";
+import ForgotPass from "views/ForgotPassword.jsx";
+import ResetPassword from "views/ResetPassword";
+
+export const adminRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -39,13 +41,6 @@ const dashboardRoutes = [
     name: "Topics",
     icon: "pe-7s-graph",
     component: Topics,
-    layout: "/admin",
-  },
-  {
-    path: "/test",
-    name: "Test",
-    icon: "pe-7s-user",
-    component: Test,
     layout: "/admin",
   },
   {
@@ -95,4 +90,23 @@ const dashboardRoutes = [
   },
 ];
 
-export default dashboardRoutes;
+export const authRoutes = [
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+    layout: "/auth",
+  },
+  {
+    path: "/forgot",
+    name: "Forgot",
+    component: ForgotPass,
+    layout: "/auth",
+  },
+  {
+    path: "/reset",
+    name: "Reset",
+    component: ResetPassword,
+    layout: "/auth",
+  },
+];
