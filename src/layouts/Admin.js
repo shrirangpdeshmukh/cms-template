@@ -56,10 +56,30 @@ class Admin extends Component {
     }
   };
   getRoutes = (adminRoutes) => {
-    // if (this.props.location.pathname.includes("/admin/user"))
+    let renderFlag = false;
 
-    return adminRoutes.map((prop, key) => {
+    const cookies = this.props.cookies.cookies;
+
+    const auth = cookies.isAuthenticated;
+    const userData = cookies.userData;
+
+    if (auth && userData && userData !== "undefined") {
+      const authJSON = JSON.parse(auth);
+      const userDataJSON = JSON.parse(userData);
+
+      if (authJSON && userDataJSON) {
+        const userRole = userDataJSON.user.role;
+
+        if (userRole === "admin" || userRole === "superAdmin") {
+          renderFlag = true;
+        }
+      }
+    }
+
+    let routes = adminRoutes.map((prop, key) => {
       if (prop.layout === "/admin") {
+        if (prop.path === "/signup" && !renderFlag) return null;
+
         return (
           <Route
             path={prop.layout + prop.path}
@@ -77,6 +97,8 @@ class Admin extends Component {
         return null;
       }
     });
+
+    return routes;
   };
   getBrandText = (path) => {
     for (let i = 0; i < adminRoutes.length; i++) {
