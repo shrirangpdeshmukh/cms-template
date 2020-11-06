@@ -22,7 +22,7 @@ import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
 
-// import { style } from "variables/Variables.jsx";
+// import { style } from "variables/Variables";
 
 import routes from "routes.js";
 
@@ -88,8 +88,9 @@ class Admin extends Component {
         ) !== -1
       ) {
         return routes[i].name;
+      } else if (this.props.location.pathname.includes("/admin/user")) {
+        return "User Profile";
       }
-      else if (this.props.location.pathname.includes("/admin/user")) {return "User Profile"}
     }
     return "Brand";
   };
@@ -117,9 +118,14 @@ class Admin extends Component {
   }
   render() {
     return (
-      <div style={{ position: " relative"}}>
+      <div style={{ position: " relative" }}>
         <Sidebar {...this.props} routes={routes} />
-        <div id="main-panel" className="main-panel" ref="mainPanel" styles={{paddingBottom:"2.5rem"}}>
+        <div
+          id="main-panel"
+          className="main-panel"
+          ref="mainPanel"
+          styles={{ paddingBottom: "2.5rem" }}
+        >
           <AdminNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
@@ -127,7 +133,6 @@ class Admin extends Component {
           <Switch>{this.getRoutes(routes)}</Switch>
           <Footer />
         </div>
-        
       </div>
     );
   }
