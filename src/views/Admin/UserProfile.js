@@ -41,7 +41,12 @@ import TableAbsent from "../../components/Cards/TableAbsentCard/TableAbsentCard"
 import axios from "../../axios-root";
 
 import checkValidity from "../../variables/validityRules";
-import { ChangeDesignation, AwardPoints } from "../../variables/forms";
+import {
+  ChangeDesignation,
+  AwardPoints,
+  UpdatePassword,
+  AddBio,
+} from "../../variables/forms";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -49,6 +54,8 @@ class UserProfile extends Component {
     this.state = {
       awardPoints: AwardPoints,
       changeDesignation: ChangeDesignation,
+      updatePassword: UpdatePassword,
+      editBio: AddBio,
       dropDownValue: "New Role",
       newRole: null,
       formIsValid: false,
@@ -325,6 +332,154 @@ class UserProfile extends Component {
       });
   };
 
+  updateInputChangedHandler = (event, inputIdentifier) => {
+    const updatedForm = {
+      ...this.state.updatePassword,
+    };
+    const updatedFormElement = {
+      ...updatedForm[inputIdentifier],
+    };
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
+    let formIsValid = true;
+    updatedForm[inputIdentifier] = updatedFormElement;
+    for (let inputIdentifier in updatedForm) {
+      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+    }
+
+    if (inputIdentifier === "newPasswordConfirm") {
+      updatedFormElement.valid =
+        updatedFormElement.valid &&
+        updatedFormElement.value === updatedForm["newPassword"].value;
+    }
+
+    this.setState({ updatePassword: updatedForm, formIsValid: formIsValid });
+  };
+
+  updatePass = (event) => {
+    event.preventDefault();
+    this.setState({ loading: true });
+    const formData = {};
+    for (let formElementIdentifier in this.state.updatePassword) {
+      formData[formElementIdentifier] = this.state.updatePassword[
+        formElementIdentifier
+      ].value;
+    }
+
+    axios
+      .patch(`auth/updatePassword`, formData)
+      .then((response) => {
+        if (response.data) {
+          const modalData = {
+            title: "Success",
+            message: "Update Successful",
+            Button: "success",
+            img: "success",
+            hide: () => {
+              this.setState({ showModal: 0 });
+              window.location.reload(false);
+            },
+          };
+
+          this.setState({
+            loading: false,
+            showModal: 8,
+            modalData: modalData,
+            formIsValid: false,
+          });
+
+          const cookies = this.props.cookies;
+          cookies.set("isAuthenticated", true, { path: "/" });
+          cookies.set("userData", response.data.data, { path: "/" });
+        } else {
+          this.setState({
+            loading: false,
+            formIsValid: false,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({
+          loading: false,
+          formIsValid: false,
+        });
+      });
+  };
+
+  bioInputChangedHandler = (event, inputIdentifier) => {
+    const updatedForm = {
+      ...this.state.editBio,
+    };
+    const updatedFormElement = {
+      ...updatedForm[inputIdentifier],
+    };
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
+    let formIsValid = true;
+    updatedForm[inputIdentifier] = updatedFormElement;
+    for (let inputIdentifier in updatedForm) {
+      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+    }
+
+    this.setState({ editBio: updatedForm, formIsValid: formIsValid });
+  };
+
+  bioChange = (event) => {
+    event.preventDefault();
+    this.setState({ loading: true });
+    const formData = {};
+    for (let formElementIdentifier in this.state.editBio) {
+      formData[formElementIdentifier] = this.state.editBio[
+        formElementIdentifier
+      ].value;
+    }
+
+    axios
+      .patch(`users/me`, formData)
+      .then((res) => {
+        let message = res.data.message
+          .toLowerCase()
+          .split(" ")
+          .map(function (word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+          })
+          .join(" ");
+        const modalData = {
+          title: "Success",
+          message: message,
+          Button: "success",
+          img: "success",
+          hide: () => {
+            this.setState({ showModal: 0 });
+            window.location.reload(false);
+          },
+        };
+
+        this.setState({
+          loading: false,
+          showModal: 8,
+          modalData: modalData,
+          formIsValid: false,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({
+          loading: false,
+          formIsValid: false,
+        });
+      });
+  };
+
   render() {
     // Modal Forms
     const changeDesignationForm = [];
@@ -340,6 +495,22 @@ class UserProfile extends Component {
       awardPointsForm.push({
         id: key,
         config: this.state.awardPoints[key],
+      });
+    }
+
+    const updatePasswordForm = [];
+    for (let key in this.state.updatePassword) {
+      updatePasswordForm.push({
+        id: key,
+        config: this.state.updatePassword[key],
+      });
+    }
+
+    const editBioForm = [];
+    for (let key in this.state.editBio) {
+      editBioForm.push({
+        id: key,
+        config: this.state.editBio[key],
       });
     }
 
@@ -367,11 +538,19 @@ class UserProfile extends Component {
       { title: "Change Designation", number: 3 },
     ];
 
+    const userActions = [
+      { title: "Edit Bio", number: 5 },
+      { title: "Update Password", number: 6 },
+    ];
+
     let dropdown = null;
     let awardPointsModal = null;
     let changeRoleModal = null;
     let changeDesignationModal = null;
     let blacklistUserModal = null;
+    let updatePasswordModal = null;
+    let bioModal = null;
+    let userDropDown = null;
 
     const cookies = this.props.cookies.cookies;
 
@@ -383,6 +562,120 @@ class UserProfile extends Component {
       const userDataJSON = JSON.parse(userData);
 
       if (authJSON && userDataJSON) {
+        if (this.props.match.path.includes("/profile")) {
+          userDropDown = (
+            <DropdownButton
+              bsStyle="info"
+              title="Edit Profile"
+              pullRight
+              className="btn-fill"
+              id="edit-profile"
+            >
+              {userActions.map((action) => {
+                return (
+                  <MenuItem
+                    key={action.number}
+                    eventKey={action.number}
+                    onClick={() => this.setState({ showModal: action.number })}
+                  >
+                    {action.title}
+                  </MenuItem>
+                );
+              })}
+            </DropdownButton>
+          );
+
+          updatePasswordModal = (
+            <Modal show={this.state.showModal === 6} onHide={this.hideModals}>
+              <Modal.Header closeButton>
+                <Modal.Title>Update Password</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Row>
+                  <Col lg={8} md={8} sm={10}>
+                    {updatePasswordForm.map((formElement) => (
+                      <InputElements
+                        key={formElement.id}
+                        element={formElement}
+                        changeHandler={this.updateInputChangedHandler}
+                      />
+                    ))}
+                  </Col>
+                  <Col lg={4} md={4}>
+                    <Image
+                      src={award}
+                      rounded
+                      style={{
+                        height: "100%",
+                        width: "90%",
+                        marginLeft: "5%",
+                        marginTop: "5px",
+                        marginRight: "5%",
+                      }}
+                    ></Image>
+                  </Col>
+                </Row>
+              </Modal.Body>
+              <Modal.Footer>
+                <ActionModalButtons
+                  disabled={!this.state.formIsValid}
+                  submit={this.updatePass}
+                  cancel={this.hideModals}
+                  yes="Update"
+                  no="Close"
+                />
+              </Modal.Footer>
+            </Modal>
+          );
+
+          bioModal = (
+            <Modal show={this.state.showModal === 5} onHide={this.hideModals}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Bio</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Row>
+                  <Col lg={8} md={8} sm={10}>
+                    <br />
+                    <br />
+                    {editBioForm.map((formElement) => (
+                      <InputElements
+                        key={formElement.id}
+                        element={formElement}
+                        changeHandler={this.bioInputChangedHandler}
+                      />
+                    ))}
+                  </Col>
+                  {window.innerWidth > 991 ? (
+                    <Col lg={4} md={4}>
+                      <Image
+                        src={designation}
+                        rounded
+                        style={{
+                          height: "80%",
+                          width: "80%",
+                          marginLeft: "5%",
+                          marginTop: "5px",
+                          marginRight: "5%",
+                        }}
+                      ></Image>
+                    </Col>
+                  ) : null}
+                </Row>
+              </Modal.Body>
+              <Modal.Footer>
+                <ActionModalButtons
+                  disabled={!this.state.formIsValid}
+                  submit={this.bioChange}
+                  cancel={this.hideModals}
+                  yes="Change"
+                  no="Close"
+                />
+              </Modal.Footer>
+            </Modal>
+          );
+        }
+
         const userRole = userDataJSON.user.role;
 
         if (userRole === "admin" || userRole === "superAdmin") {
@@ -681,6 +974,11 @@ class UserProfile extends Component {
               {changeRoleModal}
               {changeDesignationModal}
               {blacklistUserModal}
+
+              {userDropDown}
+              {updatePasswordModal}
+              {bioModal}
+
               {responseModal}
               {data}
             </Col>
