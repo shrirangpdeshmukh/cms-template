@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 
 import Button from "components/CustomButton/CustomButton";
-import axios from "../axios-root"
+import axios from "../../axios-root"
 
 class Announcements extends Component {
   state = {

@@ -5,11 +5,11 @@ import { Card } from "components/Cards/Card/Card";
 import { FormInputs } from "components/FormInputs/FormInputs";
 import Button from "components/CustomButton/CustomButton";
 
-import axios from "../axios-root";
+import axios from "../../axios-root";
 
-import checkValidity from "../variables/validityRules";
+import checkValidity from "../../variables/validityRules";
 
-import Auxillary from "../hoc/Auxillary/Auxillary";
+import Auxillary from "../../hoc/Auxillary/Auxillary";
 
 class UserProfile extends Component {
   constructor(props) {

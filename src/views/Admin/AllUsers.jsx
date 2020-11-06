@@ -25,11 +25,11 @@ import {
   Badge,
 } from "react-bootstrap";
 
-import axios from "../axios-root";
+import axios from "../../axios-root";
 
 import Card from "components/Cards/Card/Card";
-import CustomButton from "../components/CustomButton/CustomButton";
-import Spinner from "../components/Spinner/Spinner";
+import CustomButton from "../../components/CustomButton/CustomButton";
+import Spinner from "../../components/Spinner/Spinner";
 
 class AllUsers extends Component {
   constructor(props) {

@@ -22,7 +22,7 @@ import Card from "components/Cards/Card/Card";
 import Button from "components/CustomButton/CustomButton";
 import LeaderboardTable from "components/Tables/LeaderboardTable";
 
-import axios from "../axios-root";
+import axios from "../../axios-root";
 
 class TableList extends Component {
   constructor(props) {

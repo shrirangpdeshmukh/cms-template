@@ -15,18 +15,18 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard";
-import UserProfile from "views/UserProfile.js";
-import TableList from "views/Leaderboard.js";
-import AllUsers from "views/AllUsers";
+import Dashboard from "views/Admin/Dashboard";
+import UserProfile from "views/Admin/UserProfile.js";
+import TableList from "views/Admin/Leaderboard.js";
+import AllUsers from "views/Admin/AllUsers";
 import Icons from "views/Icons";
-import Announcements from "views/Announcements";
-import Topics from "views/Topics";
-import SignUP from "views/SignUp";
+import Announcements from "views/Admin/Announcements";
+import Topics from "views/Admin/Topics";
+import SignUP from "views/Admin/SignUp.js";
 
-import Login from "views/Login.js";
-import ForgotPass from "views/ForgotPassword.jsx";
-import ResetPassword from "views/ResetPassword";
+import Login from "views/Authentication/Login.js";
+import ForgotPass from "views/Authentication/ForgotPassword.jsx";
+import ResetPassword from "views/Authentication/ResetPassword";
 
 export const adminRoutes = [
   {

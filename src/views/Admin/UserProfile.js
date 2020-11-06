@@ -28,20 +28,20 @@ import {
 } from "react-bootstrap";
 
 import { UserCard } from "components/Cards/UserCard/UserCard2";
-import Table from "../components/Tables/pointTransactionTable";
-import InputElements from "../components/Form/InputElements/InputElements";
-import ResponseModal from "../components/Modals/ResponseModal/ResponseModal";
-import Spinner from "../components/Spinner/Spinner";
-import ActionModalButtons from "../components/CustomButton/ActionModalButtons/ActionModalButtons";
+import Table from "../../components/Tables/pointTransactionTable";
+import InputElements from "../../components/Form/InputElements/InputElements";
+import ResponseModal from "../../components/Modals/ResponseModal/ResponseModal";
+import Spinner from "../../components/Spinner/Spinner";
+import ActionModalButtons from "../../components/CustomButton/ActionModalButtons/ActionModalButtons";
 
-import award from "../assets/img/award.png";
-import designation from "../assets/img/designation.png";
-import TableAbsent from "../components/Cards/TableAbsentCard/TableAbsentCard";
+import award from "../../assets/img/award.png";
+import designation from "../../assets/img/designation.png";
+import TableAbsent from "../../components/Cards/TableAbsentCard/TableAbsentCard";
 
-import axios from "../axios-root";
+import axios from "../../axios-root";
 
-import checkValidity from "../variables/validityRules";
-import { ChangeDesignation, AwardPoints } from "../variables/forms";
+import checkValidity from "../../variables/validityRules";
+import { ChangeDesignation, AwardPoints } from "../../variables/forms";
 
 class UserProfile extends Component {
   constructor(props) {

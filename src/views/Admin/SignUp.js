@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 
 import { Row, Col } from "react-bootstrap";
-import { FormInputs } from "../components/FormInputs/FormInputs";
-import Button from "../components/CustomButton/CustomButton";
-import SignUPCard from "./SignUPCard";
+import { FormInputs } from "../../components/FormInputs/FormInputs";
+import Button from "../../components/CustomButton/CustomButton";
+import SignUPCard from "./SignUPCard.js";
 
-import Auxillary from "../hoc/Auxillary/Auxillary";
+import Auxillary from "../../hoc/Auxillary/Auxillary";
 
-import checkValidity from "../variables/validityRules";
+import checkValidity from "../../variables/validityRules";
 
 class BulkSignUp extends Component {
   constructor(props) {

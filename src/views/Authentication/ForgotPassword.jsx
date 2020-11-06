@@ -1,25 +1,25 @@
 import React, { Component } from "react";
 
-import axios from "../axios-root";
+import axios from "../../axios-root";
 
-import Auxillary from "../hoc/Auxillary/Auxillary";
+import Auxillary from "../../hoc/Auxillary/Auxillary";
 
-import {ResetPassword} from "../variables/forms"
-import checkValidity from "../variables/validityRules";
+import checkValidity from "../../variables/validityRules";
+import {ForgotPassword} from "../../variables/forms";
 
-import Form from "../components/Form/Form";
-import Spinner from "../components/Spinner/Spinner";
-import ResponseModal from "../components/Modals/ResponseModal/ResponseModal";
+import ResponseModal from "../../components/Modals/ResponseModal/ResponseModal";
+import Form from "../../components/Form/Form";
+import Spinner from "../../components/Spinner/Spinner";
 
-class ResetForm extends Component {
+
+class ForgotForm extends Component {
   state = {
-    loginForm: ResetPassword,
+    loginForm: ForgotPassword,
     formIsValid: false,
-    redirectPath:null,
-    loading:false,
-    modalData:null,
-    showModal:false
-  }
+    loading: false,
+    redirectPath: null,
+    modalData:null
+  };
   
   inputChangedHandler = (event, inputIdentifier) => {
     const updatedForm = {
@@ -36,15 +36,15 @@ class ResetForm extends Component {
     if (inputIdentifier === 'passwordConfirm') {
       updatedFormElement.valid =  updatedFormElement.valid && (updatedFormElement.value===updatedForm['password'].value);
     }
-    
-    
+        
     updatedFormElement.touched = true;
     let formIsValid = true;
     updatedForm[inputIdentifier] = updatedFormElement;
     for (let inputIdentifier in updatedForm) {
       formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
     }
-           
+    
+        
     this.setState({ loginForm: updatedForm, formIsValid: formIsValid });
   };
   
@@ -59,46 +59,41 @@ class ResetForm extends Component {
     }
 
     axios
-      .patch("/auth/resetPassword", formData)
-        
+      .post("/auth/forgotPassword", formData)
+
       .then((response) => {
-        console.log(response);
         if (response.data) {
           const modalData = {
-            title: "Password Reset Succesful",
-            message: `You will be redirected to HomePage`,
+            title: "Please Check Your Email",
+            message: `We have sent a code to your Email address \n ${formData["email"]}.\n  Paste it in the next screen appearing.`,
             Button: "success",
-            hide: this.forwardToHome,
-            img:"success"
+            img:"mail",
+            hide: this.forgotToResetPassword,
           };
           this.setState({
             loading: false,
             showModal: true,
             modalData: modalData,
           });
-          const cookies = this.props.cookies;
-          cookies.set("isAuthenticated", true, { path: "/" });
-          cookies.set("userData", response.data.data, { path: "/" })
         } else {
-          // console.log(response.response);
-          // const modalData = {
-          //   title: "Error",
-          //   message: `${response.response.data.message}`,
-          //   Button: "danger",
-          //   hide: this.hideModal,
-          // };
+          const modalData = {
+            title: "Email Does not Exist",
+            message: `Please check email provided. Please give a valid email address`,
+            Button: "danger",
+            hide: this.hideModal,
+          };
           this.setState({
             loading: false,
+            showModal: true,
+            modalData: modalData,
             formIsValid: false,
-            // showModal: true,
-            // modalData: modalData,
           });
           console.log("Error occured");
         }
       })
       .catch((error) => {
-        this.setState({loading: false,formIsValid: false})
-
+        console.log(error);
+        this.setState({loading: false,formIsValid: false});
       });
   };
   
@@ -106,10 +101,11 @@ class ResetForm extends Component {
     this.setState({ showModal: false });
   };
 
-  forwardToHome = () => {
+  forgotToResetPassword = () => {
     this.setState({ showModal: false });
-    this.props.history.push("/");
+    this.props.history.push("/auth/reset");
   };
+  
   
 
   render() {
@@ -123,17 +119,21 @@ class ResetForm extends Component {
 
     let form = (
       <Form
-        img="Auth"
-        title="Reset Password"
+        img="Forgot"
+        title="Forgot Password"
         submitAction={this.loginHandler}
         elements={formElementsArray}
         changeHandler={this.inputChangedHandler}
-        Description="Reset Your Password Here"
-        link=""
-        linkData={null}
+        Description="Enter your E-mail here to reset your Password"
+        link2="Already have a Reset Token ?"
+        linkData2="/auth/reset"
         btnState={this.state.formIsValid}
       />
     );
+    
+    if (this.state.loading) {
+      form = <Spinner />;
+    }
 
     let modal = null;
 
@@ -141,11 +141,11 @@ class ResetForm extends Component {
       modal = (
         <ResponseModal
           show={this.state.showModal}
-          img={this.state.modalData.img}
           onHide={this.state.modalData.hide}
           title={this.state.modalData.title}
           body={this.state.modalData.message}
           button={this.state.modalData.Button}
+          img={this.state.modalData.img}
         />
       );
 
@@ -158,4 +158,4 @@ class ResetForm extends Component {
   }
 }
 
-export default ResetForm;
+export default ForgotForm;
