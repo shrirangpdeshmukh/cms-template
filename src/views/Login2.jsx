@@ -75,7 +75,7 @@ class LoginForm extends Component {
           });
          
           
-          console.log(this.props.cookies);
+          // console.log(this.props.cookies);
           const cookies = this.props.cookies;
           cookies.set("isAuthenticated", true, { path: "/" });
           cookies.set("userData", response.data.data, { path: "/" });
@@ -93,7 +93,7 @@ class LoginForm extends Component {
 
   fowardToHome = () => {
     this.setState({ showModal: false});
-    this.props.history.push("/");
+    this.props.history.push("/admin/profile");
   };
   
   

@@ -15,9 +15,28 @@ import { withCookies } from "react-cookie";
 
 class App extends Component {
   state = {};
+
   render() {
-    return (
-      <Auxillary>
+    let routes = (
+      <Switch>
+        <Route
+          path="/auth"
+          render={(props) => (
+            <UnAuthLayout {...props} cookies={this.props.cookies} />
+          )}
+        />
+        <Redirect from="/" to="/auth/login" />
+      </Switch>
+    );
+
+    const cookies = this.props.cookies.cookies;
+    if (
+      cookies.userData &&
+      cookies.isAuthenticated &&
+      cookies.jwt &&
+      cookies.jwt != "loggedout"
+    ) {
+      routes = (
         <Switch>
           <Route
             path="/admin"
@@ -26,21 +45,23 @@ class App extends Component {
             )}
           />
           <Route
-            path="/auth"
-            render={(props) => (
-              <UnAuthLayout {...props} cookies={this.props.cookies} />
-            )}
-          />
-          <Route
             path="/chat/:topicId/:taskId"
             render={(props) => (
               <ChatLayout {...props} cookies={this.props.cookies} />
             )}
           />
-          <Redirect from="/" to="/admin/dashboard" />
+          <Route
+            path="/auth"
+            render={(props) => (
+              <UnAuthLayout {...props} cookies={this.props.cookies} />
+            )}
+          />
+          <Redirect from="/" to="/admin/profile" />
         </Switch>
-      </Auxillary>
-    );
+      );
+    }
+
+    return <Auxillary>{routes}</Auxillary>;
   }
 }
 
