@@ -14,9 +14,9 @@ class ChatModal extends Component {
     const figure_styles = {
       float: "right",
       display: "inline-block",
-      height: "40%",
-      marginTop: "-25px",
-      width: "40%",
+      height: "30%",
+      marginTop: "-50px",
+      width: "30%",
     };
 
     return (
