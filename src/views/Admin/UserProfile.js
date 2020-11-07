@@ -563,7 +563,10 @@ class UserProfile extends Component {
       const userDataJSON = JSON.parse(userData);
 
       if (authJSON && userDataJSON) {
-        if (this.props.match.path.includes("/profile")) {
+        if (
+          this.props.match.path.includes("/profile") ||
+          parseInt(this.props.match.params.id) === userDataJSON.user.id
+        ) {
           userDropDown = (
             <DropdownButton
               bsStyle="info"
