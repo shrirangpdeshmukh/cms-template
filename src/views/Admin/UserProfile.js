@@ -33,10 +33,11 @@ import InputElements from "../../components/Form/InputElements/InputElements";
 import ResponseModal from "../../components/Modals/ResponseModal/ResponseModal";
 import Spinner from "../../components/Spinner/Spinner";
 import ActionModalButtons from "../../components/CustomButton/ActionModalButtons/ActionModalButtons";
+import TableAbsent from "../../components/Cards/TableAbsentCard/TableAbsentCard";
 
 import award from "../../assets/img/award.png";
 import designation from "../../assets/img/designation.png";
-import TableAbsent from "../../components/Cards/TableAbsentCard/TableAbsentCard";
+import authImg from "../../assets/img/auth.png";
 
 import axios from "../../axios-root";
 
@@ -603,13 +604,13 @@ class UserProfile extends Component {
                   </Col>
                   <Col lg={4} md={4}>
                     <Image
-                      src={award}
+                      src={authImg}
                       rounded
                       style={{
                         height: "100%",
                         width: "90%",
                         marginLeft: "5%",
-                        marginTop: "5px",
+                        marginTop: "10px",
                         marginRight: "5%",
                       }}
                     ></Image>

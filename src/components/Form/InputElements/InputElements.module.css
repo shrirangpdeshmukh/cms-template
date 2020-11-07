@@ -3,6 +3,12 @@
   margin-bottom: 25px;
   overflow: hidden;
 }
+.Input input:-webkit-input-placeholder,
+.Input input:-moz-placeholder,
+.Input input:-moz-placeholder,
+.Input input:-ms-input-placeholder {
+  font-size: 1.5em;
+}
 
 .Input input:focus {
   outline: none;
@@ -24,6 +30,7 @@
   border: none;
   border-bottom: 1px solid #999;
   padding: 6px 30px;
-  /* font-family: Poppins; */
+  font-family: Poppins;
   box-sizing: border-box;
+  font-size: 1.1em;
 }
