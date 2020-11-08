@@ -66,6 +66,8 @@ const leaderbaordTable = (props) => {
                   </thead>
                   <tbody>
                     {props.board.map((prop, key) => {
+                      if (!prop.current_rank) return null;
+
                       return (
                         <tr key={key} onClick={() => props.userLink(prop.id)}>
                           <td>{prop.id}</td>
