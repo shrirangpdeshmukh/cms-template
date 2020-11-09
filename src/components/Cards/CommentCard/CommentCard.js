@@ -16,9 +16,9 @@ export class Card extends Component {
           <div
             className={"card" + (this.props.plain ? " card-plain" : "")}
             style={{
-              borderRadius: "10px",
-              boxShadow: "17px 14px 22px -18px rgba(97,76,97,1)",
-              border: "0.2px solid #ccc",
+              borderRadius: "2px",
+              // boxShadow: "17px 14px 22px -18px rgba(97,76,97,1)",
+              border: "0.9px solid #ccc",
               paddingBottom: "0",
               marginBottom: "6px",
             }}
@@ -44,7 +44,7 @@ export class Card extends Component {
                 </h4>
               </a>
             </div>
-            <div className="content" style={{ fontSize: "0.9em" }}>
+            <div className="content" style={{ fontSize: "1em" }}>
               <div dangerouslySetInnerHTML={{ __html: text }} />
             </div>
           </div>

@@ -15,9 +15,9 @@ class Chat extends Component {
   timeout = undefined;
   state = {
     comments: [
-      { authorId: 10, taskId: 3, text: "sdfgsdgsfgsfg", id: 1000000 },
-      { authorId: 10, taskId: 3, text: "sdfgsdgsfgsfg", id: 1000000002 },
-      { authorId: 10, taskId: 3, text: "sdfgsdgsfgsfg", id: 100000009 },
+      { authorId: 10, taskId: 3, text: "Test Comments", id: 1000000 },
+      { authorId: 10, taskId: 3, text: "Test Comments", id: 1000000002 },
+      { authorId: 10, taskId: 3, text: "Test Comments", id: 100000009 },
     ],
     error: false,
     typing: "",
@@ -141,7 +141,7 @@ class Chat extends Component {
           />
         );
       });
-    }
+    } else chat = <h5>No messages on this task yet !!</h5>;
     return (
       <div
         className="content"
@@ -182,7 +182,7 @@ class Chat extends Component {
                   />
                 </FormGroup>{" "}
               </Col>
-              <Col lg={1} md={4} xs={2} style={{ paddingLeft: "2px" }}>
+              <Col lg={1} md={4} xs={2}>
                 <Button
                   pullRight
                   onClick={(e) =>
@@ -191,7 +191,7 @@ class Chat extends Component {
                       document.getElementById("message").value
                     )
                   }
-                  style={{ padding: "5px", borderRadius: "10px" }}
+                  style={{ border: "0", marginLeft: "-15px" }}
                 >
                   <IoIosSend style={{ padding: "0", fontSize: "1.8em" }} />
                 </Button>
