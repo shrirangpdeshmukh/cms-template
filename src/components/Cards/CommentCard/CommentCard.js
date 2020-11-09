@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import { Row, Col } from "react-bootstrap";
 export class Card extends Component {
+  urlify = (text) => {
+    var urlRegex = /(([a-z]+:\/\/)?(([a-z0-9\-]+\.)+([a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(\?[a-z0-9+_\-\.%=&amp;]*)?)?(#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(\s+|$)/gi;
+    return text.replace(urlRegex, function (url) {
+      return `<a href="${url}" target="_blank"> ${url} </a>`;
+    });
+  };
   render() {
+    const text = this.urlify(this.props.content);
+
     return (
       <Row>
         <Col md={11} xs={12}>
@@ -36,8 +44,8 @@ export class Card extends Component {
                 </h4>
               </a>
             </div>
-            <div className={"content"} style={{ fontSize: "0.9em" }}>
-              {this.props.content}
+            <div className="content" style={{ fontSize: "0.9em" }}>
+              <div dangerouslySetInnerHTML={{ __html: text }} />
             </div>
           </div>
         </Col>

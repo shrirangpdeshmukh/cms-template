@@ -15,9 +15,9 @@ class Chat extends Component {
   timeout = undefined;
   state = {
     comments: [
-      { authorId: 10, taskId: 3, comment: "sdfgsdgsfgsfg", id: 1000000 },
-      { authorId: 10, taskId: 3, comment: "sdfgsdgsfgsfg", id: 1000000002 },
-      { authorId: 10, taskId: 3, comment: "sdfgsdgsfgsfg", id: 100000009 },
+      { authorId: 10, taskId: 3, text: "sdfgsdgsfgsfg", id: 1000000 },
+      { authorId: 10, taskId: 3, text: "sdfgsdgsfgsfg", id: 1000000002 },
+      { authorId: 10, taskId: 3, text: "sdfgsdgsfgsfg", id: 100000009 },
     ],
     error: false,
     typing: "",
@@ -29,7 +29,7 @@ class Chat extends Component {
         `/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/comments/100`
       )
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         this.setState({ comments: response.data.comments.data });
         this.setUpSocket();
       })
@@ -107,13 +107,6 @@ class Chat extends Component {
     else this.setState({ typing: `` });
   };
 
-  urlify = (text) => {
-    var urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function (url) {
-      return '<a href="' + url + '">' + url + "</a>";
-    });
-  };
-
   render() {
     let modal = null;
 
@@ -133,10 +126,6 @@ class Chat extends Component {
     let chat = null;
     if (this.state.comments.length) {
       chat = this.state.comments.map((comment) => {
-        // const commentText = comment.text
-        // console.log(commentText)
-        //const linkifiedText=this.urlify(commentText)
-        // console.log(typeof(comment.id));
         let date = new Date(parseInt(comment.timestamp))
           .toString()
           .split("GMT")[0];
@@ -148,11 +137,7 @@ class Chat extends Component {
               JSON.parse(this.props.cookies.cookies.userData).user.id
             }`}
             stats={date}
-            content={
-              comment.text
-              //  commentText
-              // linkifiedText
-            }
+            content={comment.text}
           />
         );
       });
