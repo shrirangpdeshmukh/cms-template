@@ -117,6 +117,7 @@ const inputElement = (props) => {
                     : normalStyle
                 }
                 className={styles.Input} //css
+                bsClass={styles.Input}
                 type={formElement.config.elementConfig.type} // type of input {text, password, email}
                 placeholder={formElement.config.elementConfig.placeholder}
                 value={formElement.config.elementConfig.value}

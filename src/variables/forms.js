@@ -108,6 +108,78 @@ export const ForgotPassword = {
   },
 };
 
+export const UpdatePassword = {
+  password: {
+    elementType: "input",
+    elementConfig: {
+      type: "password",
+      placeholder: "Your Current Password",
+      id: "SignUpPass",
+    },
+    value: null,
+    icon: "lock",
+    validation: {
+      required: true,
+      minLength: 8,
+    },
+    valid: false,
+    touched: false,
+  },
+
+  newPassword: {
+    elementType: "input",
+    elementConfig: {
+      type: "password",
+      placeholder: "Your New Password",
+      id: "SignUpPass",
+    },
+    value: null,
+    icon: "lock",
+    validation: {
+      required: true,
+      minLength: 8,
+    },
+    valid: false,
+    touched: false,
+  },
+
+  newPasswordConfirm: {
+    elementType: "input",
+    elementConfig: {
+      type: "password",
+      placeholder: "Confirm Your New Password",
+      id: "SignUpPassConfirm",
+    },
+    value: null,
+    icon: "lockFill",
+    validation: {
+      required: true,
+      minLength: 8,
+      same: true,
+    },
+    valid: false,
+    touched: false,
+  },
+};
+
+export const AddBio = {
+  bio: {
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      id: "designation",
+      placeholder: "Bio goes here....",
+    },
+    value: null,
+    icon: "designation",
+    validation: {
+      required: true,
+    },
+    valid: false,
+    touched: false,
+  },
+};
+
 export const ChangeDesignation = {
   designation: {
     elementType: "input",
@@ -203,9 +275,9 @@ export const CreateTask = {
     icon: "",
     validation: {
       required: true,
-      isDate:true
+      isDate: true,
     },
     valid: false,
     touched: false,
-  }
-}
+  },
+};

@@ -18,7 +18,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
-import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
+import AdminNavbarLinks from "../Navbars/AdminNavbarLinks";
 
 import logo from "assets/img/collegelogo.png";
 
@@ -40,6 +40,48 @@ class Sidebar extends Component {
     window.addEventListener("resize", this.updateDimensions.bind(this));
   }
   render() {
+    let renderFlag = false;
+    
+    const cookies = this.props.cookies.cookies;
+
+    const auth = cookies.isAuthenticated;
+    const userData = cookies.userData;
+
+    if (auth && userData && userData !== "undefined") {
+      const authJSON = JSON.parse(auth);
+      const userDataJSON = JSON.parse(userData);
+
+      if (authJSON && userDataJSON) {
+        const userRole = userDataJSON.user.role;
+
+        if (userRole === "admin" || userRole === "superAdmin") {
+          renderFlag = true;
+        }
+      }
+    }
+    
+    let routes = this.props.routes.map((prop, key) => {
+      
+      if (prop.path === "/signup" && !renderFlag) return null;
+      
+      if (!prop.redirect && prop.icon && prop.name)
+        return (
+          <li className={this.activeRoute(prop.layout + prop.path)} key={key}>
+            <NavLink
+              to={prop.layout + prop.path}
+              className="nav-link"
+              activeClassName="active"
+            >
+              <i className={prop.icon} />
+              <p>{prop.name}</p>
+            </NavLink>
+          </li>
+        );
+      return null;
+    });
+
+
+
     return (
       <div
         id="sidebar"
@@ -58,27 +100,7 @@ class Sidebar extends Component {
           </a>
         </div>
         <div className="sidebar-wrapper">
-          <ul className="nav">
-            {this.props.routes.map((prop, key) => {
-              if (!prop.redirect)
-                return (
-                  <li
-                    className={this.activeRoute(prop.layout + prop.path)}
-                    key={key}
-                  >
-                    <NavLink
-                      to={prop.layout + prop.path}
-                      className="nav-link"
-                      activeClassName="active"
-                    >
-                      <i className={prop.icon} />
-                      <p>{prop.name}</p>
-                    </NavLink>
-                  </li>
-                );
-              return null;
-            })}
-          </ul>
+          <ul className="nav">{routes}</ul>
         </div>
       </div>
     );

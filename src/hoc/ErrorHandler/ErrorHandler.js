@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Auxillary from "../Auxillary/Auxillary";
-import ResponseModal from "../../components/ResponseModal/ResponseModal";
+import ResponseModal from "../../components/Modals/ResponseModal/ResponseModal";
 
 const ErrorHandler = (WrappedComponent, axios) => {
   return class extends Component {

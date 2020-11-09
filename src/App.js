@@ -7,17 +7,36 @@ import axios from "./axios-root";
 import Auxillary from "./hoc/Auxillary/Auxillary";
 import ErrorHandler from "./hoc/ErrorHandler/ErrorHandler";
 
-import AdminLayout from "layouts/Admin.jsx";
-import UnAuthLayout from "layouts/UnAuthLayout.js";
-import ChatLayout from "./layouts/ChatLayout";
+import AdminLayout from "layouts/Admin.js";
+import AuthLayout from "layouts/AuthLayout";
+import TaskLayout from "./layouts/TaskLayout.js";
 
 import { withCookies } from "react-cookie";
 
 class App extends Component {
   state = {};
+
   render() {
-    return (
-      <Auxillary>
+    let routes = (
+      <Switch>
+        <Route
+          path="/auth"
+          render={(props) => (
+            <AuthLayout {...props} cookies={this.props.cookies} />
+          )}
+        />
+        <Redirect from="/" to="/auth/login" />
+      </Switch>
+    );
+
+    const cookies = this.props.cookies.cookies;
+    if (
+      cookies.userData &&
+      cookies.isAuthenticated &&
+      cookies.jwt &&
+      cookies.jwt != "loggedout"
+    ) {
+      routes = (
         <Switch>
           <Route
             path="/admin"
@@ -26,21 +45,23 @@ class App extends Component {
             )}
           />
           <Route
-            path="/auth"
+            path="/task/:topicId/:taskId"
             render={(props) => (
-              <UnAuthLayout {...props} cookies={this.props.cookies} />
+              <TaskLayout {...props} cookies={this.props.cookies} />
             )}
           />
           <Route
-            path="/chat/:topicId/:taskId"
+            path="/auth"
             render={(props) => (
-              <ChatLayout {...props} cookies={this.props.cookies} />
+              <AuthLayout {...props} cookies={this.props.cookies} />
             )}
           />
-          <Redirect from="/" to="/admin/dashboard" />
+          <Redirect from="/" to="/admin/profile" />
         </Switch>
-      </Auxillary>
-    );
+      );
+    }
+
+    return <Auxillary>{routes}</Auxillary>;
   }
 }
 

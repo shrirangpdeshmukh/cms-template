@@ -15,18 +15,20 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard.jsx";
-import UserProfile from "views/UserProfile.js";
-import TableList from "views/TableList.jsx";
-import AllUsers from "views/AllUsers.jsx";
-import Icons from "views/Icons.jsx";
-import Announcements from "views/Announcements.jsx";
-import Login from "views/Login.jsx";
-import Topics from "views/Topics.jsx";
-import Test from "views/Test.jsx";
-import SignUP from "views/SignUp";
+import Dashboard from "views/Admin/Dashboard";
+import UserProfile from "views/Admin/UserProfile.js";
+import TableList from "views/Admin/Leaderboard.js";
+import AllUsers from "views/Admin/AllUsers";
+import Icons from "views/Icons";
+import Announcements from "views/Admin/Announcements";
+import Topics from "views/Admin/Topics";
+import SignUP from "views/Admin/SignUp.js";
 
-const dashboardRoutes = [
+import Login from "views/Authentication/Login.js";
+import ForgotPass from "views/Authentication/ForgotPassword.jsx";
+import ResetPassword from "views/Authentication/ResetPassword";
+
+export const adminRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -35,30 +37,21 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/demo",
+    path: "/topics",
     name: "Topics",
     icon: "pe-7s-graph",
     component: Topics,
     layout: "/admin",
   },
   {
-    path: "/test",
-    name: "Test",
-    icon: "pe-7s-user",
-    component: Test,
-    layout: "/admin",
-  },
-  {
-    path: "/user/:id",
-    name: "User Profile",
+    path: "/profile",
+    name: "My Profile",
     icon: "pe-7s-user",
     component: UserProfile,
     layout: "/admin",
   },
   {
-    path: "/profile",
-    name: "My Profile",
-    icon: "pe-7s-user",
+    path: "/user/:id",
     component: UserProfile,
     layout: "/admin",
   },
@@ -73,7 +66,7 @@ const dashboardRoutes = [
   {
     path: "/allUsers",
     name: "All Users",
-    icon: "pe-7s-news-paper",
+    icon: "pe-7s-users",
     component: AllUsers,
     layout: "/admin",
   },
@@ -89,10 +82,29 @@ const dashboardRoutes = [
   {
     path: "/signup",
     name: "Add New Users",
-    icon: "pe-7s-users",
+    icon: "pe-7s-id",
     component: SignUP,
     layout: "/admin",
   },
 ];
 
-export default dashboardRoutes;
+export const authRoutes = [
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+    layout: "/auth",
+  },
+  {
+    path: "/forgot",
+    name: "Forgot",
+    component: ForgotPass,
+    layout: "/auth",
+  },
+  {
+    path: "/reset",
+    name: "Reset",
+    component: ResetPassword,
+    layout: "/auth",
+  },
+];
