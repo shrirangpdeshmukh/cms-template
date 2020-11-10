@@ -18,7 +18,7 @@
 import React, { Component } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
 
-import routes from "../../routes";
+import {adminRoutes} from "../../routes";
 
 class AdminNavbarLinks extends Component {
   constructor(props) {
@@ -28,10 +28,33 @@ class AdminNavbarLinks extends Component {
     };
   }
 
-  render() {
-    const nav = routes.map((route) => {
+  render() {   
+    let renderFlag=false;
+    const cookies = this.props.cookies.cookies;
+
+    const auth = cookies.isAuthenticated;
+    const userData = cookies.userData;
+
+    if (auth && userData && userData !== "undefined") {
+      const authJSON = JSON.parse(auth);
+      const userDataJSON = JSON.parse(userData);
+
+      if (authJSON && userDataJSON) {
+        const userRole = userDataJSON.user.role;
+
+        if (userRole === "admin" || userRole === "superAdmin") {
+          renderFlag=true;
+        }}}
+    
+    
+    
+    let nav = adminRoutes.map((route) => {
+      
+      if (!route.name || !route.icon ) return null;
+      else if (route.path==="/signup" && !renderFlag) return null;
+      
       return (
-        <NavItem key={route.name} href={`${route.layout}${route.path}`}>
+        <NavItem key={route.path} href={`${route.layout}${route.path}`}>
           <i
             className={route.icon}
             style={{ padding: "2px", fontSize: "1.2em", fontWeight: "bolder" }}
@@ -42,6 +65,8 @@ class AdminNavbarLinks extends Component {
         </NavItem>
       );
     });
+    
+    
 
     const Navigation = <Nav pullRight>{nav}</Nav>;
 

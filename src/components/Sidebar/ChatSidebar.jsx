@@ -18,7 +18,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
-import AdminSidebarLinks from "../Navbars/AdminSidebarLinks.jsx";
+import AdminSidebarLinks from "../Navbars/AdminSidebarLinks";
 
 import logo from "assets/img/collegelogo.png";
 
@@ -59,10 +59,12 @@ class Sidebar extends Component {
         </div>
         <div className="sidebar-wrapper">
           <ul className="nav">
-            {this.state.width <= 991 ? <AdminSidebarLinks /> : null}
+            {this.state.width <= 991 ? (
+              <AdminSidebarLinks cookies={this.props.cookies} />
+            ) : null}
 
             {this.props.routes.map((prop, key) => {
-              if (!prop.redirect)
+              if (!prop.redirect && prop.name && prop.icon)
                 return (
                   <li
                     className={this.activeRoute(prop.layout + prop.path)}
@@ -81,18 +83,18 @@ class Sidebar extends Component {
               return null;
             })}
             <li
-                    className={this.activeRoute(this.props.layout + "/newTask")}
-                    //key={key}
-                  >
-                    <NavLink
-                      to={this.props.layout + "/newTask"}
-                      className="nav-link"
-                      activeClassName="active"
-                    >
-                      <i className="pe-7s-plus" />
-                      <p>New Task</p>
-                    </NavLink>
-                  </li>
+              className={this.activeRoute(this.props.layout + "/newTask")}
+              //key={key}
+            >
+              <NavLink
+                to={this.props.layout + "/newTask"}
+                className="nav-link"
+                activeClassName="active"
+              >
+                <i className="pe-7s-plus" />
+                <p>New Task</p>
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>
