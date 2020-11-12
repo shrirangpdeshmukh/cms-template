@@ -103,6 +103,8 @@ class UserProfile extends Component {
         newForm[inputIdentifier].validationState === "success" && formIsValid;
     }
 
+    // if (identifier === "email" )
+
     this.setState({
       formValues: newFormValues,
       formIsValid: formIsValid,
@@ -155,8 +157,19 @@ class UserProfile extends Component {
     ];
 
     let buttonText = "Add User";
-
-    if (!this.state.loading && !this.state.success && !this.state.error) {
+    if (
+      !this.state.loading &&
+      !this.state.success &&
+      !this.state.error &&
+      this.state.form.email.validationState === "success" &&
+      !this.state.form.email.value.includes(`@iitbbs.ac.in`)
+    ) {
+      buttonText = "Use College Email";
+    } else if (
+      !this.state.loading &&
+      !this.state.success &&
+      !this.state.error
+    ) {
       buttonText = "Add User";
     } else if (this.state.loading && !this.state.success) {
       buttonText = "Loading....";
@@ -244,7 +257,11 @@ class UserProfile extends Component {
                   type="submit"
                   style={{ marginLeft: "5px" }}
                   disabled={
-                    !(this.state.formIsValid && this.state.role) ||
+                    !(
+                      this.state.formIsValid &&
+                      this.state.role &&
+                      this.state.form.email.value.includes(`@iitbbs.ac.in`)
+                    ) ||
                     this.state.loading ||
                     this.state.success ||
                     this.state.error
