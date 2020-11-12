@@ -1,19 +1,20 @@
 import React, { Component } from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Route, Switch,withRouter } from "react-router-dom";
 import TaskNavbar from "components/Navbars/TaskNavbar";
 import Footer from "components/Footer/Footer";
-import ChatSidebar from "components/Sidebar/ChatSidebar";
+import ChatSidebar from "components/Sidebar/ChatSidebar.jsx";
 import axios from "../axios-root";
 import { withCookies } from "react-cookie";
 import Test from "../views/Task";
-import Card from "../components/Cards/Card/Card";
-import { Grid, Col, Button } from "react-bootstrap";
+import Card from '../components/Cards/Card/Card'
+import { Grid,Col,Button} from 'react-bootstrap'
 import ResponseModal from "../components/Modals/ResponseModal/ResponseModal";
-import Auxillary from "../hoc/Auxillary/Auxillary";
-import InputElements from "../components/Form/InputElements/InputElements";
-import { CreateTask } from "../variables/forms";
-import checkValidity from "../variables/validityRules";
-import styles from "../components/Form/Form.module.css";
+import Auxillary from '../hoc/Auxillary/Auxillary'
+import InputElements from '../components/Form/InputElements/InputElements'
+import { CreateTask } from '../variables/forms'
+import checkValidity from '../variables/validityRules'
+import styles from '../components/Form/Form.module.css'
+
 
 class Chat extends Component {
   constructor(props) {
@@ -24,10 +25,10 @@ class Chat extends Component {
       error: false,
       tasks: [],
       routes: [],
-      responseModal: false,
+      responseModal:false,
       topic: null,
       createTask: CreateTask,
-      formIsValid: false,
+      formIsValid:false
     };
   }
 
@@ -48,22 +49,22 @@ class Chat extends Component {
             icon: "pe-7s-news-paper",
             id: task.id,
             deadline: task.deadline,
-            description: task.description,
+            description: task.description
           });
         });
-
+        
         console.log(routes);
         this.setState({
           tasks: response.data.tasks,
           routes: routes,
           topic: topicId,
         });
-        console.log(this.props.cookies);
+        //console.log(this.props.cookies);
       })
       .catch((err) => this.setState({ error: true }));
   }
 
-  createTaskInputChangedHandler = (event, inputIdentifier) => {
+   createTaskInputChangedHandler = (event, inputIdentifier) => {
     const updatedForm = {
       ...this.state.createTask,
     };
@@ -154,44 +155,44 @@ class Chat extends Component {
     }
   }
 
+  
   onCreateTask = (e) => {
-    e.preventDefault();
-    console.log(this.props);
+    e.preventDefault()
+    console.log(this.props)
     const formData = {};
     for (let formElementIdentifier in this.state.createTask) {
       formData[formElementIdentifier] = this.state.createTask[
         formElementIdentifier
       ].value;
     }
-    axios
-      .post(`/board/topics/${this.state.topic}/tasks`, formData)
-      .then((response) => {
-        console.log(response);
+    axios.post(`/board/topics/${this.state.topic}/tasks`, formData)
+      .then(response => {
+        console.log(response)
         const modalData = {
-          title: "Task Created",
-          message: `The task was created successfully. Click OK to go back to the topic !`,
-          Button: "success",
-          img: "success",
+            title: "Task Created",
+            message: `The task was created successfully. Click OK to go back to the topic !`,
+            Button: "success",
+            img:"success",
           hide: () => {
-            console.log("ftt");
-            this.setState({ responseModal: false });
-            this.props.history.push(
-              `/task/${this.state.topic}/${this.state.tasks[0].id}`
-            );
-            window.location.reload(true);
-          },
+              //console.log("ftt")
+    this.setState({ responseModal: false});
+            this.props.history.push(`/task/${this.state.topic}/${this.state.tasks[0].id}`);
+            window.location.reload(true)
+            },
         };
         this.setState({
-          responseModal: true,
-          modalData: modalData,
-        });
+            responseModal: true,
+            modalData: modalData,
+          });
       })
-      .catch((err) => {
-        this.setState({ error: true });
-      });
-  };
+      .catch(err => {
+        this.setState({error:true})
+      })
+  }
 
   render() {
+
+    
     let modal = null;
     if (this.state.modalData)
       modal = (
@@ -205,20 +206,22 @@ class Chat extends Component {
         />
       );
 
-    let createTaskForm = [];
-    for (let key in this.state.createTask) {
+    let createTaskForm = []
+      for (let key in this.state.createTask) {
       createTaskForm.push({
         id: key,
         config: this.state.createTask[key],
       });
     }
-
+    
     let form = (
-      <div
+      
+     <div
         className="content"
         style={{ position: " relative", minHeight: "100vh" }}
       >
         <Grid>
+          
           <Col md={10} sm={12}>
             <Card
               title="Create Task"
@@ -231,47 +234,39 @@ class Chat extends Component {
                       changeHandler={this.createTaskInputChangedHandler}
                     />
                   ))}
-                  <Button
-                    disabled={!this.state.formIsValid}
-                    className={styles.Button}
-                    onClick={(e) => this.onCreateTask(e)}
-                  >
-                    Create
-                  </Button>
-                </form>
+                  <Button disabled={!this.state.formIsValid} className={styles.Button} onClick={(e)=>this.onCreateTask(e)}>Create</Button>
+                  </form>
               }
             />
           </Col>
         </Grid>
       </div>
-    );
-
+    )
+    
+    
     return (
       <div className="">
-        <ChatSidebar
-          {...this.props}
-          routes={this.state.routes}
-          layout={`/task/${this.state.topic}`}
-        />
+        <ChatSidebar {...this.props} routes={this.state.routes} layout={`/task/${this.state.topic}`} />
         <div id="main-panel" className="main-panel" ref="mainPanel">
           <TaskNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
             infoCallback={this.showModal}
           />
-
+          
           <Switch>
             {this.getRoutes(this.state.routes)}
             <Route
-              path={`/task/${this.state.topic}/newTask`}
+            path={`/task/${this.state.topic}/newTask`}
               render={(props) => (
                 <Auxillary>
-                  {modal}
-                  {form}
-                </Auxillary>
-              )}
-              //key={key}
-            />
+                  { modal }
+                 {form}
+                  
+              </Auxillary>
+            )}
+            //key={key}
+          />
           </Switch>
           <Footer />
         </div>
