@@ -15,39 +15,38 @@ import {
 
 import { Card } from "components/Cards/Card/Card";
 import axios from "../../axios-root";
-// import { Route, Router } from "react-router";
-// import TaskLayout from "../../layouts/TaskLayout";
 import { AiFillPlusCircle } from "react-icons/ai";
 import ActionModalButtons from "../../components/CustomButton/ActionModalButtons/ActionModalButtons";
-// import Spinner from "../../components/Spinner/Spinner";
-// import Checkbox from "../../components/CustomCheckbox/CustomCheckbox";
 import ResponseModal from "../../components/Modals/ResponseModal/ResponseModal";
 import checkValidity from "../../variables/validityRules";
 import InputElements from "../../components/Form/InputElements/InputElements";
 import { CreateTopic } from "../../variables/forms";
 
 class Topics extends Component {
-  state = {
-    topics: null,
-    error: null,
-    updatedTime: null,
-    userData: null,
-    editTopic: null,
-    formIsValid: true,
-    showModal: false,
-    showResponse: false,
-    loading: false,
-    editTicked: false,
-    editDropDownTitle: "Scope",
-    editDropDownValue: null,
-    currentEditingTopic: null,
-    createTopic: CreateTopic,
-    showCreate: false,
-    createDropDownTitle: "Scope",
-    createDropDownValue: null,
-    createFormIsValid: false,
-    createTicked: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      topics: null,
+      error: null,
+      updatedTime: null,
+      userData: null,
+      editTopic: null,
+      formIsValid: true,
+      showModal: false,
+      showResponse: false,
+      loading: false,
+      editTicked: false,
+      editDropDownTitle: "Scope",
+      editDropDownValue: null,
+      currentEditingTopic: null,
+      createTopic: CreateTopic,
+      showCreate: false,
+      createDropDownTitle: "Scope",
+      createDropDownValue: null,
+      createFormIsValid: false,
+      createTicked: false,
+    };
+  }
   componentDidMount() {
     axios
       .get(`/board/topics/`)
@@ -111,7 +110,7 @@ class Topics extends Component {
     axios
       .get(`/board/topics/${id}`)
       .then((response) => {
-        console.log(response.data.topic);
+        // console.log(response.data.topic);
         const res = response.data.topic;
 
         const updatedForm = {
@@ -298,16 +297,9 @@ class Topics extends Component {
     let editModal = null;
     let adminTopics = null;
     let userTopics = null;
-
-    addTopic = (
-      <Button
-        style={{ border: "0.05px solid #ccc", size: "1.5em" }}
-        onClick={() => this.setState({ showCreate: true })}
-      >
-        <AiFillPlusCircle style={{ marginRight: "5%" }} />
-        Add New Topic
-      </Button>
-    );
+    let topicEdit = false;
+    let topicEditLink = null;
+    let nonAdminTopics = 0;
 
     const editTopicForm = [];
     for (let key in this.state.editTopic) {
@@ -325,149 +317,182 @@ class Topics extends Component {
       });
     }
 
-    const DropDownOptions = [
-      { title: "All Members", value: "member" },
-      { title: "Admins only", value: "admin" },
-      { title: "Super Admins Only", value: "superAdmin" },
-    ];
+    const cookies = this.props.cookies.cookies;
 
-    editModal = (
-      <Modal show={this.state.showModal} onHide={this.hideModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Topic</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Row>
-            <Col lg={1} md={1} sm={1}></Col>
-            <Col lg={10} md={10} sm={10}>
-              {editTopicForm.map((formElement) => (
-                <InputElements
-                  key={formElement.id}
-                  element={formElement}
-                  changeHandler={this.editInputChangedHandler}
-                />
-              ))}
-              <DropdownButton
-                style={{ marginLeft: "15%" }}
-                title={this.state.editDropDownTitle}
-                id="scope-topic"
-                // bsStyle="success"
-              >
-                {DropDownOptions.map((option) => {
-                  return (
-                    <MenuItem
-                      key={option.title}
-                      onClick={() => {
-                        this.setState({
-                          editDropDownTitle: option.title,
-                          editDropDownValue: option.value,
-                        });
-                      }}
+    const auth = cookies.isAuthenticated;
+    const userData = cookies.userData;
+
+    if (auth && userData && userData !== "undefined") {
+      const authJSON = JSON.parse(auth);
+      const userDataJSON = JSON.parse(userData);
+
+      if (authJSON && userDataJSON) {
+        const userRole = userDataJSON.user.role;
+
+        if (userRole === "admin" || userRole === "superAdmin") {
+          // renderFlag = true;
+          topicEdit = true;
+          topicEditLink = (id) => {
+            this.getTopicDetails(id);
+          };
+          addTopic = (
+            <Button
+              style={{ border: "0.05px solid #ccc", size: "1.5em" }}
+              onClick={() => this.setState({ showCreate: true })}
+            >
+              <AiFillPlusCircle style={{ marginRight: "5%" }} />
+              Add New Topic
+            </Button>
+          );
+
+          const DropDownOptions = [
+            { title: "All Members", value: "member" },
+            { title: "Admins only", value: "admin" },
+            { title: "Super Admins Only", value: "superAdmin" },
+          ];
+
+          editModal = (
+            <Modal show={this.state.showModal} onHide={this.hideModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Topic</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Row>
+                  <Col lg={1} md={1} sm={1}></Col>
+                  <Col lg={10} md={10} sm={10}>
+                    {editTopicForm.map((formElement) => (
+                      <InputElements
+                        key={formElement.id}
+                        element={formElement}
+                        changeHandler={this.editInputChangedHandler}
+                      />
+                    ))}
+                    <DropdownButton
+                      style={{ marginLeft: "15%" }}
+                      title={this.state.editDropDownTitle}
+                      id="scope-topic"
+                      // bsStyle="success"
                     >
-                      {option.title}
-                    </MenuItem>
-                  );
-                })}
-              </DropdownButton>
-              <input
-                type="checkbox"
-                checked={this.state.editTicked}
-                style={{
-                  display: "inline-block",
-                  marginLeft: "8%",
-                  marginRight: "2%",
-                }}
-                onChange={() => {
-                  const change = !this.state.editTicked;
-                  this.setState({ editTicked: change });
-                }}
-              />
-              Mark as Important
-            </Col>
-            <Col lg={1} md={1} sm={1}></Col>
-          </Row>
-        </Modal.Body>
-        <Modal.Footer>
-          <ActionModalButtons
-            disabled={!this.state.formIsValid || !this.state.editDropDownValue}
-            submit={this.editTopicHandler}
-            cancel={this.hideModal}
-            yes="Update"
-            no="Close"
-          />
-        </Modal.Footer>
-      </Modal>
-    );
-
-    createModal = (
-      <Modal show={this.state.showCreate} onHide={this.hideModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>New Topic</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Row>
-            <Col lg={1} md={1} sm={1}></Col>
-            <Col lg={10} md={10} sm={10}>
-              {createTopicForm.map((formElement) => (
-                <InputElements
-                  key={formElement.id}
-                  element={formElement}
-                  changeHandler={this.createInputChangedHandler}
-                />
-              ))}
-              <DropdownButton
-                style={{ marginLeft: "15%" }}
-                title={this.state.createDropDownTitle}
-                id="scope-topic"
-                // bsStyle="success"
-              >
-                {DropDownOptions.map((option) => {
-                  return (
-                    <MenuItem
-                      key={option.title}
-                      onClick={() => {
-                        this.setState({
-                          createDropDownTitle: option.title,
-                          createDropDownValue: option.value,
-                        });
+                      {DropDownOptions.map((option) => {
+                        return (
+                          <MenuItem
+                            key={option.title}
+                            onClick={() => {
+                              this.setState({
+                                editDropDownTitle: option.title,
+                                editDropDownValue: option.value,
+                              });
+                            }}
+                          >
+                            {option.title}
+                          </MenuItem>
+                        );
+                      })}
+                    </DropdownButton>
+                    <input
+                      type="checkbox"
+                      checked={this.state.editTicked}
+                      style={{
+                        display: "inline-block",
+                        marginLeft: "8%",
+                        marginRight: "2%",
                       }}
-                    >
-                      {option.title}
-                    </MenuItem>
-                  );
-                })}
-              </DropdownButton>
-              <input
-                type="checkbox"
-                style={{
-                  display: "inline-block",
-                  marginLeft: "8%",
-                  marginRight: "2%",
-                }}
-                onChange={() => {
-                  const change = !this.state.createTicked;
-                  this.setState({ createTicked: change });
-                }}
-              />
-              Mark as important
-            </Col>
-            <Col lg={1} md={1} sm={1}></Col>
-          </Row>
-        </Modal.Body>
-        <Modal.Footer>
-          <ActionModalButtons
-            disabled={
-              !this.state.createFormIsValid || !this.state.createDropDownValue
-            }
-            submit={this.createTopicHandler}
-            cancel={this.hideModal}
-            yes="Create"
-            no="Close"
-          />
-        </Modal.Footer>
-      </Modal>
-    );
+                      onChange={() => {
+                        const change = !this.state.editTicked;
+                        this.setState({ editTicked: change });
+                      }}
+                    />
+                    Mark as Important
+                  </Col>
+                  <Col lg={1} md={1} sm={1}></Col>
+                </Row>
+              </Modal.Body>
+              <Modal.Footer>
+                <ActionModalButtons
+                  disabled={
+                    !this.state.formIsValid || !this.state.editDropDownValue
+                  }
+                  submit={this.editTopicHandler}
+                  cancel={this.hideModal}
+                  yes="Update"
+                  no="Close"
+                />
+              </Modal.Footer>
+            </Modal>
+          );
 
+          createModal = (
+            <Modal show={this.state.showCreate} onHide={this.hideModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>New Topic</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Row>
+                  <Col lg={1} md={1} sm={1}></Col>
+                  <Col lg={10} md={10} sm={10}>
+                    {createTopicForm.map((formElement) => (
+                      <InputElements
+                        key={formElement.id}
+                        element={formElement}
+                        changeHandler={this.createInputChangedHandler}
+                      />
+                    ))}
+                    <DropdownButton
+                      style={{ marginLeft: "15%" }}
+                      title={this.state.createDropDownTitle}
+                      id="scope-topic"
+                      // bsStyle="success"
+                    >
+                      {DropDownOptions.map((option) => {
+                        return (
+                          <MenuItem
+                            key={option.title}
+                            onClick={() => {
+                              this.setState({
+                                createDropDownTitle: option.title,
+                                createDropDownValue: option.value,
+                              });
+                            }}
+                          >
+                            {option.title}
+                          </MenuItem>
+                        );
+                      })}
+                    </DropdownButton>
+                    <input
+                      type="checkbox"
+                      style={{
+                        display: "inline-block",
+                        marginLeft: "8%",
+                        marginRight: "2%",
+                      }}
+                      onChange={() => {
+                        const change = !this.state.createTicked;
+                        this.setState({ createTicked: change });
+                      }}
+                    />
+                    Mark as important
+                  </Col>
+                  <Col lg={1} md={1} sm={1}></Col>
+                </Row>
+              </Modal.Body>
+              <Modal.Footer>
+                <ActionModalButtons
+                  disabled={
+                    !this.state.createFormIsValid ||
+                    !this.state.createDropDownValue
+                  }
+                  submit={this.createTopicHandler}
+                  cancel={this.hideModal}
+                  yes="Create"
+                  no="Close"
+                />
+              </Modal.Footer>
+            </Modal>
+          );
+        }
+      }
+    }
     if (this.state.topics) {
       adminTopics = this.state.topics.map((topic) => {
         if (topic.scope == "superAdmin" || topic.scope == "admin") {
@@ -496,13 +521,13 @@ class Topics extends Component {
                   marginBottom: "20px",
                 }}
                 content={<div className="description">{topic.description}</div>}
-                topicEdit={true}
-                topicEditLink={() => {
-                  this.getTopicDetails(topic.id);
-                }}
+                topicEdit={topicEdit}
+                topicEditLink={() => topicEditLink(topic.id)}
               />
             </Col>
           );
+        } else {
+          nonAdminTopics++;
         }
       });
 
@@ -527,10 +552,8 @@ class Topics extends Component {
                 title={topic.heading}
                 // category="Created by: Shrirang"
                 stats={stats}
-                topicEdit={true}
-                topicEditLink={() => {
-                  this.getTopicDetails(topic.id);
-                }}
+                topicEdit={topicEdit}
+                topicEditLink={() => topicEditLink(topic.id)}
                 content={<div className="description">{topic.description}</div>}
               />
             </Col>
@@ -552,6 +575,20 @@ class Topics extends Component {
           img={this.state.modalData.img}
         />
       );
+    let adminCard = null;
+    if (adminTopics) {
+      if (adminTopics.length !== nonAdminTopics) {
+        adminCard = (
+          <Card
+            id="AdminCards"
+            title="Admin Scope Topics"
+            hCenter
+            topicCard
+            content={<Row>{adminTopics}</Row>}
+          />
+        );
+      }
+    }
 
     return (
       <div className="content">
@@ -560,14 +597,7 @@ class Topics extends Component {
           {createModal}
           {responseModal}
           {editModal}
-          <Card
-            id="AdminCards"
-            title="Admin Scope Topics"
-            hCenter
-            topicCard
-            content={<Row>{adminTopics}</Row>}
-          />
-
+          {adminCard}
           <Card
             id="UserCards"
             title="User Scope Topics"
