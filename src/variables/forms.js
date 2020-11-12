@@ -269,13 +269,48 @@ export const CreateTask = {
     elementConfig: {
       type: "text",
       id: "deadline",
-      placeholder: "DD/MM/YYYY",
+      placeholder: "Deadline DD/MM/YYYY",
     },
     value: null,
     icon: "",
     validation: {
       required: true,
       isDate: true,
+    },
+    valid: false,
+    touched: false,
+  },
+};
+
+
+export const CreateTopic = {
+  heading: {
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      id: "heading",
+      placeholder: "Heading",
+    },
+    value: null,
+    icon: "points",
+    validation: {
+      required: true,
+    },
+    valid: false,
+    touched: false,
+  },
+
+  description: {
+    elementType: "input",
+    elementConfig: {
+      type: "text",
+      id: "description",
+      placeholder: "Description",
+    },
+    value: null,
+    icon: "reason",
+    validation: {
+      required: true,
     },
     valid: false,
     touched: false,

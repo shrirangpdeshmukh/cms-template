@@ -638,7 +638,7 @@ class Chat extends Component {
           />
         );
       });
-    }
+    } else chat = <h5>No messages on this task yet !!</h5>;
 
     let responseModal = null;
     if (this.state.modalData)
@@ -654,6 +654,7 @@ class Chat extends Component {
       );
 
     
+
     return (
       <div
         className="content"
@@ -695,16 +696,26 @@ class Chat extends Component {
                   <FormControl
                     onKeyPress={(e) => this.keypress(e, document.getElementById("message").value)}
                     autoComplete="off"
-                    type="text" placeholder="Write Your Message" id="message" />
-          </FormGroup>{" "}
-        </Col>
-        <Col lg={1} md={4} xs={2} style={{ paddingLeft: "2px" }}>
-          <Button
-            pullRight
-            onClick={(e)=>this.onSubmitComment(e,document.getElementById("message").value)}
-            style={{ padding: "5px", borderRadius: "10px" }}
-          >
-            <IoIosSend style={{ padding: "0", fontSize: "1.8em" }} />
+
+                    type="text"
+                    placeholder="Write Your Message"
+                    id="message"
+                  />
+                </FormGroup>{" "}
+              </Col>
+              <Col lg={1} md={4} xs={2}>
+                <Button
+                  pullRight
+                  onClick={(e) =>
+                    this.onSubmitComment(
+                      e,
+                      document.getElementById("message").value
+                    )
+                  }
+                  style={{ border: "0", marginLeft: "-15px" }}
+                >
+                  <IoIosSend style={{ padding: "0", fontSize: "1.8em" }} />
+
                 </Button>
         </Col>
       </Form>
