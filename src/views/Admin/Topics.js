@@ -8,18 +8,23 @@ import {
   Image,
   DropdownButton,
   MenuItem,
+  Checkbox,
+  Form,
+  FormGroup,
 } from "react-bootstrap";
 
 import { Card } from "components/Cards/Card/Card";
 import axios from "../../axios-root";
-import { Route, Router } from "react-router";
-import TaskLayout from "../../layouts/TaskLayout";
+// import { Route, Router } from "react-router";
+// import TaskLayout from "../../layouts/TaskLayout";
 import { AiFillPlusCircle } from "react-icons/ai";
 import ActionModalButtons from "../../components/CustomButton/ActionModalButtons/ActionModalButtons";
-import Spinner from "../../components/Spinner/Spinner";
+// import Spinner from "../../components/Spinner/Spinner";
+// import Checkbox from "../../components/CustomCheckbox/CustomCheckbox";
 import ResponseModal from "../../components/Modals/ResponseModal/ResponseModal";
 import checkValidity from "../../variables/validityRules";
 import InputElements from "../../components/Form/InputElements/InputElements";
+import { CreateTopic } from "../../variables/forms";
 
 class Topics extends Component {
   state = {
@@ -32,13 +37,16 @@ class Topics extends Component {
     showModal: false,
     showResponse: false,
     loading: false,
+    editTicked: false,
     editDropDownTitle: "Scope",
     editDropDownValue: null,
     currentEditingTopic: null,
-    createForm: null,
+    createTopic: CreateTopic,
     showCreate: false,
     createDropDownTitle: "Scope",
     createDropDownValue: null,
+    createFormIsValid: false,
+    createTicked: false,
   };
   componentDidMount() {
     axios
@@ -76,7 +84,29 @@ class Topics extends Component {
     this.setState({ editTopic: updatedForm, formIsValid: formIsValid });
   };
 
-  getTaskDetails = (id) => {
+  createInputChangedHandler = (event, inputIdentifier) => {
+    const updatedForm = {
+      ...this.state.createTopic,
+    };
+    const updatedFormElement = {
+      ...updatedForm[inputIdentifier],
+    };
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
+    let formIsValid = true;
+    updatedForm[inputIdentifier] = updatedFormElement;
+    for (let inputIdentifier in updatedForm) {
+      formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+    }
+
+    this.setState({ createTopic: updatedForm, createFormIsValid: formIsValid });
+  };
+
+  getTopicDetails = (id) => {
     this.setState({ showModal: true });
     axios
       .get(`/board/topics/${id}`)
@@ -136,12 +166,15 @@ class Topics extends Component {
         } else if (res.scope === "private") {
           dropDownUpdate = { title: "Private Members", value: res.scope };
         }
+        let imp = false;
+        if (res.important == 1) imp = true;
 
         this.setState({
           editTopic: updatedForm,
           editDropDownTitle: dropDownUpdate.title,
           editDropDownValue: dropDownUpdate.value,
           currentEditingTopic: res.id,
+          editTicked: imp,
         });
       })
       .catch((error) => console.log(error));
@@ -158,6 +191,8 @@ class Topics extends Component {
     }
     formData.scope = this.state.editDropDownValue;
 
+    if (this.state.editTicked) formData.isImportant = 1;
+    else formData.isImportant = 0;
     axios
       .patch(`board/topics/${this.state.currentEditingTopic}`, formData)
       .then((res) => {
@@ -195,6 +230,52 @@ class Topics extends Component {
       });
   };
 
+  createTopicHandler = (event) => {
+    event.preventDefault();
+    this.setState({ showCreate: false, loading: true });
+    const formData = {};
+    for (let formElementIdentifier in this.state.createTopic) {
+      formData[formElementIdentifier] = this.state.createTopic[
+        formElementIdentifier
+      ].value;
+    }
+    formData.scope = this.state.createDropDownValue;
+    if (this.state.createTicked) formData.isImportant = 1;
+    else formData.isImportant = 0;
+
+    axios
+      .post(`board/topics/`, formData)
+      .then((res) => {
+        console.log(res);
+
+        let message = "New Topic Created Successful";
+        const modalData = {
+          title: "Success",
+          message: message,
+          Button: "success",
+          img: "success",
+          hide: () => {
+            this.setState({ showResponse: false });
+            window.location.reload(false);
+          },
+        };
+
+        this.setState({
+          loading: false,
+          showResponse: true,
+          modalData: modalData,
+          createFormIsValid: false,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({
+          loading: false,
+          createFormIsValid: false,
+        });
+      });
+  };
+
   toChatHandler = (topicId) => {
     let taskId = 1;
     axios
@@ -208,15 +289,20 @@ class Topics extends Component {
   };
 
   hideModal = () => {
-    this.setState({ showModal: false });
+    this.setState({ showModal: false, showCreate: false });
   };
 
   render() {
     let addTopic = null;
+    let createModal = null;
+    let editModal = null;
+    let adminTopics = null;
+    let userTopics = null;
+
     addTopic = (
       <Button
         style={{ border: "0.05px solid #ccc", size: "1.5em" }}
-        onClick={() => console.log("Topic")}
+        onClick={() => this.setState({ showCreate: true })}
       >
         <AiFillPlusCircle style={{ marginRight: "5%" }} />
         Add New Topic
@@ -231,7 +317,20 @@ class Topics extends Component {
       });
     }
 
-    let editModal = null;
+    const createTopicForm = [];
+    for (let key in this.state.createTopic) {
+      createTopicForm.push({
+        id: key,
+        config: this.state.createTopic[key],
+      });
+    }
+
+    const DropDownOptions = [
+      { title: "All Members", value: "member" },
+      { title: "Admins only", value: "admin" },
+      { title: "Super Admins Only", value: "superAdmin" },
+    ];
+
     editModal = (
       <Modal show={this.state.showModal} onHide={this.hideModal}>
         <Modal.Header closeButton>
@@ -254,37 +353,36 @@ class Topics extends Component {
                 id="scope-topic"
                 // bsStyle="success"
               >
-                <MenuItem
-                  onClick={() => {
-                    this.setState({
-                      editDropDownTitle: "All Members",
-                      editDropDownValue: "member",
-                    });
-                  }}
-                >
-                  All Members
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    this.setState({
-                      editDropDownTitle: "Super Admins Only",
-                      editDropDownValue: "superAdmin",
-                    });
-                  }}
-                >
-                  Super Admins Only
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    this.setState({
-                      editDropDownTitle: "Admins Only",
-                      editDropDownValue: "admin",
-                    });
-                  }}
-                >
-                  Admins Only
-                </MenuItem>
+                {DropDownOptions.map((option) => {
+                  return (
+                    <MenuItem
+                      key={option.title}
+                      onClick={() => {
+                        this.setState({
+                          editDropDownTitle: option.title,
+                          editDropDownValue: option.value,
+                        });
+                      }}
+                    >
+                      {option.title}
+                    </MenuItem>
+                  );
+                })}
               </DropdownButton>
+              <input
+                type="checkbox"
+                checked={this.state.editTicked}
+                style={{
+                  display: "inline-block",
+                  marginLeft: "8%",
+                  marginRight: "2%",
+                }}
+                onChange={() => {
+                  const change = !this.state.editTicked;
+                  this.setState({ editTicked: change });
+                }}
+              />
+              Mark as Important
             </Col>
             <Col lg={1} md={1} sm={1}></Col>
           </Row>
@@ -301,8 +399,75 @@ class Topics extends Component {
       </Modal>
     );
 
-    let adminTopics = null;
-    let userTopics = null;
+    createModal = (
+      <Modal show={this.state.showCreate} onHide={this.hideModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>New Topic</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            <Col lg={1} md={1} sm={1}></Col>
+            <Col lg={10} md={10} sm={10}>
+              {createTopicForm.map((formElement) => (
+                <InputElements
+                  key={formElement.id}
+                  element={formElement}
+                  changeHandler={this.createInputChangedHandler}
+                />
+              ))}
+              <DropdownButton
+                style={{ marginLeft: "15%" }}
+                title={this.state.createDropDownTitle}
+                id="scope-topic"
+                // bsStyle="success"
+              >
+                {DropDownOptions.map((option) => {
+                  return (
+                    <MenuItem
+                      key={option.title}
+                      onClick={() => {
+                        this.setState({
+                          createDropDownTitle: option.title,
+                          createDropDownValue: option.value,
+                        });
+                      }}
+                    >
+                      {option.title}
+                    </MenuItem>
+                  );
+                })}
+              </DropdownButton>
+              <input
+                type="checkbox"
+                style={{
+                  display: "inline-block",
+                  marginLeft: "8%",
+                  marginRight: "2%",
+                }}
+                onChange={() => {
+                  const change = !this.state.createTicked;
+                  this.setState({ createTicked: change });
+                }}
+              />
+              Mark as important
+            </Col>
+            <Col lg={1} md={1} sm={1}></Col>
+          </Row>
+        </Modal.Body>
+        <Modal.Footer>
+          <ActionModalButtons
+            disabled={
+              !this.state.createFormIsValid || !this.state.createDropDownValue
+            }
+            submit={this.createTopicHandler}
+            cancel={this.hideModal}
+            yes="Create"
+            no="Close"
+          />
+        </Modal.Footer>
+      </Modal>
+    );
+
     if (this.state.topics) {
       adminTopics = this.state.topics.map((topic) => {
         if (topic.scope == "superAdmin" || topic.scope == "admin") {
@@ -333,7 +498,7 @@ class Topics extends Component {
                 content={<div className="description">{topic.description}</div>}
                 topicEdit={true}
                 topicEditLink={() => {
-                  this.getTaskDetails(topic.id);
+                  this.getTopicDetails(topic.id);
                 }}
               />
             </Col>
@@ -364,7 +529,7 @@ class Topics extends Component {
                 stats={stats}
                 topicEdit={true}
                 topicEditLink={() => {
-                  this.getTaskDetails(topic.id);
+                  this.getTopicDetails(topic.id);
                 }}
                 content={<div className="description">{topic.description}</div>}
               />
@@ -392,6 +557,7 @@ class Topics extends Component {
       <div className="content">
         <Grid fluid>
           {addTopic}
+          {createModal}
           {responseModal}
           {editModal}
           <Card
