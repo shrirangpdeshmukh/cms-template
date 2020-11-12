@@ -15,12 +15,15 @@ import {
   Button,
   Modal,
   ListGroupItem,
+  DropdownButton,
+  MenuItem
 } from "react-bootstrap";
 import { IoIosSend } from "react-icons/io";
 import TagInput from "components/TagInput/TagInput"
 import checkValidity from "../variables/validityRules";
 import { AddAssignment,RemoveAssignment } from "../variables/forms";
 import InputElements from "components/Form/InputElements/InputElements"
+import ResponseModal from 'components/Modals/ResponseModal/ResponseModal'
 
 class Chat extends Component {
   socket = null;
@@ -28,7 +31,7 @@ class Chat extends Component {
   timeout = undefined;
   state = {
     taskData:null,
-    comments: [{authorId:10,taskId:3,text:"sdfgsdgsfgsfg"},{authorId:10,taskId:3,text:"sdfgsdgsfgsfg"},{authorId:10,taskId:3,text:"sdfgsdgsfgsfg"}],
+    comments: [],
     error: false,
     typing: '',
     showModal: 0,
@@ -40,7 +43,11 @@ class Chat extends Component {
     formIsValid: false,
     assignees: [],
     assignmentRequests: [],
-    requestTracker:[]
+    requestTracker: [],
+    dropDownValue: "Change Importance",
+    isArchived: 0,
+    important: 0,
+    responseModal: false,
   }
 
   componentDidMount() {
@@ -48,11 +55,9 @@ class Chat extends Component {
       //console.log(response)
       this.setState({ comments: response.data.comments.data })
       this.setUpSocket()
-    }).catch(err=>this.setState({error:true,loading:false}))
-    //console.log(this.props)
-    axios.get(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}`).then(response => {
-      //console.log(response)
-      this.setState({ taskData: response.data.task })
+      axios.get(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}`).then(response => {
+      console.log(response)
+      this.setState({ taskData: response.data.task,isArchived:response.data.task.isArchived,important:response.data.task.important })
       if (response.data.task.tags !== null) {
         this.setState({tags: response.data.task.tags,updatedTags:response.data.task.tags})
         
@@ -63,21 +68,26 @@ class Chat extends Component {
         response.data.task.assignments.forEach(assignment => assignments.push(assignment.email))
       }
         this.setState({assignees:assignments})
-    
-      
-    }).catch(e => this.setState({ error: true, loading: false }))
-    axios.get(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/assignmentRequest`)
+     axios.get(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/assignmentRequest`)
       .then(response => {
         // console.log(response)
         if (response.data.requests !== null) {
+          console.log(response.data.requests)
           const requestsTracker = []
-          response.data.requests.forEach(request => requestsTracker.pushback('notAccepted'));
-          this.setState({ assignmentRequests: response.data.requests,requestTracker:requestsTracker })
-        
+          const requests=[]
+          response.data.requests.forEach(request => requestsTracker.push('notAccepted'));
+          response.data.requests.forEach(request => requests.push(request.email));
+          this.setState({ assignmentRequests: requests,requestTracker:requestsTracker })
         }
         this.setState({loading:false})
       })
-    .catch(err=>this.setState({error:true}))
+    .catch(err=>this.setState({error:true,loading:false}))
+      
+    }).catch(e => this.setState({ error: true, loading: false }))
+    }).catch(err=>this.setState({error:true,loading:false}))
+    //console.log(this.props)
+    
+   
   }
 
 
@@ -142,7 +152,7 @@ class Chat extends Component {
 
 
   hideModals = () => {
-    this.setState({showModal:0})
+    this.setState({showModal:0,dropDownValue:"Change Importance"})
   }
 
   updatedTagsInState = (tags) => {
@@ -224,6 +234,16 @@ class Chat extends Component {
         console.log(addedAssignments)
         this.setState({assignees:[...this.state.assignees,...addedAssignments],showModal:0,loading:false})
         console.log(this.state.assignees)
+        const modalData = {
+          title: "Success",
+          message: response.data.message,
+          Button: "success",
+          img: "success",
+          hide: () => {
+            this.setState({ responseModal: false })
+          }
+        }
+        this.setState({responseModal:true,modalData:modalData})
         
       })
       .catch (err => {
@@ -245,7 +265,16 @@ class Chat extends Component {
         const updatedAssignments = this.state.assignees.filter(assigneeEmail=>assigneeEmail!==formData.email)
         this.setState({assignees:updatedAssignments,showModal:0,loading:false})
         console.log(this.state.assignees)
-        
+        const modalData = {
+          title: "Success",
+          message: response.data.message,
+          Button: "success",
+          img: "success",
+          hide: () => {
+            this.setState({ responseModal: false })
+          }
+        }
+        this.setState({responseModal:true,modalData:modalData})
       })
       .catch (err => {
         this.setState({error:true,loading:false})
@@ -256,7 +285,7 @@ class Chat extends Component {
     const requestTracker = this.state.requestTracker
     requestTracker[index] = 'accepting';
     this.setState({requestTracker:requestTracker})
-    axios.patch(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/assignmentRequest`, { email: this.state.assignmentRequests[index].email })
+    axios.patch(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/assignmentRequest`, { email: this.state.assignmentRequests[index] })
       .then(response => {
       const requestTracker = this.state.requestTracker
         requestTracker.splice(index, 1);
@@ -266,6 +295,38 @@ class Chat extends Component {
 
     this.setState({requestTracker:requestTracker})
     }).catch(err=>this.setState({error:true}))
+  }
+
+  onArchive = () => {
+    axios.patch(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/archive`, { important: (this.state.important===1)?1:0 })
+      .then(response => {
+        this.setState({ isArchived: 1, showModal: 0, dropDownValue: "Change Importance" })
+        const modalData = {
+          title: "Success",
+          message: response.data.message,
+          Button: "success",
+          img: "success",
+          hide: () => {
+            this.setState({ responseModal: false })
+          }
+        }
+        this.setState({responseModal:true,modalData:modalData})
+      })
+      
+    .catch(err=>this.setState({error:true}))
+
+  }
+
+  onRequestAssignment = () => {
+    const currentRequests = this.state.assignmentRequests
+    const requestTracker=this.state.requestTracker
+    axios.post(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/assignmentRequest`, { email: JSON.parse(this.props.cookies.cookies.userData).user.email })
+      .then(response => {
+        currentRequests.push(JSON.parse(this.props.cookies.cookies.userData).user.email)
+        requestTracker.push("notAccepted")
+        this.setState({assignmentRequests:currentRequests,requestTracker:requestTracker})
+      })
+    .catch(err=>this.setState({error:true}))
   }
 
   render() {
@@ -282,11 +343,21 @@ class Chat extends Component {
           taskCreator="Ranga"
           description={this.props.taskDescription}
           assignedTo={this.state.assignees}
+          canRequestAssignment={
+            this.state.assignees.indexOf(
+            JSON.parse(this.props.cookies.cookies.userData).user.email) === -1
+            && JSON.parse(this.props.cookies.cookies.userData).user.role !== "admin"
+            && JSON.parse(this.props.cookies.cookies.userData).user.role !== "superAdmin"}
+          hasRequestedAssignment={
+            this.state.assignmentRequests.indexOf(
+            JSON.parse(this.props.cookies.cookies.userData).user.email) !== -1}
+          onRequestAssignment={this.onRequestAssignment}
           tags={this.state.tags}
           onUpdateTags={() => this.onMenuItemClicked(1)}
           onAddAssignment={() => this.onMenuItemClicked(2)}
           onRemoveAssignment={() => this.onMenuItemClicked(3)}
-          onCheckAssignmentRequests={()=>this.onMenuItemClicked(4)}
+          onCheckAssignmentRequests={() => this.onMenuItemClicked(4)}
+          onArchive={()=>this.onMenuItemClicked(5)}
           deadline={this.props.taskDeadline}
           isAdmin={JSON.parse(this.props.cookies.cookies.userData).user.role === "admin" || JSON.parse(this.props.cookies.cookies.userData).user.role === "superAdmin"}
         />
@@ -371,6 +442,7 @@ class Chat extends Component {
     let removeAssigneesModal = null;
     let checkRequestsModal = null;
     let checkRequestsModalData = null;
+    let archiveModal = null;
     if (this.state.loading == false) {
       addAssigneesModal = (
         <Modal show={this.state.showModal === 2} onHide={this.hideModals}>
@@ -381,7 +453,7 @@ class Chat extends Component {
           </Modal.Header>
           <Modal.Body>
             <Row>
-              <Col lg={8} md={8} sm={10}>
+              <Col lg={8} md={12} sm={10}>
                 {addAssigneesForm}
               </Col>
                     
@@ -408,7 +480,7 @@ class Chat extends Component {
           </Modal.Header>
           <Modal.Body>
             <Row>
-              <Col lg={8} md={8} sm={10}>
+              <Col lg={8} md={12} sm={10}>
                 {removeAssigneesForm}
               </Col>
                     
@@ -437,15 +509,16 @@ class Chat extends Component {
         checkRequestsModalData = this.state.assignmentRequests.map((request,index) => {
           return (
             <div style={{display:"flex"}}>
-            <ListGroupItem>{request.email}
+            <ListGroupItem style={{width:"600px"}}>{request}&nbsp;&nbsp;</ListGroupItem>
             <Button
               pullRight
               bsSize="small"
               disabled={this.state.requestTracker[index] === 'accepting'}
-              bsStyle="success"
+                  bsStyle="success"
+                  className="btn-fill"
               onClick={() => this.onAcceptRequest(index)}>
               {(this.state.requestTracker[index] === 'notAccepted') ? 'Accept' : 'Accepting'}
-            </Button></ListGroupItem></div>
+            </Button></div>
           )
         })
       }
@@ -458,7 +531,7 @@ class Chat extends Component {
           </Modal.Header>
           <Modal.Body>
             <Row>
-              <Col lg={8} md={8} sm={10}>
+              <Col lg={8} md={12} sm={10}>
                 {checkRequestsModalData}
               </Col>
                     
@@ -475,6 +548,75 @@ class Chat extends Component {
           </Modal.Footer>
         </Modal>
       )
+
+       
+        let taskImportanceOptions = ["Important","Not Important"]
+      
+      archiveModal=(
+        <Modal
+                show={this.state.showModal === 5}
+                onHide={this.hideModals}
+                bsSize="small"
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>Archive Task</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Grid fluid>
+                    <p>
+                      <b style={{ fontSize: "1.2em" }}>Archived Status:</b> &nbsp;{" "}
+                      {(this.state.isArchived)?"Archived":"Not Archived"}
+                      <br />
+                      <b style={{ fontSize: "1.2em" }}>
+                        Importance Status:
+                      </b> &nbsp; {(this.state.important)?"Important":"Not important"}{" "}
+                    </p>
+
+                    <br />
+                    <br />
+              { !this.state.isArchived?(
+                <DropdownButton
+                  bsStyle="primary"
+                  title={this.state.dropDownValue}
+                  className="btn-fill"
+                  id="task-importance"
+                >
+                  <MenuItem
+                    eventKey={taskImportanceOptions[0]}
+                    onClick={() =>
+                      this.setState({
+                        dropDownValue: taskImportanceOptions[0],
+                        important:1
+                      })
+                    }
+                  >
+                    {taskImportanceOptions[0]}
+                  </MenuItem>
+                  <MenuItem
+                    eventKey={taskImportanceOptions[1]}
+                    onClick={() =>
+                      this.setState({
+                        dropDownValue: taskImportanceOptions[1],
+                        important:0
+                      })
+                    }
+                  >
+                    {taskImportanceOptions[1]}
+                  </MenuItem>
+                     
+                </DropdownButton>):null}
+                  </Grid>
+                </Modal.Body>
+                <Modal.Footer>
+                  <ActionModalButtons
+                    disabled={this.state.dropDownValue=="Change Importance"||this.state.isArchived===1}
+                    submit={this.onArchive}
+                    cancel={this.hideModals}
+                    yes="Archive"
+                    no="Cancel"
+                  />
+                </Modal.Footer>
+              </Modal>)
     }
 
     let chat = null;
@@ -498,6 +640,19 @@ class Chat extends Component {
       });
     }
 
+    let responseModal = null;
+    if (this.state.modalData)
+      responseModal = (
+        <ResponseModal
+          show={this.state.responseModal}
+          onHide={this.state.modalData.hide}
+          title={this.state.modalData.title}
+          body={this.state.modalData.message}
+          button={this.state.modalData.Button}
+          img={this.state.modalData.img}
+        />
+      );
+
     
     return (
       <div
@@ -514,6 +669,8 @@ class Chat extends Component {
           {addAssigneesModal}
           {removeAssigneesModal}
           {checkRequestsModal}
+          {archiveModal}
+          {responseModal}
           {chat}
 
           {/* chat input */}

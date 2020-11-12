@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, Row, Col, Image,DropdownButton,MenuItem,Label } from "react-bootstrap";
+import { Modal, Row, Col, Image,DropdownButton,MenuItem,Label,Button } from "react-bootstrap";
 import img from "../../../assets/img/details.png";
 class ChatModal extends Component {
   state = { width: window.innerWidth };
@@ -14,9 +14,9 @@ class ChatModal extends Component {
     const figure_styles = {
       float: "right",
       display: "inline-block",
-      height: "40%",
-      marginTop: "-25px",
-      width: "40%",
+      height: "30%",
+      marginTop: "-50px",
+      width: "30%",
     };
 
     let taskDropdown = null
@@ -25,7 +25,6 @@ class ChatModal extends Component {
             <DropdownButton
               bsStyle="success"
               title="Admin Actions"
-              dropup
               className="btn-fill"
           id="admin-actions"
           
@@ -65,7 +64,7 @@ class ChatModal extends Component {
               
                 <MenuItem
                   eventKey="5"
-                  //onClick={() => this.setState({ showModal: 4 })}
+                  onClick={this.props.onArchive}
                 >
                    Archive
                 </MenuItem>
@@ -109,6 +108,9 @@ class ChatModal extends Component {
                 return <li>{assigned}</li>;
               })}
             </ul>
+            {this.props.canRequestAssignment?(
+            <Button onClick={this.props.onRequestAssignment} bsSize="small" className="btn-fill" bsStyle="primary" disabled={this.props.hasRequestedAssignment}>{ (this.props.hasRequestedAssignment)?"Requested":"Request Assignmnet"}</Button>
+            ) : null}
             <br />
             <strong>Tags</strong>:&nbsp;
             <ul>

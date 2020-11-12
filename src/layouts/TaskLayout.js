@@ -174,7 +174,6 @@ class Chat extends Component {
             Button: "success",
             img:"success",
           hide: () => {
-              //console.log("ftt")
     this.setState({ responseModal: false});
             this.props.history.push(`/task/${this.state.topic}/${this.state.tasks[0].id}`);
             window.location.reload(true)
