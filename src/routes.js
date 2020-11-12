@@ -21,7 +21,7 @@ import TableList from "views/Admin/Leaderboard.js";
 import AllUsers from "views/Admin/AllUsers";
 import Icons from "views/Icons";
 import Announcements from "views/Admin/Announcements";
-import Topics from "views/Admin/Topics";
+import Topics from "views/Admin/Topics.js";
 import SignUP from "views/Admin/SignUp.js";
 
 import Login from "views/Authentication/Login.js";

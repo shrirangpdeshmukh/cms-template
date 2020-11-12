@@ -269,7 +269,7 @@ export const CreateTask = {
     elementConfig: {
       type: "text",
       id: "deadline",
-      placeholder: "DD/MM/YYYY",
+      placeholder: "Deadline DD/MM/YYYY",
     },
     value: null,
     icon: "",
