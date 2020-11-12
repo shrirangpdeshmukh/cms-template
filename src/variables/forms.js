@@ -282,6 +282,7 @@ export const CreateTask = {
   },
 };
 
+
 export const CreateTopic = {
   heading: {
     elementType: "input",
@@ -315,3 +316,42 @@ export const CreateTopic = {
     touched: false,
   },
 };
+
+
+export const AddAssignment= {
+  emails: {
+    elementType: "textarea",
+    elementConfig: {
+      type: "text",
+      id: "email",
+      placeholder: "Enter comma seperated emails",
+    },
+    value: null,
+    icon: "",
+    validation: {
+      required: true,
+      isCommaSeperatedEmailList:true
+    },
+    valid: false,
+    touched: false,
+  }, 
+}
+
+export const RemoveAssignment= {
+  email: {
+    elementType: "textarea",
+    elementConfig: {
+      type: "text",
+      id: "email",
+      placeholder: "Enter email of the user to unassign",
+    },
+    value: null,
+    icon: "",
+    validation: {
+      required: true,
+      isEmail:true
+    },
+    valid: false,
+    touched: false,
+  }, 
+}

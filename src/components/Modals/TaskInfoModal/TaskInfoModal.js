@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, Row, Col, Image } from "react-bootstrap";
+import { Modal, Row, Col, Image,DropdownButton,MenuItem,Label } from "react-bootstrap";
 import img from "../../../assets/img/details.png";
 class ChatModal extends Component {
   state = { width: window.innerWidth };
@@ -14,10 +14,76 @@ class ChatModal extends Component {
     const figure_styles = {
       float: "right",
       display: "inline-block",
-      height: "30%",
-      marginTop: "-50px",
-      width: "30%",
+      height: "40%",
+      marginTop: "-25px",
+      width: "40%",
     };
+
+    let taskDropdown = null
+    if (this.props.isAdmin) {
+      taskDropdown=(
+            <DropdownButton
+              bsStyle="success"
+              title="Admin Actions"
+              dropup
+              className="btn-fill"
+          id="admin-actions"
+          
+          
+            >
+             
+        <MenuItem
+                    key={1}
+                    eventKey={1}
+                   onClick={this.props.onUpdateTags}
+                  >
+          Add/Remove Tag
+                  </MenuItem>
+        <MenuItem
+                    key={2}
+                    eventKey={2}
+                   onClick={this.props.onAddAssignment}
+                  >
+          
+          Add Assignment
+                  </MenuItem>
+        <MenuItem
+                    key={3}
+                    eventKey={3}
+                   onClick={this.props.onRemoveAssignment}
+                  >
+          Remove Assignment
+                  </MenuItem>
+        <MenuItem
+                    key={4}
+                    eventKey={4}
+                   onClick={this.props.onCheckAssignmentRequests}
+                  >
+                    Check Assignment Requests
+                  </MenuItem>
+              <MenuItem divider />
+              
+                <MenuItem
+                  eventKey="5"
+                  //onClick={() => this.setState({ showModal: 4 })}
+                >
+                   Archive
+                </MenuItem>
+              
+            </DropdownButton>
+          );
+    }
+
+    let tags=null
+    if (this.props.tags !== null) {
+      tags = this.props.tags.map(tag => {
+        return (
+          <li><Label bsStyle="primary">{tag}</Label></li>
+          
+        )
+      })
+    }
+    
 
     return (
       <Modal
@@ -44,8 +110,14 @@ class ChatModal extends Component {
               })}
             </ul>
             <br />
+            <strong>Tags</strong>:&nbsp;
+            <ul>
+              {tags}
+            </ul>
+            <br/>
             <strong>Deadline</strong>:&nbsp; {this.props.deadline}
             <br />
+            {taskDropdown}
           </p>
 
           {this.state.width < 991 ? null : (
