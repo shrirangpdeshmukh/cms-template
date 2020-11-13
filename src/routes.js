@@ -23,6 +23,7 @@ import Icons from "views/Icons";
 import Announcements from "views/Admin/Announcements";
 import Topics from "views/Admin/Topics.js";
 import SignUP from "views/Admin/SignUp.js";
+import Logout from "views/Admin/Logout";
 
 import Login from "views/Authentication/Login.js";
 import ForgotPass from "views/Authentication/ForgotPassword.jsx";
@@ -84,6 +85,14 @@ export const adminRoutes = [
     name: "Add New Users",
     icon: "pe-7s-id",
     component: SignUP,
+    layout: "/admin",
+  },
+
+  {
+    path: "/logout",
+    name: "Logout",
+    icon: "pe-7s-id",
+    component: Logout,
     layout: "/admin",
   },
 ];
