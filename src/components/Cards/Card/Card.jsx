@@ -15,15 +15,43 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+
 import React, { Component } from "react";
+
+import {Button} from "react-bootstrap";
+import {BiEditAlt} from "react-icons/bi";
 
 export class Card extends Component {
   render() {
+    
+    
+    let editOption=null;
+    if (this.props.topicEdit) {
+      editOption = (
+        <div
+          style={{
+            float: "right",
+            marginRight: "3%",
+            zIndex: "1000",
+            marginTop: "5%",
+          }}
+        >
+      <Button
+        style={{ border: "none", size: "1.2em" }}
+        onClick={this.props.topicEditLink}
+      >
+        <BiEditAlt style={{ height: "1.6em", width: "1.6em" }} />
+      </Button>
+        </div>
+      );
+    }
+
     return (
       <div
         className={"card" + (this.props.plain ? " card-plain" : "")}
         style={this.props.style}
       >
+        {editOption}
         <div
           className={"header" + (this.props.hCenter ? " bold text-center" : "")}
         >
@@ -44,8 +72,10 @@ export class Card extends Component {
           >
             {this.props.title}
           </h4>
-          <div className="category">{this.props.category}</div>
+
+          <div className="category">{this.props.category} </div>
         </div>
+
         <div
           className={
             "content" +

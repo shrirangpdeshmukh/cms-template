@@ -21,6 +21,11 @@ export default (value, rules) => {
     isValid = pattern.test(value) && isValid;
   }
 
+  if (rules.isCommaSeperatedEmailList) {
+    const pattern = /^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$/g;
+    isValid = pattern.test(value) && isValid;
+  }
+
   if (rules.isNumeric) {
     const pattern = /^\d+$/;
     isValid = pattern.test(value) && isValid;
