@@ -23,6 +23,7 @@ import { Card } from "components/Cards/Card/Card";
 import { StatsCard } from "components/StatsCard/StatsCard";
 import { Tasks } from "components/Tasks/Tasks";
 import Spinner from "components/Spinner/Spinner";
+import ConfirmModal from "../../components/Modals/confirmModal/ConfirmModal";
 import {
   dataPie,
   legendPie,
@@ -50,7 +51,9 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="content">
-        <Spinner />
+        {/* <Spinner /> */}
+        <ConfirmModal Heading = "Are you sure to update the following announcement :" Body = "Hello World!" />
+        <br /><br />
         <Grid fluid>
           <Row>
             <Col lg={3} sm={6}>
