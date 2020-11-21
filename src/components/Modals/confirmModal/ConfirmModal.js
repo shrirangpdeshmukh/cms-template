@@ -7,7 +7,8 @@ class ConfirmModal extends Component {
         show : this.props.show
     }
     handleClose = () => {
-        this.setState({show : false})
+        this.setState({show : false});
+        this.props.closeClicked();
     }
     render() {
         return (
