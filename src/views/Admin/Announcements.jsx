@@ -53,7 +53,7 @@ class Announcements extends Component {
   }  
 
   updateAnnouncement = (id,updatedAnnouncement) => {
-    this.setState({loading : true});
+    this.setState({loading : true,showModal : false});
     axios.patch(`/board/announcements/${id}`,updatedAnnouncement)
     .then(response => {
       console.log(response);
@@ -75,23 +75,31 @@ class Announcements extends Component {
     const modalData = {
       Heading : "Are you sure to update the following announcement:",
       Body : `Are you sure to update the announcement : ${this.state.announcementData}`,
-      onContinue : this.updateAnnouncement(id,updatedAnnouncement)
+      onContinue : () => this.updateAnnouncement(id,updatedAnnouncement)
     }
     this.setState({showModal : true, modalData : modalData});
   }
  
+  deleteAnnouncement = (id) => {
+    this.setState({loading : true,showModal : false});
+    axios.delete(`/board/announcements/${id}/archive`)
+    .then(response => {
+      console.log(response)
+      this.setState({announcements : response.data.announcements,loading:false})
+    })
+    .catch(err => {
+      this.setState({error : err});
+      console.log(err);
+    })
+  }
   deleteClicked = (e,id) => {
     e.preventDefault();
-    this.setState({loading : true});
-    axios.delete(`/board/announcements/${id}/archive`)
-      .then(response => {
-        console.log(response)
-        this.setState({announcements : response.data.announcements,loading:false})
-      })
-      .catch(err => {
-        this.setState({error : err});
-        console.log(err);
-      })
+    const modalData = {
+      Heading : "Are you sure to delete the following announcement:",
+      Body : ` ${this.state.announcementData}`,
+      onContinue : () => this.deleteAnnouncement(id)
+    }
+    this.setState({showModal : true, modalData : modalData});
   }
 
   handleChange = (event) => {
@@ -149,7 +157,7 @@ class Announcements extends Component {
               <span data-notify="message">
                {el.body}
                 <button className="btn" type="button" 
-                  onClick={()=>this.setState({ open: !this.state.open, showId : el.id })} style={{border:"none"}}>
+                  onClick={()=>this.setState({ open: !this.state.open, showId : el.id,announcementData : el.body })} style={{border:"none"}}>
                   (Show full announcement)
                 </button>
               </span>
@@ -164,7 +172,7 @@ class Announcements extends Component {
                                 defaultValue={el.body}
                                 className = {`message${el.id}`}
                                 // id = {`message${el.id}`}
-                                controlId = {`message${el.id}`} 
+                                // controlId = {`message${el.id}`} 
                               />
                       </FormGroup>
                                   
@@ -178,34 +186,7 @@ class Announcements extends Component {
       }
       
     }
-    //   announcements = 
-    //   this.state.announcements.forEach(element => {
-    //     console.log(element.body);
-    //     return (
-    //       <p>Hello</p>
-      //   <Alert bsStyle="info" className="alert-with-icon">
-      //    <span data-notify="icon" className="pe-7s-bell" />
-      //    <span data-notify="message">
-      //      {element.body}
-      //      <button className="btn" type="button" style={{border:"none"}}>(Show full announcement)</button>
-      //    </span> 
-      //  </Alert>
-    //     );
-    //   });
-    // }
-    
-    // console.log(this.state.announcements);
-    // announcements.forEach(element => {
-    //   return (
-    //     <Alert bsStyle="info" className="alert-with-icon">
-    //     <span data-notify="icon" className="pe-7s-bell" />
-    //     <span data-notify="message">
-    //       {element.body}
-    //       <button className="btn" type="button" style={{border:"none"}}>(Show full announcement)</button>
-    //     </span> 
-    //   </Alert>
-    //   );
-    // });
+
     if (window.innerWidth >= 993) {
       return (
         <div className="content">
@@ -223,34 +204,18 @@ class Announcements extends Component {
                   <Col md={6}>
                     <Button style={{border:"none"}}><Label>+</Label></Button>
                     {announcements}
-                    {/* <Alert bsStyle="info" className="alert-with-icon">
-                      <span data-notify="icon" className="pe-7s-bell" />
-                      <span data-notify="message">
-                        This is a notification with close button and icon and have
-                        many lines. 
-                        <button className="btn" type="button" style={{border:"none"}}>(Show full announcement)</button>
-                   
-                      </span> 
-                    </Alert> */}
-                  
                   </Col>
                   <Col md={6}>
                     <h5>Announcement</h5>
                     <div className="card">
                       {/* <div className="content"> */}
                       <FormGroup controlId="formControlsTextarea">
-                        {/* <FormControl
-                          style={{ height: "30rem", resize: "none" }}
-                          componentClass="textarea"
-                          // placeholder="textarea"
-                          defaultValue={this.state.announcementData}
-                        /> */}
                         {textForm}
                       </FormGroup>
                     </div>
                   
                     <Button className="btn-fill" style={{ marginRight:"10px"}} bsStyle="primary" onClick = {(e) => this.updateClicked(e,document.getElementById("formControlsTextarea").value, this.state.showId)}>Update</Button>
-                    <Button className="btn-fill" bsStyle="danger">Delete</Button>
+                    <Button className="btn-fill" bsStyle="danger" onClick = {(e) => this.deleteClicked(e,this.state.showId)}>Delete</Button>
                   </Col>
                 </Row>
                 <br />
@@ -277,34 +242,6 @@ class Announcements extends Component {
                   <Col md={6}>
                     <Button style={{ border: "none" }}><Label>+</Label></Button>
                     {announcements}
-                    {/* <Alert bsStyle="info" className="alert-with-icon">
-                      <span data-notify="icon" className="pe-7s-bell" />
-                      <span data-notify="message">
-                        This is a notification with close button and icon and have
-                        many lines.
-                        <button className="btn" type="button" 
-                          onClick={()=>this.setState({ open: !this.state.open })} style={{border:"none"}}>
-                          (Show full announcement)
-                        </button>
-                      </span>
-                    <Collapse in={this.state.open}>
-                          <div>
-                            <div className="card">
-                              <FormGroup controlId="formControlsTextarea">
-                                  <FormControl
-                                        style={{ height: "30rem", resize: "none" }}
-                                        componentClass="textarea"
-                                        placeholder="textarea"
-                                        defaultValue={this.state.announcementData}
-                                      />
-                              </FormGroup>
-                                          
-                            </div>
-                            <Button className="btn-fill" style={{ marginRight:"10px"}} bsStyle="primary">Edit</Button>
-                            <Button bsStyle="danger" className="btn-fill">Delete</Button>
-                          </div>                
-                    </Collapse>
-                    </Alert> */}
                   </Col> 
                 </Row>
                 <br />
