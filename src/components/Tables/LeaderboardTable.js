@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 
 import Card from "components/Cards/Card/Card";

@@ -19,7 +19,7 @@ import Dashboard from "views/Admin/Dashboard";
 import UserProfile from "views/Admin/UserProfile.js";
 import TableList from "views/Admin/Leaderboard.js";
 import AllUsers from "views/Admin/AllUsers";
-import Icons from "views/Icons";
+// import Icons from "views/Icons";
 import Announcements from "views/Admin/Announcements";
 import Topics from "views/Admin/Topics.js";
 import SignUP from "views/Admin/SignUp.js";
@@ -91,7 +91,7 @@ export const adminRoutes = [
   {
     path: "/logout",
     name: "Logout",
-    icon: "pe-7s-id",
+    icon: "pe-7s-back",
     component: Logout,
     layout: "/admin",
   },

@@ -22,10 +22,13 @@ import {
   Col,
   DropdownButton,
   MenuItem,
+  Dropdown,
   Modal,
-  ButtonGroup,
+  // ButtonGroup,
   Image,
 } from "react-bootstrap";
+
+import { FiMoreVertical } from "react-icons/fi";
 
 import { UserCard } from "components/Cards/UserCard/UserCard2";
 import Table from "../../components/Tables/pointTransactionTable";
@@ -79,7 +82,7 @@ class UserProfile extends Component {
         const authJSON = JSON.parse(auth);
         const userDataJSON = JSON.parse(userData);
 
-        console.log(userDataJSON);
+        // console.log(userDataJSON);
         if (authJSON && userDataJSON) {
           path = `/users/${userDataJSON.user.id}`;
         }
@@ -515,22 +518,6 @@ class UserProfile extends Component {
       });
     }
 
-    //User Card
-    let data = null;
-    if (this.state.user) {
-      data = (
-        <UserCard
-          name={this.state.user.name}
-          email={this.state.user.email}
-          rank={this.state.user.current_rank}
-          bio={this.state.user.bio}
-          role={this.state.user.role}
-          designation={this.state.user.designation}
-          points={this.state.user.points}
-        />
-      );
-    }
-
     //Required Modals and DropDown for Actions
 
     const actions = [
@@ -568,25 +555,26 @@ class UserProfile extends Component {
           parseInt(this.props.match.params.id) === userDataJSON.user.id
         ) {
           userDropDown = (
-            <DropdownButton
-              bsStyle="info"
-              title="Edit Profile"
-              pullRight
-              className="btn-fill"
-              id="edit-profile"
-            >
-              {userActions.map((action) => {
-                return (
-                  <MenuItem
-                    key={action.number}
-                    eventKey={action.number}
-                    onClick={() => this.setState({ showModal: action.number })}
-                  >
-                    {action.title}
-                  </MenuItem>
-                );
-              })}
-            </DropdownButton>
+            <Dropdown title="Edit Profile" pullRight dropup id="edit-profile">
+              <Dropdown.Toggle noCaret>
+                <FiMoreVertical />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {userActions.map((action) => {
+                  return (
+                    <MenuItem
+                      key={action.number}
+                      eventKey={action.number}
+                      onClick={() =>
+                        this.setState({ showModal: action.number })
+                      }
+                    >
+                      {action.title}
+                    </MenuItem>
+                  );
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
           );
 
           updatePasswordModal = (
@@ -938,6 +926,23 @@ class UserProfile extends Component {
       }
     }
 
+    //User Card
+    let data = null;
+    if (this.state.user) {
+      data = (
+        <UserCard
+          name={this.state.user.name}
+          email={this.state.user.email}
+          rank={this.state.user.current_rank}
+          bio={this.state.user.bio}
+          role={this.state.user.role}
+          designation={this.state.user.designation}
+          points={this.state.user.points}
+          dropdown={userDropDown}
+        />
+      );
+    }
+
     let table = null;
     if (this.state.user) {
       if (this.state.user.tracking_points && this.state.user.allotments) {
@@ -979,7 +984,7 @@ class UserProfile extends Component {
               {changeDesignationModal}
               {blacklistUserModal}
 
-              {userDropDown}
+              {/* {userDropDown} */}
               {updatePasswordModal}
               {bioModal}
 
