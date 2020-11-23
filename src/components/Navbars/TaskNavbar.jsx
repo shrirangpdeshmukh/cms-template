@@ -35,7 +35,7 @@ class Header extends Component {
           <Navbar.Brand>
             {this.props.brandText}
             &nbsp;&nbsp;
-            <BsInfoCircleFill onClick={this.props.infoCallback} />
+            <BsInfoCircleFill onClick={this.props.infoCallback} style={{zIndex:"1000000000"}}/>
           </Navbar.Brand>
           <Navbar.Toggle onClick={this.mobileSidebarToggle} />
         </Navbar.Header>

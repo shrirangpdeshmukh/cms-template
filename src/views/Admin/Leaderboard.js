@@ -16,9 +16,8 @@
 
 */
 import React, { Component } from "react";
-import { Grid, Row, Col, Table } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 
-import Card from "components/Cards/Card/Card";
 import Button from "components/CustomButton/CustomButton";
 import LeaderboardTable from "components/Tables/LeaderboardTable";
 

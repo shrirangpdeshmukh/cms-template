@@ -7,7 +7,7 @@ import { Modal, Button, Image } from "react-bootstrap";
 import mail_sent from "../../../assets/img/mail_sent.png";
 import network_error from "../../../assets/img/network_error.png";
 import success from "../../../assets/img/success.png";
-import wrong_token from "../../../assets/img/wrong_token.jpg";
+// import wrong_token from "../../../assets/img/wrong_token.jpg";
 import unauthorized from "../../../assets/img/unauthorized.png";
 
 class ResponseModal extends Component {

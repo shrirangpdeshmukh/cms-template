@@ -28,7 +28,7 @@ import {
 import axios from "../../axios-root";
 
 import Card from "components/Cards/Card/Card";
-import CustomButton from "../../components/CustomButton/CustomButton";
+// import CustomButton from "../../components/CustomButton/CustomButton";
 import Spinner from "../../components/Spinner/Spinner";
 
 class AllUsers extends Component {
@@ -72,7 +72,6 @@ class AllUsers extends Component {
                         borderRight: 0,
                         borderLeft: 0,
                         fontSize: 20,
-                        borderLeft: 0,
                       }}
                     >
                       {user.name}
@@ -80,6 +79,7 @@ class AllUsers extends Component {
                     </ListGroupItem>
                   );
                 }
+                else return null;
               })}
             </ListGroup>
           </div>

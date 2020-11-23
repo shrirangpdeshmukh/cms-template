@@ -54,6 +54,7 @@ class Admin extends Component {
       default:
         break;
     }
+    return level;
   };
   getRoutes = (adminRoutes) => {
     let renderFlag = false;

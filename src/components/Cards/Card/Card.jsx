@@ -18,14 +18,13 @@
 
 import React, { Component } from "react";
 
-import {Button} from "react-bootstrap";
-import {BiEditAlt} from "react-icons/bi";
+import { Button, ButtonGroup } from "react-bootstrap";
+import { BiEditAlt } from "react-icons/bi";
+import { AiOutlineDelete } from "react-icons/ai";
 
 export class Card extends Component {
   render() {
-    
-    
-    let editOption=null;
+    let editOption = null;
     if (this.props.topicEdit) {
       editOption = (
         <div
@@ -36,12 +35,20 @@ export class Card extends Component {
             marginTop: "5%",
           }}
         >
-      <Button
-        style={{ border: "none", size: "1.2em" }}
-        onClick={this.props.topicEditLink}
-      >
-        <BiEditAlt style={{ height: "1.6em", width: "1.6em" }} />
-      </Button>
+          <ButtonGroup>
+            <Button
+              style={{ border: "none", size: "1.2em" }}
+              onClick={this.props.topicEditLink}
+            >
+              <BiEditAlt style={{ height: "1.6em", width: "1.6em" }} />
+            </Button>
+            <Button
+              style={{ border: "none", size: "1.2em" }}
+              onClick={this.props.archiveEdit}
+            >
+              <AiOutlineDelete style={{ height: "1.6em", width: "1.6em" }} />
+            </Button>
+          </ButtonGroup>
         </div>
       );
     }

@@ -5,12 +5,8 @@ import {
   Col,
   Button,
   Modal,
-  Image,
   DropdownButton,
   MenuItem,
-  Checkbox,
-  Form,
-  FormGroup,
 } from "react-bootstrap";
 
 import { Card } from "components/Cards/Card/Card";
@@ -45,6 +41,8 @@ class Topics extends Component {
       createDropDownValue: null,
       createFormIsValid: false,
       createTicked: false,
+      showArchive: false,
+      archiveImportantTicked: false,
     };
   }
   componentDidMount() {
@@ -179,6 +177,24 @@ class Topics extends Component {
       .catch((error) => console.log(error));
   };
 
+  archiveTicks = (id) => {
+    this.setState({ showArchive: true });
+    axios
+      .get(`/board/topics/${id}`)
+      .then((response) => {
+        const res = response.data.topic;
+
+        let imp = false;
+        if (res.important == 1) imp = true;
+
+        this.setState({
+          currentEditingTopic: res.id,
+          archiveImportantTicked: imp,
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
   editTopicHandler = (event) => {
     event.preventDefault();
     this.setState({ showModal: false, loading: true });
@@ -275,6 +291,28 @@ class Topics extends Component {
       });
   };
 
+  archiveTopicHandler = (event) => {
+    event.preventDefault();
+    this.setState({ showArchive: false, loading: true });
+    const formData = { isImportant: this.state.archiveImportantTicked ? 1 : 0 };
+
+    axios
+      .patch(`board/topics/${this.state.currentEditingTopic}/archive`, formData)
+      .then((res) => {
+        console.log(res);
+        window.location.reload(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({
+          loading: false,
+          currentEditingTopic: null,
+          archiveImportantTicked: false,
+          // createFormIsValid: false,
+        });
+      });
+  };
+
   toChatHandler = (topicId) => {
     let taskId = 1;
     axios
@@ -288,7 +326,7 @@ class Topics extends Component {
   };
 
   hideModal = () => {
-    this.setState({ showModal: false, showCreate: false });
+    this.setState({ showModal: false, showCreate: false, showArchive: false });
   };
 
   render() {
@@ -300,6 +338,8 @@ class Topics extends Component {
     let topicEdit = false;
     let topicEditLink = null;
     let nonAdminTopics = 0;
+    let archiveModal = null;
+    let archiveEdit = null;
 
     const editTopicForm = [];
     for (let key in this.state.editTopic) {
@@ -334,6 +374,9 @@ class Topics extends Component {
           topicEdit = true;
           topicEditLink = (id) => {
             this.getTopicDetails(id);
+          };
+          archiveEdit = (id) => {
+            this.archiveTicks(id);
           };
           addTopic = (
             <Button
@@ -490,6 +533,47 @@ class Topics extends Component {
               </Modal.Footer>
             </Modal>
           );
+
+          archiveModal = (
+            <Modal show={this.state.showArchive} onHide={this.hideModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Archive Topic</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Row>
+                  <input
+                    type="checkbox"
+                    checked={this.state.archiveImportantTicked}
+                    style={{
+                      display: "inline-block",
+                      marginLeft: "8%",
+                      marginRight: "2%",
+                    }}
+                    onChange={() => {
+                      const change = !this.state.archiveImportantTicked;
+                      this.setState({ archiveImportantTicked: change });
+                    }}
+                  />
+                  Mark as Important.
+                  <div style={{ padding: "5%" }}>
+                    {" "}
+                    If marked, you will receive the details of the topic in the
+                    next Fortnight Archived Mail.
+                  </div>
+                  <br />
+                </Row>
+              </Modal.Body>
+              <Modal.Footer>
+                <ActionModalButtons
+                  disabled={false}
+                  submit={this.archiveTopicHandler}
+                  cancel={this.hideModal}
+                  yes="Archive"
+                  no="Close"
+                />
+              </Modal.Footer>
+            </Modal>
+          );
         }
       }
     }
@@ -516,13 +600,14 @@ class Topics extends Component {
                 category=""
                 stats={stats}
                 style={{
-                  border: "0.1px dashed",
+                  border: "0.1px solid #ccc",
                   margin: "2px",
                   marginBottom: "20px",
                 }}
                 content={<div className="description">{topic.description}</div>}
                 topicEdit={topicEdit}
                 topicEditLink={() => topicEditLink(topic.id)}
+                archiveEdit={() => archiveEdit(topic.id)}
               />
             </Col>
           );
@@ -550,10 +635,15 @@ class Topics extends Component {
                 statsIcon="fa fa-history"
                 id="chartHours"
                 title={topic.heading}
-                // category="Created by: Shrirang"
                 stats={stats}
                 topicEdit={topicEdit}
+                style={{
+                  border: "0.1px solid #ccc",
+                  margin: "2px",
+                  marginBottom: "20px",
+                }}
                 topicEditLink={() => topicEditLink(topic.id)}
+                archiveEdit={() => archiveEdit(topic.id)}
                 content={<div className="description">{topic.description}</div>}
               />
             </Col>
@@ -585,6 +675,11 @@ class Topics extends Component {
             hCenter
             topicCard
             content={<Row>{adminTopics}</Row>}
+            style={{
+              border: "0.1px solid #ccc",
+              margin: "2px",
+              marginBottom: "20px",
+            }}
           />
         );
       }
@@ -595,6 +690,7 @@ class Topics extends Component {
         <Grid fluid>
           {addTopic}
           {createModal}
+          {archiveModal}
           {responseModal}
           {editModal}
           {adminCard}
@@ -604,6 +700,11 @@ class Topics extends Component {
             hCenter
             topicCard
             content={<Row>{userTopics}</Row>}
+            style={{
+              border: "0.1px solid #ccc",
+              margin: "2px",
+              marginBottom: "20px",
+            }}
           />
         </Grid>
       </div>
