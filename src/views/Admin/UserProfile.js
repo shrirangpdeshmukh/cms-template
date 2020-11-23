@@ -978,13 +978,12 @@ class UserProfile extends Component {
           <Row>
             <Col md={8}>{table}</Col>
             <Col md={4}>
-              {dropdown}
+              <div style={{ marginLeft: "6%" }}>{dropdown}</div>
               {awardPointsModal}
               {changeRoleModal}
               {changeDesignationModal}
               {blacklistUserModal}
 
-              {/* {userDropDown} */}
               {updatePasswordModal}
               {bioModal}
 
