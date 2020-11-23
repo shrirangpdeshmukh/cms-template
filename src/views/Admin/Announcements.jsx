@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import {
   Grid,
@@ -14,123 +13,142 @@ import {
 import ConfirmModal from "../../components/Modals/confirmModal/ConfirmModal";
 import CreateAnnouncementModal from "../../components/Modals/createAnnouncementModal/createAnnouncementModal";
 
-import Spinner from './../../components/Spinner/Spinner';
-import Button from "./../../components/CustomButton/CustomButton";
-import axios from "../../axios-root"
+import Spinner from "../../components/Spinner/Spinner";
+import Button from "../../components/CustomButton/CustomButton";
+import axios from "../../axios-root";
 
 class Announcements extends Component {
   state = {
-      open: false,
-      showId : null,
-      announcements: null,
-      error:null,
-      announcementData: "click on the statement",
-      loading : false,
-      showModal : false,
-      modalData : null,
-      creatingAnnouncement :false            
-  }
+    open: false,
+    showId: null,
+    announcements: null,
+    error: null,
+    announcementData: "click on the statement",
+    loading: false,
+    showModal: false,
+    modalData: null,
+    creatingAnnouncement: false,
+  };
 
   componentDidMount() {
-        axios.get('/board/announcements').then(response => {
-          this.setState({ announcements: response.data.data.announcements })
-          console.log(response);
-          console.log(this.state.announcements)
-        }).catch(err => {
-            this.setState({error:err})
-        })
+    axios
+      .get("/board/announcements")
+      .then((response) => {
+        this.setState({ announcements: response.data.data.announcements });
+        console.log(response);
+        console.log(this.state.announcements);
+      })
+      .catch((err) => {
+        this.setState({ error: err });
+      });
   }
-  handleClick (e) {
+  handleClick(e) {
     e.preventDefault();
     const state = this.state.announcementData;
     console.log(state);
   }
 
-  fullAnnouncementClicked = (e,id) => {
+  fullAnnouncementClicked = (e, id) => {
     e.preventDefault();
-    const announcement = this.state.announcements.find(a => a.id === id);
+    const announcement = this.state.announcements.find((a) => a.id === id);
     console.log(this.state.announcements);
     console.log(announcement);
-    this.setState({announcementData : announcement.body, showId : id});
+    this.setState({ announcementData: announcement.body, showId: id });
     console.log(this.state.announcementData);
-  }  
+  };
 
-  updateAnnouncement = (id,updatedAnnouncement) => {
-    this.setState({loading : true,showModal : false});
-    axios.patch(`/board/announcements/${id}`,updatedAnnouncement)
-    .then(response => {
-      console.log(response);
-      // console.log(this.state.announcements)
-      const announcements = response.data.updatedAnnouncements;
-      console.log(announcements)
-      this.setState({open : false, showId : null, announcements : announcements, loading : false})
-    }).catch(err => {
-      this.setState({error : err})
-      console.log(err)
-    })
-  }
-  updateClicked(e,text,id) {
+  updateAnnouncement = (id, updatedAnnouncement) => {
+    this.setState({ loading: true, showModal: false });
+    axios
+      .patch(`/board/announcements/${id}`, updatedAnnouncement)
+      .then((response) => {
+        console.log(response);
+        // console.log(this.state.announcements)
+        const announcements = response.data.updatedAnnouncements;
+        console.log(announcements);
+        this.setState({
+          open: false,
+          showId: null,
+          announcements: announcements,
+          loading: false,
+        });
+      })
+      .catch((err) => {
+        this.setState({ error: err });
+        console.log(err);
+      });
+  };
+  updateClicked(e, text, id) {
     e.preventDefault();
     console.log(text);
     let updatedAnnouncement = {
-      updatedAnnouncement : text
-    }
+      updatedAnnouncement: text,
+    };
     const modalData = {
-      Heading : "Are you sure to update the following announcement:",
-      Body : `Are you sure to update the announcement : ${this.state.announcementData}`,
-      onContinue : () => this.updateAnnouncement(id,updatedAnnouncement)
-    }
-    this.setState({showModal : true, modalData : modalData});
+      Heading: "Are you sure to update the following announcement:",
+      Body: `Are you sure to update the announcement : ${this.state.announcementData}`,
+      onContinue: () => this.updateAnnouncement(id, updatedAnnouncement),
+    };
+    this.setState({ showModal: true, modalData: modalData });
   }
- 
+
   deleteAnnouncement = (id) => {
-    this.setState({loading : true,showModal : false});
-    axios.delete(`/board/announcements/${id}/archive`)
-    .then(response => {
-      console.log(response)
-      this.setState({announcements : response.data.announcements,loading:false})
-    })
-    .catch(err => {
-      this.setState({error : err});
-      console.log(err);
-    })
-  }
-  deleteClicked = (e,id) => {
+    this.setState({ loading: true, showModal: false });
+    axios
+      .delete(`/board/announcements/${id}/archive`)
+      .then((response) => {
+        console.log(response);
+        this.setState({
+          announcements: response.data.announcements,
+          loading: false,
+        });
+      })
+      .catch((err) => {
+        this.setState({ error: err });
+        console.log(err);
+      });
+  };
+  deleteClicked = (e, id) => {
     e.preventDefault();
     const modalData = {
-      Heading : "Are you sure to delete the following announcement:",
-      Body : ` ${this.state.announcementData}`,
-      onContinue : () => this.deleteAnnouncement(id)
-    }
-    this.setState({showModal : true, modalData : modalData});
-  }
+      Heading: "Are you sure to delete the following announcement:",
+      Body: ` ${this.state.announcementData}`,
+      onContinue: () => this.deleteAnnouncement(id),
+    };
+    this.setState({ showModal: true, modalData: modalData });
+  };
   closeConfirmClicked = () => {
-    this.setState({showModal : false});
-  }
+    this.setState({ showModal: false });
+  };
   closeCreateAnnouncementModal = () => {
-    this.setState({creatingAnnouncement : false})
-  }
+    this.setState({ creatingAnnouncement: false });
+  };
   createAnnouncement = () => {
     let announcementBody = document.getElementById("textarea").value;
-    this.setState({loading : true, creatingAnnouncement : false});
+    this.setState({ loading: true, creatingAnnouncement: false });
     let announcementdata = {
-      announcement : announcementBody
-    }
-    axios.post("/board/announcements", announcementdata)
-      .then(response => {
+      announcement: announcementBody,
+    };
+    axios
+      .post("/board/announcements", announcementdata)
+      .then((response) => {
         console.log(response);
-        this.setState({loading : false, showModal : false, announcements : response.data.announcements});
+        this.setState({
+          loading: false,
+          showModal: false,
+          announcements: response.data.announcements,
+        });
       })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   handleChange = (event) => {
     event.preventDefault();
     // console.log(event.target.value);
     // this.setState({loading : true})
-    this.setState({announcementData : event.target.value})
-  }
+    this.setState({ announcementData: event.target.value });
+  };
   render() {
     console.log(this.state.announcementData);
     let announcements;
@@ -138,120 +156,197 @@ class Announcements extends Component {
     let text = this.state.announcementData;
     let modal = null;
     let createAnnouncementModal = null;
-    if(this.state.creatingAnnouncement) {
-    createAnnouncementModal = <CreateAnnouncementModal create = {this.createAnnouncement} show = {this.state.creatingAnnouncement} onClose = {this.closeCreateAnnouncementModal}/>
+    if (this.state.creatingAnnouncement) {
+      createAnnouncementModal = (
+        <CreateAnnouncementModal
+          create={this.createAnnouncement}
+          show={this.state.creatingAnnouncement}
+          onClose={this.closeCreateAnnouncementModal}
+        />
+      );
     }
     let textForm = (
       <FormControl
-                          style={{ height: "30rem", resize: "none" }}
-                          componentClass="textarea"
-                          placeholder="textarea"
-                          // defaultValue= "Click on any announcement"
-                          value = {text}
-                          readOnly = {false}
-                          onChange = {this.handleChange}
-                          // controlId = "bigMsg"
-                        />
+        style={{ height: "30rem", resize: "none" }}
+        componentClass="textarea"
+        placeholder="textarea"
+        // defaultValue= "Click on any announcement"
+        value={text}
+        readOnly={false}
+        onChange={this.handleChange}
+        // controlId = "bigMsg"
+      />
       // <input type = "textarea" style = {{height: "30rem", resize: "none"}} value = {text || ""} onChange = {() => console.log(text)} />
-    )
-    console.log(text)
+    );
+    console.log(text);
     console.log(this.state.announcementData);
 
-    if(this.state.loading) {
-      spinner = <Spinner />
+    if (this.state.loading) {
+      spinner = <Spinner />;
     }
-    if(this.state.showModal && this.state.modalData) {
+    if (this.state.showModal && this.state.modalData) {
       modal = (
-        <ConfirmModal show = {this.state.showModal} Heading = {this.state.modalData.Heading} 
-            Body = {this.state.modalData.Body} onContinue = {this.state.modalData.onContinue} closeClicked = {this.closeConfirmClicked} />
+        <ConfirmModal
+          show={this.state.showModal}
+          Heading={this.state.modalData.Heading}
+          Body={this.state.modalData.Body}
+          onContinue={this.state.modalData.onContinue}
+          closeClicked={this.closeConfirmClicked}
+        />
       );
     }
-    if(this.state.announcements) {
-      if(window.innerWidth >= 993) {
-        announcements = this.state.announcements.map(el => (
-        <Alert bsStyle="info" className="alert-with-icon" key = {el.id} style = {{overflow : "auto"}}>
-          <span data-notify="icon" className="pe-7s-bell" />
-          <span data-notify="message">
-            {el.body}
-            <button className="btn" type="button" style={{border:"none"}} onClick = {(e) => this.fullAnnouncementClicked(e,el.id)}>(Show full announcement)</button>
-          </span>
-          <h6 style = {{color : "gray"}} >{
-            (new Date(el.timestamp)).toDateString()
-            }</h6>
-        </Alert>
-      ))
+    if (this.state.announcements) {
+      if (window.innerWidth >= 993) {
+        announcements = this.state.announcements.map((el) => (
+          <Alert
+            bsStyle="info"
+            className="alert-with-icon"
+            key={el.id}
+            style={{ overflow: "auto" }}
+          >
+            <span data-notify="icon" className="pe-7s-bell" />
+            <span data-notify="message">
+              {el.body}
+              <button
+                className="btn"
+                type="button"
+                style={{ border: "none" }}
+                onClick={(e) => this.fullAnnouncementClicked(e, el.id)}
+              >
+                (Show full announcement)
+              </button>
+            </span>
+            <h6 style={{ color: "gray" }}>
+              {new Date(el.timestamp).toDateString()}
+            </h6>
+          </Alert>
+        ));
       } else {
-        announcements = this.state.announcements.map(el => (
-          <Alert bsStyle="info" className="alert-with-icon" key = {el.id} style = {{overflow : "auto"}}>
-              <span data-notify="icon" className="pe-7s-bell" />
-              <span data-notify="message">
-               {el.body}
-                <button className="btn" type="button" 
-                  onClick={()=>this.setState({ open: !this.state.open, showId : el.id,announcementData : el.body })} style={{border:"none"}}>
-                  (Show full announcement)
-                </button>
-              </span>
+        announcements = this.state.announcements.map((el) => (
+          <Alert
+            bsStyle="info"
+            className="alert-with-icon"
+            key={el.id}
+            style={{ overflow: "auto" }}
+          >
+            <span data-notify="icon" className="pe-7s-bell" />
+            <span data-notify="message">
+              {el.body}
+              <button
+                className="btn"
+                type="button"
+                onClick={() =>
+                  this.setState({
+                    open: !this.state.open,
+                    showId: el.id,
+                    announcementData: el.body,
+                  })
+                }
+                style={{ border: "none" }}
+              >
+                (Show full announcement)
+              </button>
+            </span>
             <Collapse in={this.state.open && this.state.showId === el.id}>
-                  <div>
-                    <div className="card">
-                      <FormGroup 
-                        // controlId="formControlsTextarea"
-                        >
-                          <FormControl
-                                style={{ height: "30rem", resize: "none" }}
-                                componentClass="textarea"
-                                placeholder={el.body}
-                                defaultValue={el.body}
-                                className = {`message${el.id}`}
-                                id = {`message${el.id}`}
-                                // controlId = {`message${el.id}`}
-                                onChange = {this.handleChange}
-                              />
-                      </FormGroup>
-                                  
-                    </div>
-                    <Button className="btn-fill" style={{ marginRight:"10px"}} bsStyle="primary" onClick = {(e) => this.updateClicked(e,this.state.announcementData ,el.id)}>Update</Button>
-                    <Button bsStyle="danger" className="btn-fill" onClick = {(e) => this.deleteClicked(e,el.id)}>Delete</Button>
-                  </div>                
+              <div>
+                <div className="card">
+                  <FormGroup
+                  // controlId="formControlsTextarea"
+                  >
+                    <FormControl
+                      style={{ height: "30rem", resize: "none" }}
+                      componentClass="textarea"
+                      placeholder={el.body}
+                      defaultValue={el.body}
+                      className={`message${el.id}`}
+                      id={`message${el.id}`}
+                      // controlId = {`message${el.id}`}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </div>
+                <Button
+                  className="btn-fill"
+                  style={{ marginRight: "10px" }}
+                  bsStyle="primary"
+                  onClick={(e) =>
+                    this.updateClicked(e, this.state.announcementData, el.id)
+                  }
+                >
+                  Update
+                </Button>
+                <Button
+                  bsStyle="danger"
+                  className="btn-fill"
+                  onClick={(e) => this.deleteClicked(e, el.id)}
+                >
+                  Delete
+                </Button>
+              </div>
             </Collapse>
-        </Alert>
-        ))
+          </Alert>
+        ));
       }
-      
     }
 
     if (window.innerWidth >= 993) {
       return (
         <div className="content">
           <Grid fluid>
-          {spinner}
-          {modal}
-          {createAnnouncementModal}
+            {spinner}
+            {modal}
+            {createAnnouncementModal}
 
             <div className="card">
               <div className="header">
                 <h4 className="title">Latest Announcements</h4>
               </div>
-              
+
               <div className="content">
                 <Row>
                   <Col md={6}>
-                    <Button style={{border:"none"}} onClick = {() => this.setState({creatingAnnouncement : true})}><Label>+</Label></Button>
+                    <Button
+                      style={{ border: "none" }}
+                      onClick={() =>
+                        this.setState({ creatingAnnouncement: true })
+                      }
+                    >
+                      <Label>+</Label>
+                    </Button>
                     {announcements}
                   </Col>
                   <Col md={6}>
                     <h5>Announcement</h5>
                     <div className="card">
                       {/* <div className="content"> */}
-                      <FormGroup 
+                      <FormGroup
                       // controlId="formControlsTextarea"
                       >
                         {textForm}
                       </FormGroup>
                     </div>
                     {/* document.getElementById("formControlsTextarea").value */}
-                    <Button className="btn-fill" style={{ marginRight:"10px"}} bsStyle="primary" onClick = {(e) => this.updateClicked(e,this.state.announcementData, this.state.showId)}>Update</Button>
-                    <Button className="btn-fill" bsStyle="danger" onClick = {(e) => this.deleteClicked(e,this.state.showId)}>Delete</Button>
+                    <Button
+                      className="btn-fill"
+                      style={{ marginRight: "10px" }}
+                      bsStyle="primary"
+                      onClick={(e) =>
+                        this.updateClicked(
+                          e,
+                          this.state.announcementData,
+                          this.state.showId
+                        )
+                      }
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      className="btn-fill"
+                      bsStyle="danger"
+                      onClick={(e) => this.deleteClicked(e, this.state.showId)}
+                    >
+                      Delete
+                    </Button>
                   </Col>
                 </Row>
                 <br />
@@ -261,15 +356,17 @@ class Announcements extends Component {
           </Grid>
         </div>
       );
-    }
-    else {
+    } else {
       return (
         <div className="content">
           {spinner}
           {modal}
           {createAnnouncementModal}
 
-          <ConfirmModal Heading = "Are you sure to update the following announcement :" Body = "Hello World!" />
+          <ConfirmModal
+            Heading="Are you sure to update the following announcement :"
+            Body="Hello World!"
+          />
           <Grid fluid>
             <div className="card">
               <div className="header">
@@ -278,9 +375,16 @@ class Announcements extends Component {
               <div className="content">
                 <Row>
                   <Col md={6}>
-                    <Button style={{ border: "none" }} onClick = {() => this.setState({creatingAnnouncement : true})}><Label>+</Label></Button>
+                    <Button
+                      style={{ border: "none" }}
+                      onClick={() =>
+                        this.setState({ creatingAnnouncement: true })
+                      }
+                    >
+                      <Label>+</Label>
+                    </Button>
                     {announcements}
-                  </Col> 
+                  </Col>
                 </Row>
                 <br />
                 <br />
