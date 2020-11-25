@@ -16,7 +16,7 @@ class ConfirmModal extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title><b>{this.props.Heading}</b></Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{this.props.Body}</Modal.Body>
+                <Modal.Body style = {{overflow : "hidden"}}>{this.props.Body}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" onClick={this.handleClose}>
                             Close

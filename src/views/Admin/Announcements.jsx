@@ -156,6 +156,34 @@ class Announcements extends Component {
     let text = this.state.announcementData;
     let modal = null;
     let createAnnouncementModal = null;
+    
+    const cookies = this.props.cookies.cookies;
+    const auth = cookies.isAuthenticated;
+    const userData = cookies.userData;
+    let userRole;
+    if(auth && userData !== "undefined" ){
+      const authJSON = JSON.parse(auth);
+      const userDataJSON = JSON.parse(userData);
+
+      if(authJSON && userDataJSON) {
+        userRole = userDataJSON.user.role;
+        console.log(userRole);
+      }
+    }
+    
+    let createAnnouncementButton = null;
+    if(userRole !== "user") {
+      createAnnouncementButton = (
+        <Button
+        style={{ border: "none" }}
+        onClick={() =>
+          this.setState({ creatingAnnouncement: true })
+        }
+      >
+       <Label>+</Label> 
+      </Button>
+      )
+    }
     if (this.state.creatingAnnouncement) {
       createAnnouncementModal = (
         <CreateAnnouncementModal
@@ -172,7 +200,7 @@ class Announcements extends Component {
         placeholder="textarea"
         // defaultValue= "Click on any announcement"
         value={text}
-        readOnly={false}
+        readOnly={userRole === "user"}
         onChange={this.handleChange}
         // controlId = "bigMsg"
       />
@@ -202,7 +230,7 @@ class Announcements extends Component {
             bsStyle="info"
             className="alert-with-icon"
             key={el.id}
-            style={{ overflow: "auto" }}
+            style={{ overflow: "hidden" }}
           >
             <span data-notify="icon" className="pe-7s-bell" />
             <span data-notify="message">
@@ -217,7 +245,9 @@ class Announcements extends Component {
               </button>
             </span>
             <h6 style={{ color: "gray" }}>
-              {new Date(el.timestamp).toDateString()}
+              {new Date(el.timestamp).toLocaleTimeString()}
+              ,
+              {new Date(el.timestamp).toDateString()} 
             </h6>
           </Alert>
         ));
@@ -227,11 +257,12 @@ class Announcements extends Component {
             bsStyle="info"
             className="alert-with-icon"
             key={el.id}
-            style={{ overflow: "auto" }}
+            style={{ overflow: "hidden" }}
           >
             <span data-notify="icon" className="pe-7s-bell" />
             <span data-notify="message">
               {el.body}
+              
               <button
                 className="btn"
                 type="button"
@@ -246,6 +277,11 @@ class Announcements extends Component {
               >
                 (Show full announcement)
               </button>
+              <h6 style={{ color: "gray" }}>
+                {new Date(el.timestamp).toLocaleTimeString()}
+                ,
+                {new Date(el.timestamp).toDateString()} 
+              </h6>
             </span>
             <Collapse in={this.state.open && this.state.showId === el.id}>
               <div>
@@ -261,10 +297,12 @@ class Announcements extends Component {
                       className={`message${el.id}`}
                       id={`message${el.id}`}
                       // controlId = {`message${el.id}`}
+                      readOnly = {userRole === "user"}
                       onChange={this.handleChange}
                     />
                   </FormGroup>
                 </div>
+                {userRole === "user" ? null : (
                 <Button
                   className="btn-fill"
                   style={{ marginRight: "10px" }}
@@ -272,9 +310,12 @@ class Announcements extends Component {
                   onClick={(e) =>
                     this.updateClicked(e, this.state.announcementData, el.id)
                   }
+                  show = {userData !== "user"}
                 >
                   Update
                 </Button>
+                )}
+                {userRole === "user" ? null : (
                 <Button
                   bsStyle="danger"
                   className="btn-fill"
@@ -282,6 +323,7 @@ class Announcements extends Component {
                 >
                   Delete
                 </Button>
+                )}
               </div>
             </Collapse>
           </Alert>
@@ -305,14 +347,7 @@ class Announcements extends Component {
               <div className="content">
                 <Row>
                   <Col md={6}>
-                    <Button
-                      style={{ border: "none" }}
-                      onClick={() =>
-                        this.setState({ creatingAnnouncement: true })
-                      }
-                    >
-                      <Label>+</Label>
-                    </Button>
+                    {createAnnouncementButton}
                     {announcements}
                   </Col>
                   <Col md={6}>
@@ -326,6 +361,7 @@ class Announcements extends Component {
                       </FormGroup>
                     </div>
                     {/* document.getElementById("formControlsTextarea").value */}
+                    {userRole === "user" ? null : (
                     <Button
                       className="btn-fill"
                       style={{ marginRight: "10px" }}
@@ -340,6 +376,8 @@ class Announcements extends Component {
                     >
                       Update
                     </Button>
+                    )}
+                    {userRole === "user" ? null : (
                     <Button
                       className="btn-fill"
                       bsStyle="danger"
@@ -347,6 +385,7 @@ class Announcements extends Component {
                     >
                       Delete
                     </Button>
+                    )}
                   </Col>
                 </Row>
                 <br />
@@ -375,14 +414,7 @@ class Announcements extends Component {
               <div className="content">
                 <Row>
                   <Col md={6}>
-                    <Button
-                      style={{ border: "none" }}
-                      onClick={() =>
-                        this.setState({ creatingAnnouncement: true })
-                      }
-                    >
-                      <Label>+</Label>
-                    </Button>
+                    {createAnnouncementButton}
                     {announcements}
                   </Col>
                 </Row>

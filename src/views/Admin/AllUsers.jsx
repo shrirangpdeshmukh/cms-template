@@ -95,7 +95,7 @@ class AllUsers extends Component {
       data = <Spinner />;
     }
 
-    if (this.state.users.length != 0) {
+    if (this.state.users.length !== 0) {
       data = (
         <Grid fluid>
           <Row>
