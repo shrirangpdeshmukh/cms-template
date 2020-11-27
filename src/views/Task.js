@@ -147,6 +147,7 @@ class Chat extends Component {
               );
             }
             this.setState({ assignees: assignments });
+            //console.log(this.props)
             axios
               .get(
                 `/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/assignmentRequest`
@@ -178,7 +179,6 @@ class Chat extends Component {
           .catch((e) => this.setState({ error: true, loading: false }));
       })
       .catch((err) => this.setState({ error: true, loading: false }));
-    //console.log(this.props)
   }
 
   setUpSocket = () => {

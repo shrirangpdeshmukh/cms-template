@@ -355,3 +355,22 @@ export const RemoveAssignment= {
     touched: false,
   }, 
 }
+
+export const AddUsersToPrivateScope= {
+  emails: {
+    elementType: "textarea",
+    elementConfig: {
+      type: "text",
+      id: "email",
+      placeholder: "Enter comma seperated emails",
+    },
+    value: null,
+    icon: "",
+    validation: {
+      required: true,
+      isCommaSeperatedEmailList:true
+    },
+    valid: false,
+    touched: false,
+  }, 
+}

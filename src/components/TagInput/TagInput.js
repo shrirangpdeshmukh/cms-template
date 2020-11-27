@@ -10,12 +10,24 @@ class TagInput extends Component{
 		this.props.updateTags(updated)
     }
 
-    addTags = (event) => {
-        if (event.target.value !== "") {
+	addTags = (event) => {
+		if (this.props.isEmail) {
+			const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    
+			if (event.target.value !== ""&&pattern.test(event.target.value)) {
 					this.props.updateTags([...this.props.tags, event.target.value])
 
 			event.target.value = "";
 			
+		}
+		} else {
+			
+			if (event.target.value !== "") {
+						this.props.updateTags([...this.props.tags, event.target.value])
+	
+				event.target.value = "";
+				
+			}
 		}
     }
 
@@ -35,9 +47,9 @@ class TagInput extends Component{
 				))}
 			</ul>
 			<input
-				type="text"
-				onKeyUp={event => (event.key === "Enter") ? this.addTags(event) : null}
-				placeholder="Press enter to add tags"
+					type="text"
+					onKeyUp={event => (event.key === "Enter") ? this.addTags(event) : null}
+					placeholder={this.props.isEmail?"Enter emails. Press enter after each one.":"Press enter to add tags"}
 			/>
 		</div>
     )

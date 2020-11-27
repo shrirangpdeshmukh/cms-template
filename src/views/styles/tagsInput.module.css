@@ -5,7 +5,7 @@
   align-items: flex-start;
   flex-wrap: wrap;
   min-height: 48px;
-  width: 480px;
+  width: 570px;
   padding: 0 8px;
   border: 1px solid rgb(214, 216, 218);
   border-radius: 6px;
@@ -64,6 +64,6 @@
 
 @media screen and (max-width: 567px) {
   .tagsInput {
-    width: calc(100vw - 32px);
+    width: calc(100vw - 50px);
   }
 }

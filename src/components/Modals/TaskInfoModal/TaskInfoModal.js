@@ -38,7 +38,7 @@ class ChatModal extends Component {
     let taskDropdown = null;
     if (this.props.isAdmin) {
       taskDropdown = (
-        <Dropdown title="Action" dropup pullRight style={{ float: "right" }}>
+        <Dropdown title="Action"  style={{ float: "right" }}>
           <Dropdown.Toggle noCaret style={{ border: "none" }}>
             <BiEditAlt />
           </Dropdown.Toggle>
