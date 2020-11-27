@@ -20,7 +20,7 @@ class TableAbsentCard extends Component {
     };
     let width = window.innerWidth * 1;
     if (width > 549) {
-      console.log(window.innerWidth);
+      // console.log(window.innerWidth);
       this.setState({ style: newStyle });
     }
   }

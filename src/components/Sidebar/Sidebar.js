@@ -18,8 +18,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
-
-import logo from "assets/img/collegelogo.png";
+import logo from "../../assets/img/collegelogo.png";
 
 class Sidebar extends Component {
   constructor(props) {
@@ -40,7 +39,7 @@ class Sidebar extends Component {
   }
   render() {
     let renderFlag = false;
-    
+
     const cookies = this.props.cookies.cookies;
 
     const auth = cookies.isAuthenticated;
@@ -58,11 +57,10 @@ class Sidebar extends Component {
         }
       }
     }
-    
+
     let routes = this.props.routes.map((prop, key) => {
-      
       if (prop.path === "/signup" && !renderFlag) return null;
-      
+
       if (!prop.redirect && prop.icon && prop.name)
         return (
           <li className={this.activeRoute(prop.layout + prop.path)} key={key}>
@@ -78,8 +76,6 @@ class Sidebar extends Component {
         );
       return null;
     });
-
-
 
     return (
       <div

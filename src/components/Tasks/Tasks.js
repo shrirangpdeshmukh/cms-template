@@ -17,15 +17,15 @@
 */
 import React, { Component } from "react";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import Checkbox from "components/CustomCheckbox/CustomCheckbox";
-import Button from "components/CustomButton/CustomButton";
+import Checkbox from "../CustomCheckbox/CustomCheckbox";
+import Button from "../CustomButton/CustomButton";
 
 export class Tasks extends Component {
-  handleCheckbox = event => {
+  handleCheckbox = (event) => {
     const target = event.target;
-    console.log(event.target);
+    // console.log(event.target);
     this.setState({
-      [target.name]: target.checked
+      [target.name]: target.checked,
     });
   };
   render() {
@@ -37,7 +37,7 @@ export class Tasks extends Component {
       "Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroi",
       "Create 4 Invisible User Experiences you Never Knew About",
       'Read "Following makes Medium better"',
-      "Unfollow 5 enemies from twitter"
+      "Unfollow 5 enemies from twitter",
     ];
     var tasks = [];
     var number;

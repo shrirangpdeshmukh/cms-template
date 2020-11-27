@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Grid } from "react-bootstrap";
-import CommentCard from "components/Cards/CommentCard/CommentCard";
-import ChatModal from "components/Modals/TaskInfoModal/TaskInfoModal";
-import ActionModalButtons from "components/CustomButton/ActionModalButtons/ActionModalButtons";
+import CommentCard from "../components/Cards/CommentCard/CommentCard";
+import ChatModal from "../components/Modals/TaskInfoModal/TaskInfoModal";
+import ActionModalButtons from "../components/CustomButton/ActionModalButtons/ActionModalButtons";
 import axios from "../axios-root";
 import io from "socket.io-client";
 import { withCookies } from "react-cookie";
@@ -19,29 +19,18 @@ import {
   MenuItem,
 } from "react-bootstrap";
 import { IoIosSend } from "react-icons/io";
-import TagInput from "components/TagInput/TagInput";
+import TagInput from "../components/TagInput/TagInput";
 import checkValidity from "../variables/validityRules";
-// <<<<<<< Refactoring
-// import { AddAssignment, RemoveAssignment } from "../variables/forms";
-// import InputElements from "components/Form/InputElements/InputElements";
-// =======
+
 import { AddAssignment, RemoveAssignment } from "../variables/forms";
-import InputElements from "components/Form/InputElements/InputElements";
-import ResponseModal from "components/Modals/ResponseModal/ResponseModal";
+import InputElements from "../components/Form/InputElements/InputElements";
+import ResponseModal from "../components/Modals/ResponseModal/ResponseModal";
 
 class Chat extends Component {
   socket = null;
   typing = null;
   timeout = undefined;
   state = {
-    // <<<<<<< Refactoring
-    //     comments: [
-    //       { authorId: 10, taskId: 3, text: "Test Comments", id: 1000000 },
-    //       { authorId: 10, taskId: 3, text: "Test Comments", id: 1000000002 },
-    //       { authorId: 10, taskId: 3, text: "Test Comments", id: 100000009 },
-    //     ],
-
-    // =======
     taskData: null,
     comments: [],
 
@@ -57,58 +46,6 @@ class Chat extends Component {
     assignees: [],
     assignmentRequests: [],
     requestTracker: [],
-    // <<<<<<< Refactoring
-    //   };
-
-    //   componentDidMount() {
-    //     axios
-    //       .get(
-    //         `/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/comments/100`
-    //       )
-    //       .then((response) => {
-    //         //console.log(response)
-    //         this.setState({ comments: response.data.comments.data });
-    //         this.setUpSocket();
-    //       })
-    //       .catch((err) => this.setState({ error: true, loading: false }));
-    //     //console.log(this.props)
-    //     axios
-    //       .get(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}`)
-    //       .then((response) => {
-    //         //console.log(response)
-    //         this.setState({ taskData: response.data.task });
-    //         if (response.data.task.tags !== null) {
-    //           this.setState({
-    //             tags: response.data.task.tags,
-    //             updatedTags: response.data.task.tags,
-    //           });
-    //         }
-
-    //         const assignments = [];
-    //         if (response.data.task.assignments !== null) {
-    //           response.data.task.assignments.forEach((assignment) =>
-    //             assignments.push(assignment.email)
-    //           );
-    //         }
-    //         this.setState({ assignees: assignments });
-    //       })
-    //       .catch((e) => this.setState({ error: true, loading: false }));
-    //     axios
-    //       .get(
-    //         `/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/assignmentRequest`
-    //       )
-    //       .then((response) => {
-    //         // console.log(response)
-    //         if (response.data.requests !== null) {
-    //           const requestsTracker = [];
-    //           response.data.requests.forEach((request) =>
-    //             requestsTracker.pushback("notAccepted")
-    //           );
-    //           this.setState({
-    //             assignmentRequests: response.data.requests,
-    //             requestTracker: requestsTracker,
-    //           });
-    // =======
     dropDownValue: "Change Importance",
     isArchived: 0,
     important: 0,
@@ -127,7 +64,7 @@ class Chat extends Component {
         axios
           .get(`/board/topics/${this.props.topicId}/tasks/${this.props.taskId}`)
           .then((response) => {
-            console.log(response);
+            // console.log(response);
             this.setState({
               taskData: response.data.task,
               isArchived: response.data.task.isArchived,
@@ -155,7 +92,7 @@ class Chat extends Component {
               .then((response) => {
                 // console.log(response)
                 if (response.data.requests !== null) {
-                  console.log(response.data.requests);
+                  // console.log(response.data.requests);
                   const requestsTracker = [];
                   const requests = [];
                   response.data.requests.forEach((request) =>
@@ -261,7 +198,7 @@ class Chat extends Component {
 
   updatedTagsInState = (tags) => {
     this.setState({ updatedTags: tags });
-    console.log(this.state.updatedTags);
+    // console.log(this.state.updatedTags);
   };
 
   submitUpdatedTags = (updatedTags) => {
@@ -363,18 +300,18 @@ class Chat extends Component {
         formData
       )
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         const addedAssignments = [];
         formData.emails
           .split(",")
           .forEach((email) => addedAssignments.push(email));
-        console.log(addedAssignments);
+        // console.log(addedAssignments);
         this.setState({
           assignees: [...this.state.assignees, ...addedAssignments],
           showModal: 0,
           loading: false,
         });
-        console.log(this.state.assignees);
+        // console.log(this.state.assignees);
         const modalData = {
           title: "Success",
           message: response.data.message,
@@ -400,26 +337,7 @@ class Chat extends Component {
       formData[formElementIdentifier] = this.state.removeAssignment[
         formElementIdentifier
       ].value;
-      // <<<<<<< Refactoring
-      //     }
-      //     this.setState({ loading: true });
-      //     axios
-      //       .patch(
-      //         `/board/topics/${this.props.topicId}/tasks/${this.props.taskId}/assignments`,
-      //         formData
-      //       )
-      //       .then((response) => {
-      //         console.log(response);
-      //         const updatedAssignments = this.state.assignees.filter(
-      //           (assigneeEmail) => assigneeEmail !== formData.email
-      //         );
-      //         this.setState({
-      //           assignees: updatedAssignments,
-      //           showModal: 0,
-      //           loading: false,
-      //         });
-      //         console.log(this.state.assignees);
-      // =======
+
     }
     this.setState({ loading: true });
     axios
@@ -428,7 +346,7 @@ class Chat extends Component {
         formData
       )
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         const updatedAssignments = this.state.assignees.filter(
           (assigneeEmail) => assigneeEmail !== formData.email
         );
@@ -437,7 +355,7 @@ class Chat extends Component {
           showModal: 0,
           loading: false,
         });
-        console.log(this.state.assignees);
+        // console.log(this.state.assignees);
         const modalData = {
           title: "Success",
           message: response.data.message,

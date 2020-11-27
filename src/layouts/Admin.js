@@ -18,11 +18,11 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import AdminNavbar from "components/Navbars/AdminNavbar";
-import Footer from "components/Footer/Footer";
-import Sidebar from "components/Sidebar/Sidebar";
+import AdminNavbar from "../components/Navbars/AdminNavbar";
+import Footer from "../components/Footer/Footer";
+import Sidebar from "../components/Sidebar/Sidebar";
 
-import { adminRoutes } from "routes.js";
+import { adminRoutes } from "../routes.js";
 
 class Admin extends Component {
   constructor(props) {

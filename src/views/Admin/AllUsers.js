@@ -27,7 +27,7 @@ import {
 
 import axios from "../../axios-root";
 
-import Card from "components/Cards/Card/Card";
+import Card from "../../components/Cards/Card/Card";
 // import CustomButton from "../../components/CustomButton/CustomButton";
 import Spinner from "../../components/Spinner/Spinner";
 
@@ -66,7 +66,9 @@ class AllUsers extends Component {
                   return (
                     <ListGroupItem
                       key={user.id}
-                      onClick={() => this.props.history.push(`/admin/user/${user.id}`)}
+                      onClick={() =>
+                        this.props.history.push(`/admin/user/${user.id}`)
+                      }
                       style={{
                         borderTop: 0,
                         borderRight: 0,
@@ -78,8 +80,7 @@ class AllUsers extends Component {
                       <Badge>{user.designation}</Badge>
                     </ListGroupItem>
                   );
-                }
-                else return null;
+                } else return null;
               })}
             </ListGroup>
           </div>

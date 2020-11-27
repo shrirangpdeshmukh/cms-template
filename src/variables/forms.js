@@ -120,7 +120,6 @@ export const UpdatePassword = {
     icon: "lock",
     validation: {
       required: true,
-      minLength: 8,
     },
     valid: false,
     touched: false,
@@ -282,7 +281,6 @@ export const CreateTask = {
   },
 };
 
-
 export const CreateTopic = {
   heading: {
     elementType: "input",
@@ -317,8 +315,7 @@ export const CreateTopic = {
   },
 };
 
-
-export const AddAssignment= {
+export const AddAssignment = {
   emails: {
     elementType: "textarea",
     elementConfig: {
@@ -330,14 +327,14 @@ export const AddAssignment= {
     icon: "",
     validation: {
       required: true,
-      isCommaSeperatedEmailList:true
+      isCommaSeperatedEmailList: true,
     },
     valid: false,
     touched: false,
-  }, 
-}
+  },
+};
 
-export const RemoveAssignment= {
+export const RemoveAssignment = {
   email: {
     elementType: "textarea",
     elementConfig: {
@@ -349,14 +346,14 @@ export const RemoveAssignment= {
     icon: "",
     validation: {
       required: true,
-      isEmail:true
+      isEmail: true,
     },
     valid: false,
     touched: false,
-  }, 
-}
+  },
+};
 
-export const AddUsersToPrivateScope= {
+export const AddUsersToPrivateScope = {
   emails: {
     elementType: "textarea",
     elementConfig: {
@@ -368,9 +365,9 @@ export const AddUsersToPrivateScope= {
     icon: "",
     validation: {
       required: true,
-      isCommaSeperatedEmailList:true
+      isCommaSeperatedEmailList: true,
     },
     valid: false,
     touched: false,
-  }, 
-}
+  },
+};

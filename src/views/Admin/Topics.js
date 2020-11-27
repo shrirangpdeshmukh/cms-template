@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from "react-bootstrap";
 
-import { Card } from "components/Cards/Card/Card";
+import { Card } from "../../components/Cards/Card/Card";
 import axios from "../../axios-root";
 import { AiFillPlusCircle } from "react-icons/ai";
 import ActionModalButtons from "../../components/CustomButton/ActionModalButtons/ActionModalButtons";
@@ -17,7 +17,7 @@ import ResponseModal from "../../components/Modals/ResponseModal/ResponseModal";
 import checkValidity from "../../variables/validityRules";
 import InputElements from "../../components/Form/InputElements/InputElements";
 import { CreateTopic, AddUsersToPrivateScope } from "../../variables/forms";
-import TagInput from "components/TagInput/TagInput"
+import TagInput from "../../components/TagInput/TagInput";
 
 class Topics extends Component {
   constructor(props) {
@@ -215,45 +215,68 @@ class Topics extends Component {
       .then((res) => {
         console.log(res);
         const data = {
-      emails: this.state.users,
-    };
-    axios
-      .post(
-        `/board/topics/${this.state.currentEditingTopic}/private`,
-        data
-      )
-      .then((response) => {
-        let message = "Update Successful";
-        const modalData = {
-          title: "Success",
-          message: message,
-          Button: "success",
-          img: "success",
-          hide: () => {
-            this.setState({ showResponse: false });
-            window.location.reload(false);
-          },
+          emails: this.state.users,
         };
+        axios
+          .post(`/board/topics/${this.state.currentEditingTopic}/private`, data)
+          .then((response) => {
+            let message = "Update Successful";
+            const modalData = {
+              title: "Success",
+              message: message,
+              Button: "success",
+              img: "success",
+              hide: () => {
+                this.setState({ showResponse: false });
+                window.location.reload(false);
+              },
+            };
+            axios
+              .post(
+                `/board/topics/${this.state.currentEditingTopic}/private`,
+                data
+              )
+              .then((response) => {
+                let message = "Update Successful";
+                const modalData = {
+                  title: "Success",
+                  message: message,
+                  Button: "success",
+                  img: "success",
+                  hide: () => {
+                    this.setState({ showResponse: false });
+                    window.location.reload(false);
+                  },
+                };
 
-        this.setState({
-          loading: false,
-          showResponse: true,
-          modalData: modalData,
-          formIsValid: false,
-          currentEditingTopic: null,
-          editTopic: null,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({
-          loading: false,
-          formIsValid: false,
-          currentEditingTopic: null,
-          editTopic: null,
-        });
-      });
-        
+                this.setState({
+                  loading: false,
+                  showResponse: true,
+                  modalData: modalData,
+                  formIsValid: false,
+                  currentEditingTopic: null,
+                  editTopic: null,
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+                this.setState({
+                  loading: false,
+                  formIsValid: false,
+                  currentEditingTopic: null,
+                  editTopic: null,
+                });
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            this.setState({
+              loading: false,
+              formIsValid: false,
+              currentEditingTopic: null,
+              editTopic: null,
+            });
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -347,13 +370,17 @@ class Topics extends Component {
   };
 
   hideModal = () => {
-    this.setState({ showModal: false, showCreate: false, showArchive: false,addUsersToPrivateScope:false });
+    this.setState({
+      showModal: false,
+      showCreate: false,
+      showArchive: false,
+      addUsersToPrivateScope: false,
+    });
   };
 
   updatedUsersInState = (tags) => {
     this.setState({ users: tags });
   };
-
 
   render() {
     let addTopic = null;
@@ -418,7 +445,7 @@ class Topics extends Component {
             { title: "All Members", value: "member" },
             { title: "Admins only", value: "admin" },
             { title: "Super Admins Only", value: "superAdmin" },
-            {title: "Private", value: "private"}
+            { title: "Private", value: "private" },
           ];
 
           editModal = (
@@ -475,19 +502,19 @@ class Topics extends Component {
                     Mark as Important
                   </Col>
                   <Col lg={1} md={1} sm={1}></Col>
-                  
                 </Row>
-                {this.state.editDropDownValue==="private"?(
+                {this.state.editDropDownValue === "private" ? (
                   <Row>
                     <Col lg={10} md={10} sm={10}>
-                      Add users to private Scope: 
+                      Add users to private Scope:
                       <TagInput
                         tags={this.state.users}
                         updateTags={(users) => this.updatedUsersInState(users)}
                         isEmail
                       />
                     </Col>
-                  </Row>):null}
+                  </Row>
+                ) : null}
               </Modal.Body>
               <Modal.Footer>
                 <ActionModalButtons
@@ -613,8 +640,6 @@ class Topics extends Component {
               </Modal.Footer>
             </Modal>
           );
-
-           
         }
       }
     }

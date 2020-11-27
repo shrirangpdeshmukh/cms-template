@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 import { Row, Col, DropdownButton, MenuItem } from "react-bootstrap";
-import { Card } from "components/Cards/Card/Card";
-import { FormInputs } from "components/FormInputs/FormInputs";
-import Button from "components/CustomButton/CustomButton";
+import { Card } from "../../components/Cards/Card/Card";
+import { FormInputs } from "../../components/FormInputs/FormInputs";
+import Button from "../../components/CustomButton/CustomButton";
 
 import axios from "../../axios-root";
 

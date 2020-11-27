@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 
-import Card from "components/Cards/Card/Card";
+import Card from "../Cards/Card/Card";
 
 const updownArrow = (num) => {
   if (num < 0) {

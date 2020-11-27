@@ -20,7 +20,7 @@ import { NavLink } from "react-router-dom";
 
 import AdminSidebarLinks from "../Navbars/AdminSidebarLinks";
 
-import logo from "assets/img/collegelogo.png";
+import logo from "../../assets/img/collegelogo.png";
 
 class Sidebar extends Component {
   constructor(props) {

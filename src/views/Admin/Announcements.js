@@ -35,8 +35,8 @@ class Announcements extends Component {
       .get("/board/announcements")
       .then((response) => {
         this.setState({ announcements: response.data.data.announcements });
-        console.log(response);
-        console.log(this.state.announcements);
+        // console.log(response);
+        // console.log(this.state.announcements);
       })
       .catch((err) => {
         this.setState({ error: err });
@@ -45,16 +45,16 @@ class Announcements extends Component {
   handleClick(e) {
     e.preventDefault();
     const state = this.state.announcementData;
-    console.log(state);
+    // console.log(state);
   }
 
   fullAnnouncementClicked = (e, id) => {
     e.preventDefault();
     const announcement = this.state.announcements.find((a) => a.id === id);
-    console.log(this.state.announcements);
-    console.log(announcement);
+    // console.log(this.state.announcements);
+    // console.log(announcement);
     this.setState({ announcementData: announcement.body, showId: id });
-    console.log(this.state.announcementData);
+    // console.log(this.state.announcementData);
   };
 
   updateAnnouncement = (id, updatedAnnouncement) => {
@@ -62,10 +62,10 @@ class Announcements extends Component {
     axios
       .patch(`/board/announcements/${id}`, updatedAnnouncement)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         // console.log(this.state.announcements)
         const announcements = response.data.updatedAnnouncements;
-        console.log(announcements);
+        // console.log(announcements);
         this.setState({
           open: false,
           showId: null,
@@ -80,7 +80,7 @@ class Announcements extends Component {
   };
   updateClicked(e, text, id) {
     e.preventDefault();
-    console.log(text);
+    // console.log(text);
     let updatedAnnouncement = {
       updatedAnnouncement: text,
     };
@@ -97,7 +97,7 @@ class Announcements extends Component {
     axios
       .delete(`/board/announcements/${id}/archive`)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         this.setState({
           announcements: response.data.announcements,
           loading: false,
@@ -132,7 +132,7 @@ class Announcements extends Component {
     axios
       .post("/board/announcements", announcementdata)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         this.setState({
           loading: false,
           showModal: false,
@@ -150,39 +150,37 @@ class Announcements extends Component {
     this.setState({ announcementData: event.target.value });
   };
   render() {
-    console.log(this.state.announcementData);
+    // console.log(this.state.announcementData);
     let announcements;
     let spinner = null;
     let text = this.state.announcementData;
     let modal = null;
     let createAnnouncementModal = null;
-    
+
     const cookies = this.props.cookies.cookies;
     const auth = cookies.isAuthenticated;
     const userData = cookies.userData;
     let userRole;
-    if(auth && userData !== "undefined" ){
+    if (auth && userData !== "undefined") {
       const authJSON = JSON.parse(auth);
       const userDataJSON = JSON.parse(userData);
 
-      if(authJSON && userDataJSON) {
+      if (authJSON && userDataJSON) {
         userRole = userDataJSON.user.role;
         console.log(userRole);
       }
     }
-    
+
     let createAnnouncementButton = null;
-    if(userRole !== "user") {
+    if (userRole !== "user") {
       createAnnouncementButton = (
         <Button
-        style={{ border: "none" }}
-        onClick={() =>
-          this.setState({ creatingAnnouncement: true })
-        }
-      >
-       <Label>+</Label> 
-      </Button>
-      )
+          style={{ border: "none" }}
+          onClick={() => this.setState({ creatingAnnouncement: true })}
+        >
+          <Label>+</Label>
+        </Button>
+      );
     }
     if (this.state.creatingAnnouncement) {
       createAnnouncementModal = (
@@ -206,8 +204,8 @@ class Announcements extends Component {
       />
       // <input type = "textarea" style = {{height: "30rem", resize: "none"}} value = {text || ""} onChange = {() => console.log(text)} />
     );
-    console.log(text);
-    console.log(this.state.announcementData);
+    // console.log(text);
+    // console.log(this.state.announcementData);
 
     if (this.state.loading) {
       spinner = <Spinner />;
@@ -245,9 +243,8 @@ class Announcements extends Component {
               </button>
             </span>
             <h6 style={{ color: "gray" }}>
-              {new Date(el.timestamp).toLocaleTimeString()}
-              ,
-              {new Date(el.timestamp).toDateString()} 
+              {new Date(el.timestamp).toLocaleTimeString()},
+              {new Date(el.timestamp).toDateString()}
             </h6>
           </Alert>
         ));
@@ -262,7 +259,7 @@ class Announcements extends Component {
             <span data-notify="icon" className="pe-7s-bell" />
             <span data-notify="message">
               {el.body}
-              
+
               <button
                 className="btn"
                 type="button"
@@ -278,9 +275,8 @@ class Announcements extends Component {
                 (Show full announcement)
               </button>
               <h6 style={{ color: "gray" }}>
-                {new Date(el.timestamp).toLocaleTimeString()}
-                ,
-                {new Date(el.timestamp).toDateString()} 
+                {new Date(el.timestamp).toLocaleTimeString()},
+                {new Date(el.timestamp).toDateString()}
               </h6>
             </span>
             <Collapse in={this.state.open && this.state.showId === el.id}>
@@ -297,32 +293,32 @@ class Announcements extends Component {
                       className={`message${el.id}`}
                       id={`message${el.id}`}
                       // controlId = {`message${el.id}`}
-                      readOnly = {userRole === "user"}
+                      readOnly={userRole === "user"}
                       onChange={this.handleChange}
                     />
                   </FormGroup>
                 </div>
                 {userRole === "user" ? null : (
-                <Button
-                  className="btn-fill"
-                  style={{ marginRight: "10px" }}
-                  bsStyle="primary"
-                  onClick={(e) =>
-                    this.updateClicked(e, this.state.announcementData, el.id)
-                  }
-                  show = {userData !== "user"}
-                >
-                  Update
-                </Button>
+                  <Button
+                    className="btn-fill"
+                    style={{ marginRight: "10px" }}
+                    bsStyle="primary"
+                    onClick={(e) =>
+                      this.updateClicked(e, this.state.announcementData, el.id)
+                    }
+                    show={userData !== "user"}
+                  >
+                    Update
+                  </Button>
                 )}
                 {userRole === "user" ? null : (
-                <Button
-                  bsStyle="danger"
-                  className="btn-fill"
-                  onClick={(e) => this.deleteClicked(e, el.id)}
-                >
-                  Delete
-                </Button>
+                  <Button
+                    bsStyle="danger"
+                    className="btn-fill"
+                    onClick={(e) => this.deleteClicked(e, el.id)}
+                  >
+                    Delete
+                  </Button>
                 )}
               </div>
             </Collapse>
@@ -362,29 +358,31 @@ class Announcements extends Component {
                     </div>
                     {/* document.getElementById("formControlsTextarea").value */}
                     {userRole === "user" ? null : (
-                    <Button
-                      className="btn-fill"
-                      style={{ marginRight: "10px" }}
-                      bsStyle="primary"
-                      onClick={(e) =>
-                        this.updateClicked(
-                          e,
-                          this.state.announcementData,
-                          this.state.showId
-                        )
-                      }
-                    >
-                      Update
-                    </Button>
+                      <Button
+                        className="btn-fill"
+                        style={{ marginRight: "10px" }}
+                        bsStyle="primary"
+                        onClick={(e) =>
+                          this.updateClicked(
+                            e,
+                            this.state.announcementData,
+                            this.state.showId
+                          )
+                        }
+                      >
+                        Update
+                      </Button>
                     )}
                     {userRole === "user" ? null : (
-                    <Button
-                      className="btn-fill"
-                      bsStyle="danger"
-                      onClick={(e) => this.deleteClicked(e, this.state.showId)}
-                    >
-                      Delete
-                    </Button>
+                      <Button
+                        className="btn-fill"
+                        bsStyle="danger"
+                        onClick={(e) =>
+                          this.deleteClicked(e, this.state.showId)
+                        }
+                      >
+                        Delete
+                      </Button>
                     )}
                   </Col>
                 </Row>

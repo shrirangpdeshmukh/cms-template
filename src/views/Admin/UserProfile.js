@@ -30,7 +30,7 @@ import {
 
 import { FiMoreVertical } from "react-icons/fi";
 
-import { UserCard } from "components/Cards/UserCard/UserCard2";
+import { UserCard } from "../../components/Cards/UserCard/UserCard2";
 import Table from "../../components/Tables/pointTransactionTable";
 import InputElements from "../../components/Form/InputElements/InputElements";
 import ResponseModal from "../../components/Modals/ResponseModal/ResponseModal";

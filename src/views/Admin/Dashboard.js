@@ -19,10 +19,10 @@ import React, { Component } from "react";
 import ChartistGraph from "react-chartist";
 import { Grid, Row, Col } from "react-bootstrap";
 
-import { Card } from "components/Cards/Card/Card";
-import { StatsCard } from "components/StatsCard/StatsCard";
-import { Tasks } from "components/Tasks/Tasks";
-import Spinner from "components/Spinner/Spinner";
+import { Card } from "../../components/Cards/Card/Card";
+import { StatsCard } from "../../components/StatsCard/StatsCard";
+import { Tasks } from "../../components/Tasks/Tasks";
+import Spinner from "../../components/Spinner/Spinner";
 import ConfirmModal from "../../components/Modals/confirmModal/ConfirmModal";
 import {
   dataPie,
@@ -35,7 +35,7 @@ import {
   optionsBar,
   responsiveBar,
   legendBar,
-} from "variables/Variables";
+} from "../../variables/Variables";
 
 class Dashboard extends Component {
   createLegend(json) {
@@ -52,8 +52,12 @@ class Dashboard extends Component {
     return (
       <div className="content">
         {/* <Spinner /> */}
-        <ConfirmModal Heading = "Are you sure to update the following announcement :" Body = "Hello World!" />
-        <br /><br />
+        <ConfirmModal
+          Heading="Are you sure to update the following announcement :"
+          Body="Hello World!"
+        />
+        <br />
+        <br />
         <Grid fluid>
           <Row>
             <Col lg={3} sm={6}>

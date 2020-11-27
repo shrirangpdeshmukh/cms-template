@@ -15,28 +15,28 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Admin/Dashboard";
-import UserProfile from "views/Admin/UserProfile.js";
-import TableList from "views/Admin/Leaderboard.js";
-import AllUsers from "views/Admin/AllUsers";
-// import Icons from "views/Icons";
-import Announcements from "views/Admin/Announcements";
-import Topics from "views/Admin/Topics.js";
-import SignUP from "views/Admin/SignUp.js";
-import Logout from "views/Admin/Logout";
+// import Dashboard from "./views/Admin/Dashboard";
+import UserProfile from "./views/Admin/UserProfile.js";
+import TableList from "./views/Admin/Leaderboard.js";
+import AllUsers from "./views/Admin/AllUsers";
+// import Icons from "./views/Icons";
+import Announcements from "./views/Admin/Announcements";
+import Topics from "./views/Admin/Topics.js";
+import SignUP from "./views/Admin/SignUp.js";
+import Logout from "./views/Admin/Logout";
 
-import Login from "views/Authentication/Login.js";
-import ForgotPass from "views/Authentication/ForgotPassword.jsx";
-import ResetPassword from "views/Authentication/ResetPassword";
+import Login from "./views/Authentication/Login.js";
+import ForgotPass from "./views/Authentication/ForgotPassword";
+import ResetPassword from "./views/Authentication/ResetPassword";
 
 export const adminRoutes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "pe-7s-graph",
-    component: Dashboard,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/dashboard",
+  //   name: "Dashboard",
+  //   icon: "pe-7s-graph",
+  //   component: Dashboard,
+  //   layout: "/admin",
+  // },
   {
     path: "/topics",
     name: "Topics",

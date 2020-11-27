@@ -4,7 +4,7 @@ import axios from "../../axios-root";
 
 import Auxillary from "../../hoc/Auxillary/Auxillary";
 
-import {ResetPassword} from "../../variables/forms"
+import { ResetPassword } from "../../variables/forms";
 import checkValidity from "../../variables/validityRules";
 
 import Form from "../../components/Form/Form";
@@ -15,12 +15,12 @@ class ResetForm extends Component {
   state = {
     loginForm: ResetPassword,
     formIsValid: false,
-    redirectPath:null,
-    loading:false,
-    modalData:null,
-    showModal:false
-  }
-  
+    redirectPath: null,
+    loading: false,
+    modalData: null,
+    showModal: false,
+  };
+
   inputChangedHandler = (event, inputIdentifier) => {
     const updatedForm = {
       ...this.state.loginForm,
@@ -33,21 +33,22 @@ class ResetForm extends Component {
       updatedFormElement.value,
       updatedFormElement.validation
     );
-    if (inputIdentifier === 'passwordConfirm') {
-      updatedFormElement.valid =  updatedFormElement.valid && (updatedFormElement.value===updatedForm['password'].value);
+    if (inputIdentifier === "passwordConfirm") {
+      updatedFormElement.valid =
+        updatedFormElement.valid &&
+        updatedFormElement.value === updatedForm["password"].value;
     }
-    
-    
+
     updatedFormElement.touched = true;
     let formIsValid = true;
     updatedForm[inputIdentifier] = updatedFormElement;
     for (let inputIdentifier in updatedForm) {
       formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
     }
-           
+
     this.setState({ loginForm: updatedForm, formIsValid: formIsValid });
   };
-  
+
   loginHandler = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
@@ -60,16 +61,16 @@ class ResetForm extends Component {
 
     axios
       .patch("/auth/resetPassword", formData)
-        
+
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.data) {
           const modalData = {
             title: "Password Reset Succesful",
             message: `You will be redirected to HomePage`,
             Button: "success",
             hide: this.forwardToHome,
-            img:"success"
+            img: "success",
           };
           this.setState({
             loading: false,
@@ -78,7 +79,7 @@ class ResetForm extends Component {
           });
           const cookies = this.props.cookies;
           cookies.set("isAuthenticated", true, { path: "/" });
-          cookies.set("userData", response.data.data, { path: "/" })
+          cookies.set("userData", response.data.data, { path: "/" });
         } else {
           // console.log(response.response);
           // const modalData = {
@@ -97,11 +98,10 @@ class ResetForm extends Component {
         }
       })
       .catch((error) => {
-        this.setState({loading: false,formIsValid: false})
-
+        this.setState({ loading: false, formIsValid: false });
       });
   };
-  
+
   hideModal = () => {
     this.setState({ showModal: false });
   };
@@ -110,7 +110,6 @@ class ResetForm extends Component {
     this.setState({ showModal: false });
     this.props.history.push("/");
   };
-  
 
   render() {
     const formElementsArray = [];

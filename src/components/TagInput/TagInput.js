@@ -1,14 +1,18 @@
-import React, { Component } from "react"
-import styles from '../../views/styles/tagsInput.module.css'
+import React, { Component } from "react";
+import styles from "../../views/styles/tagsInput.module.css";
 
-class TagInput extends Component{
-    
-	
+class TagInput extends Component {
+  removeTags = (index) => {
+    const updated = [...this.props.tags.filter((_, idx) => idx !== index)];
+    this.props.updateTags(updated);
+  };
 
-    removeTags = (index) => {
-		const updated=[...this.props.tags.filter((_, idx) => idx !== index)]
-		this.props.updateTags(updated)
-    }
+  addTags = (event) => {
+    if (this.props.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+
+      if (event.target.value !== "" && pattern.test(event.target.value)) {
+        this.props.updateTags([...this.props.tags, event.target.value]);
 
 	addTags = (event) => {
 		if (this.props.isEmail) {
@@ -30,6 +34,7 @@ class TagInput extends Component{
 			}
 		}
     }
+  };
 
     render() {
         return (
@@ -56,4 +61,4 @@ class TagInput extends Component{
 }
 }
 
-export default TagInput
+export default TagInput;

@@ -7,8 +7,8 @@ import axios from "./axios-root";
 import Auxillary from "./hoc/Auxillary/Auxillary";
 import ErrorHandler from "./hoc/ErrorHandler/ErrorHandler";
 
-import AdminLayout from "layouts/Admin.js";
-import AuthLayout from "layouts/AuthLayout";
+import AdminLayout from "./layouts/Admin.js";
+import AuthLayout from "./layouts/AuthLayout";
 import TaskLayout from "./layouts/TaskLayout.js";
 
 import { withCookies } from "react-cookie";

@@ -18,8 +18,8 @@
 import React, { Component } from "react";
 import { Col } from "react-bootstrap";
 
-import Button from "components/CustomButton/CustomButton";
-import LeaderboardTable from "components/Tables/LeaderboardTable";
+import Button from "../../components/CustomButton/CustomButton";
+import LeaderboardTable from "../../components/Tables/LeaderboardTable";
 
 import axios from "../../axios-root";
 
@@ -46,7 +46,7 @@ class TableList extends Component {
         axios
           .get("/board/leaderboard/")
           .then((response) => {
-            console.log(response);
+            // console.log(response);
             this.setState({ board: response.data.board });
           })
           .catch((error) => {

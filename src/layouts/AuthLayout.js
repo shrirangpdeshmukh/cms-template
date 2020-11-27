@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import classes from "./Layout.module.css";
-import Footer from "components/Footer/AuthFooter";
+import Footer from "../components/Footer/AuthFooter";
 import logo from "../assets/img/collegelogo.png";
 import { authRoutes } from "../routes.js";
 

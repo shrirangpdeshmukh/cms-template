@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
-import TaskNavbar from "components/Navbars/TaskNavbar";
-import Footer from "components/Footer/Footer";
-import ChatSidebar from "components/Sidebar/ChatSidebar.jsx";
+import TaskNavbar from "../components/Navbars/TaskNavbar";
+import Footer from "../components/Footer/Footer";
+import ChatSidebar from "../components/Sidebar/ChatSidebar";
 import axios from "../axios-root";
 import { withCookies } from "react-cookie";
 import Test from "../views/Task";
@@ -37,7 +37,7 @@ class Chat extends Component {
     axios
       .get(`/board/topics/${topicId}/tasks/`)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         const routes = [];
         response.data.tasks.forEach((task) => {
           return routes.push({
@@ -52,7 +52,7 @@ class Chat extends Component {
           });
         });
 
-        console.log(routes);
+        // console.log(routes);
         this.setState({
           tasks: response.data.tasks,
           routes: routes,
@@ -156,7 +156,7 @@ class Chat extends Component {
 
   onCreateTask = (e) => {
     e.preventDefault();
-    console.log(this.props);
+    // console.log(this.props);
     const formData = {};
     for (let formElementIdentifier in this.state.createTask) {
       formData[formElementIdentifier] = this.state.createTask[
@@ -166,18 +166,19 @@ class Chat extends Component {
     axios
       .post(`/board/topics/${this.state.topic}/tasks`, formData)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         const modalData = {
           title: "Task Created",
           message: `The task was created successfully. Click OK to go back to the topic !`,
           Button: "success",
           img: "success",
           hide: () => {
-
-    this.setState({ responseModal: false});
-            this.props.history.push(`/task/${this.state.topic}/${this.state.tasks[0].id}`);
-            window.location.reload(true)
-            },
+            this.setState({ responseModal: false });
+            this.props.history.push(
+              `/task/${this.state.topic}/${this.state.tasks[0].id}`
+            );
+            window.location.reload(true);
+          },
         };
         this.setState({
           responseModal: true,

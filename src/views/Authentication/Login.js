@@ -57,7 +57,7 @@ class LoginForm extends Component {
       .then((response) => {
         if (response.data) {
           this.setState({ loading: false });
-          console.log("Login successful");
+          // console.log("Login successful");
           const modalData = {
             title: "Log In Succesful",
             message: `Welcome ${response.data.data.user.name} !`,
