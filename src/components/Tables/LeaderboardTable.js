@@ -6,21 +6,33 @@ import Card from "../Cards/Card/Card";
 const updownArrow = (num) => {
   if (num < 0) {
     return (
-      <i
-        className="fa fa-angle-up"
-        style={{ color: "green", fontSize: "1.5em" }}
-      />
+      <span>
+        <i
+          className="fa fa-angle-up"
+          style={{ color: "green", fontSize: "1.5em" }}
+        />
+        &nbsp;{Math.abs(num)}
+      </span>
     );
   } else if (num > 0) {
     return (
-      <i
-        className="fa fa-angle-down"
-        style={{ color: "red", fontSize: "1.5em" }}
-      />
+      <span>
+        <i
+          className="fa fa-angle-down"
+          style={{ color: "red", fontSize: "1.5em" }}
+        />
+        &nbsp;{Math.abs(num)}
+      </span>
     );
   } else {
     return (
-      <i className="fa fa-minus" style={{ color: "blue", fontSize: "0.9em" }} />
+      <span>
+        <i
+          className="fa fa-minus"
+          style={{ color: "blue", fontSize: "0.9em" }}
+        />
+        &nbsp;0
+      </span>
     );
   }
 };
@@ -74,10 +86,11 @@ const leaderbaordTable = (props) => {
                           <td>{prop.name}</td>
                           <td>{prop.points}</td>
                           <td>{prop.current_rank}</td>
-                          <td>{prop.old_rank}</td>
+                          <td>{prop.old_rank == 0 ? "-" : prop.old_rank}</td>
                           <td>
-                            {updownArrow(prop.current_rank - prop.old_rank)}
-                            {Math.abs(prop.current_rank - prop.old_rank)}
+                            {prop.old_rank == 0
+                              ? "-"
+                              : updownArrow(prop.current_rank - prop.old_rank)}
                           </td>
                         </tr>
                       );
